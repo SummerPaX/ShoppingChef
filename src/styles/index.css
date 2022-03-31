@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+  body {
+    @apply bg-white dark:bg-gray-700 dark:scroll-ff;
+  }
+
+  
+  .scroll-ff {
+    scrollbar-face-color: rgb(176, 88, 54); /* Firefox 63 compatibility */
+    scrollbar-track-color: rgb(51, 62, 72); /* Firefox 63 compatibility */
+    scrollbar-color: rgb(22, 163, 74) rgb(82, 82, 82);
+  }  
+
+  
+  .page-container {
+    @apply h-screen  flex flex-col overflow-auto;
+  }
+
+  .recipe-container {
+    @apply m-2 mx-auto max-w-xl md:max-w-[40rem] lg:max-w-[55rem] xl:max-w-[72rem]  transition-all duration-200 ease-linear flex-grow px-1 scrollbar dark:scrollbar-dark overflow-auto;
+  }
+
+
+  .scrollbar::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: #e5e5e5;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+    background: #4aa14f;
+  }
+  
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #008531;
+  }
+
+  .scrollbar-dark::-webkit-scrollbar-track {
+    background: #666666;
+  }
+
+  
+  .card {
+    @apply w-[100%] mb-2 rounded-sm  shadow-md overflow-hidden transition-all duration-200 md:flex
+                bg-white
+                dark:bg-gray-700;
+  }
+  .card-img {
+    @apply md:shrink-0;
+  }
+
+  .card-img img {
+    @apply h-48 w-full object-cover md:h-full md:w-48;
+  }
+
+  .header-tag {
+    @apply uppercase tracking-wide text-sm font-semibold 
+               text-indigo-500 
+               dark:text-indigo-500 pr-2;
+  }
+  .title {
+    @apply block mt-1 text-lg leading-tight font-medium hover:underline 
+               text-black 
+               dark:text-white;
+  }
+  .tags {
+    @apply flex flex-wrap place-content-between md:place-content-start mt-2;
+  }
+
+  .tags li {
+    @apply mr-1 mt-1 py-0.5 px-1.5 rounded-sm  
+            bg-gray-200 text-slate-500
+            dark:bg-green-800 dark:text-gray-100;
+  }
+
+}
+
