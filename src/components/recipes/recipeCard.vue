@@ -13,7 +13,7 @@ export default {
 </script>
 
 <template>
-  <div class="card border border-black dark:border-green-600">
+  <div class="card">
     <div class="card-img">
       <img class="" :src="recipe.img" />
     </div>
@@ -21,7 +21,7 @@ export default {
       <div class="header">
         <span class="header-tag" v-for="(htags,index) in recipe.header" :key=index>{{htags}}</span>
         </div>
-      <a href="#" class="title">{{ recipe.title }}</a>
+      <h1 class="title">{{ recipe.title }}</h1>
       <ul class="tags">
         <li v-for="(tags,index) in recipe.tags" :key=index>{{tags}}</li>
       </ul>

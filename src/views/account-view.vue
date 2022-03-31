@@ -1,11 +1,13 @@
 <script>
-export default {
+import Login from '../components/account/login.vue'
 
+export default {
+components: {Login}
 }
 </script>
 
 <template>
-  <h1 class="w-screen text-center m-auto">Account</h1>
+  <Login />
 </template>
 
 <style>

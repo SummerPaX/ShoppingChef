@@ -3,19 +3,16 @@
 @tailwind utilities;
 
 @layer components {
-
   body {
     @apply bg-white dark:bg-gray-700 dark:scroll-ff;
   }
 
-  
   .scroll-ff {
     scrollbar-face-color: rgb(176, 88, 54); /* Firefox 63 compatibility */
     scrollbar-track-color: rgb(51, 62, 72); /* Firefox 63 compatibility */
     scrollbar-color: rgb(22, 163, 74) rgb(82, 82, 82);
-  }  
+  }
 
-  
   .page-container {
     @apply h-screen  flex flex-col overflow-auto;
   }
@@ -23,7 +20,6 @@
   .recipe-container {
     @apply m-2 mx-auto max-w-xl md:max-w-[40rem] lg:max-w-[55rem] xl:max-w-[72rem]  transition-all duration-200 ease-linear flex-grow px-1 scrollbar dark:scrollbar-dark overflow-auto;
   }
-
 
   .scrollbar::-webkit-scrollbar {
     width: 5px;
@@ -35,10 +31,10 @@
   }
 
   .scrollbar::-webkit-scrollbar-thumb {
-      border-radius: 10px;
+    border-radius: 10px;
     background: #4aa14f;
   }
-  
+
   .scrollbar::-webkit-scrollbar-thumb:hover {
     background: #008531;
   }
@@ -47,9 +43,9 @@
     background: #666666;
   }
 
-  
   .card {
-    @apply w-[100%] mb-2 rounded-sm  shadow-md overflow-hidden transition-all duration-200 md:flex
+    @apply w-[100%] mb-2 overflow-hidden transition-all duration-200 md:flex
+          border border-black dark:border-green-600 rounded-sm shadow-md 
                 bg-white
                 dark:bg-gray-700;
   }
@@ -80,6 +76,4 @@
             bg-gray-200 text-slate-500
             dark:bg-green-800 dark:text-gray-100;
   }
-
 }
-
