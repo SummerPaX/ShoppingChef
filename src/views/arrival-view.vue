@@ -1,13 +1,11 @@
 <script>
 export default {
-setup(){
-    
-}
-}
+  setup() {},
+};
 </script>
 
 <template>
-  
+
 </template>
 
 <style>

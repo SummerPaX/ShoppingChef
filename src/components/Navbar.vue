@@ -67,34 +67,3 @@
     </router-link>
   </nav>
 </template>
-
-<style scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@layer components {
-
-  .sidebar-nav {
-    @apply fixed flex flex-row bottom-0 w-screen h-16 justify-center
-           md:w-16 md:flex-col md:h-screen          
-           dark:bg-gray-800  dark:text-white  
-           bg-green-600 text-white 
-           shadow-lg px-0  ;
-  }
-  .sidebar-icon {
-    @apply relative flex items-center justify-center h-12 w-12 mx-auto md:mx-2 my-2  
-           bg-green-700 text-white fill-white   hover:bg-green-200 hover:text-green-700 hover:fill-green-500
-           dark:bg-gray-700 dark:text-green-500 dark:fill-green-500 dark:hover:bg-green-600 dark:hover:text-white dark:hover:fill-white 
-           rounded-3xl hover:rounded-xl shadow-lg 
-           cursor-pointer
-           transition-all duration-300 ease-linear;
-  }
-  .sidebar-icon.router-link-active {
-    @apply dark:bg-green-800 dark:fill-white dark:text-white rounded-md 
-           bg-green-200 text-green-700 fill-green-500
-           duration-200
-           cursor-auto;
-  }
-}
-</style>

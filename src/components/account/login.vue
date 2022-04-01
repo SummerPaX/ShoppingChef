@@ -3,7 +3,7 @@ export default {};
 </script>
 
 <template>
-<div class="h-screen min-h-screen max-h-screen flex justify-center items-center p-4">
+<div class="fixed top-0 h-screen w-screen flex justify-center items-center p-4 bg-[rgba(0,0,0,0.4)] bg-black">
   <div class="border border-black dark:border-green-600 rounded-sm shadow-md 
                 bg-white dark:bg-gray-700 w-full p-4 rounded shadow-2xl text-gray-700 dark:text-white sm:w-96">
     <div class="flex justify-end">
