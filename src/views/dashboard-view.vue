@@ -1,14 +1,12 @@
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <template>
-
-  <h1 class="w-screen text-center m-auto">Dashboard</h1>
+	<div
+		class="dark:text-white text-center m-auto h-screen flex flex-row items-start justify-center"
+	>
+		<input type="checkbox" name="agree" id="agree" class="check" />
+		<label for="agree">Agree to Terms and Conditions</label>
+	</div>
 </template>
-
-<style>
-
-</style>
