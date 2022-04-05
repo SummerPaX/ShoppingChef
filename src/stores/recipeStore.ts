@@ -1,33 +1,12 @@
 import { defineStore } from "pinia";
+import Recipe from "../types/recipe";
 import edamamOptions from "../types/edamamOptions";
 
 export const recipeStore = defineStore("recipeStore", {
 	state: () => ({
 		app_key: "40698503668e0bb3897581f4766d77f9",
 		app_id: "900da95e",
-		recipes: [
-			{
-				header: ["High-Protein", "Low-Carb", "Low-Sodium"],
-				title: "Beef Cheek Confit With Caramelized Turnips",
-				tags: [
-					"Sugar-Conscious",
-					"Low Sugar",
-					"Keto-Friendly",
-					"Paleo",
-					"Dairy-Free",
-					"Gluten-Free",
-					"Wheat-Free",
-					"Egg-Free",
-					"Peanut-Free",
-					"Tree-Nut-Free",
-					"Low Potassium",
-					"Paleo",
-					"Low Potassium",
-					"Blubb",
-				],
-				img: "https://www.edamam.com/web-img/deb/debce0693c8d8a6988af80e1f94e4c4c.jpg",
-			},
-		],
+		recipes: [] as Array<Recipe>,
 	}),
 	getters: {
 		getDietLabels() {
@@ -152,7 +131,6 @@ export const recipeStore = defineStore("recipeStore", {
 	},
 	actions: {
 		async fetchRecipes(options: edamamOptions) {
-			console.log(options);
 			let optionsString = `&q=${options.query}&app_id=${this.app_id}&app_key=${this.app_key}`;
 			options.diet.forEach((element: String) => {
 				optionsString += `&diet=${element}`;
@@ -176,7 +154,6 @@ export const recipeStore = defineStore("recipeStore", {
 				optionsString +=
 					options.calories.max < Number.MAX_VALUE ? options.calories.max : "";
 			}
-
 			if (options.time.min > 0 || options.time.max < Number.MAX_VALUE) {
 				optionsString += "&time=";
 				optionsString +=
@@ -187,8 +164,7 @@ export const recipeStore = defineStore("recipeStore", {
 				optionsString +=
 					options.time.max < Number.MAX_VALUE ? options.time.max : "";
 			}
-
-      optionsString += options.to > 0 ? `&to=${options.to}` : "";
+			optionsString += options.to > 0 ? `&to=${options.to}` : "";
 
 			console.log(optionsString);
 
@@ -197,6 +173,9 @@ export const recipeStore = defineStore("recipeStore", {
 			);
 			const dataResponse = await dataRequest.json();
 			console.log(dataResponse);
+			const hits = dataResponse.hits as Array<Recipe>;
+			console.log(hits);
+			this.recipes = hits;
 		},
 	},
 });

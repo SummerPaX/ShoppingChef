@@ -5,10 +5,10 @@ import { recipeStore } from "../stores/recipeStore";
 
 export default {
 	setup() {
-		const recipes = recipeStore();
+		const recipestore = recipeStore();
 
 		return {
-			recipes,
+			recipestore,
 		};
 	},
 	components: {
@@ -26,9 +26,9 @@ export default {
 			class="m-2 mb-[4.25rem] md:mb-0 mx-auto px-1 scrollbar overflow-auto"
 		>
 			<RecipeCard
-				v-for="(recipe, index) in recipes.recipes"
+				v-for="(recipe, index) in recipestore.recipes"
 				:key="index"
-				:recipe="recipe"
+				:recipeProp="recipe"
 			/>
 		</div>
 	</div>

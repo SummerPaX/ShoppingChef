@@ -21,7 +21,7 @@ export default {
 				{
 					query: this.queryText,
 					diet: [],
-					health: ["sugar-conscious", "paleo"],
+					health: [],
 					mealType: [],
 					dishType: [],
 					calories: {
