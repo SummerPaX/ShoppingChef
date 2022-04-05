@@ -18,7 +18,6 @@ export default {
 	methods: {
 		toggleRegister() {
 			this.registerForm = !this.registerForm;
-			console.log("register " + this.registerForm);
 		},
 	},
 };
@@ -108,28 +107,29 @@ export default {
 
 			<div class="mt-5 mb-3 relative flex flex-wrap justify-around items-center">
 				<button
+				@click="account.googleSignIn"
 					id="googleAuth"
 					class="before:w-5 before:h-5 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 google-icon"
 				>
-					Continue with Google
+					{{ registerForm ? "Sign up " : "Continue "}}  with Google
 				</button>
 				<button
 					id="microsoftAuth"
 					class="before:w-5 before:h-5 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 microsoft-icon"
 				>
-					Continue with Microsoft
+					{{ registerForm ? "Sign up " : "Continue "}} with Microsoft
 				</button>
 				<button
 					id="appleAuth"
 					class="before:w-5 before:h-5 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 apple-icon"
 				>
-					Continue with Apple
+					{{ registerForm ? "Sign up " : "Continue "}}  with Apple
 				</button>
 				<button
 					id="twitterAuth"
 					class="before:w-5 before:h-4 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 twitter-icon"
 				>
-					Continue with Twitter
+					{{ registerForm ? "Sign up " : "Continue "}}  with Twitter
 				</button>
 			</div>
 

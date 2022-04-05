@@ -4,27 +4,30 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	signOut,
-  onAuthStateChanged,
-  User, deleteUser
+	GoogleAuthProvider,
+	onAuthStateChanged,
+	User,
+	deleteUser,
+	signInWithPopup,
+	getAuth,
 } from "firebase/auth";
 import { async } from "@firebase/util";
 import { useRoute } from "vue-router";
 
-
 onAuthStateChanged(auth, (_user) => {
-  const account = accountStore();
-  account.authenticated = _user != null;
-})
+	const account = accountStore();
+	account.authenticated = _user != null;
+});
 
 export const accountStore = defineStore("accountStore", {
 	state: () => ({
 		authenticated: false,
 	}),
-  getters: {
-    getUser(): User | null{
-      return auth.currentUser;
-    }
-  },
+	getters: {
+		getUser(): User | null {
+			return auth.currentUser;
+		},
+	},
 	actions: {
 		async standardSignIn(email: string, password: string) {
 			try {
@@ -35,8 +38,8 @@ export const accountStore = defineStore("accountStore", {
 			}
 		},
 		async deleteUser() {
-      console.log("Deleting " + auth.currentUser);
-      
+			console.log("Deleting " + auth.currentUser);
+
 			deleteUser(auth.currentUser as User);
 		},
 		async signOut() {
@@ -49,6 +52,23 @@ export const accountStore = defineStore("accountStore", {
 			} catch (err) {
 				console.error(err);
 			}
+		},
+		async googleSignIn() {
+			const provider = new GoogleAuthProvider();
+
+			const auth = getAuth();
+			signInWithPopup(auth, provider)
+				.then((result) => {})
+				.catch((error) => {
+					// Handle Errors here.
+					const errorCode = error.code;
+					const errorMessage = error.message;
+					// The email of the user's account used.
+					const email = error.email;
+					// The AuthCredential type that was used.
+					const credential = GoogleAuthProvider.credentialFromError(error);
+					// ...
+				});
 		},
 	},
 });
