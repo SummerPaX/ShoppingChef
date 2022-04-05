@@ -1,5 +1,5 @@
 <script lang="ts">
-import RecipeCard from "../components/recipes/recipeCard.vue";
+import RecipeCard from "../components/recipes/Card.vue";
 import RecipeSearch from "../components/recipes/RecipeSearch.vue";
 import { recipeStore } from "../stores/recipeStore";
 
@@ -21,7 +21,7 @@ export default {
 <div class=" flex justify-center">
 
 	<div class="h-screen flex flex-col overflow-auto max-w-xl md:max-w-[95%] xl:max-w-6xl transition-all duration-200 ease-linear flex-grow">
-		<RecipeSearch class="my-5"></RecipeSearch>
+		<RecipeSearch></RecipeSearch>
 		<div
 			class="m-2 mb-[4.25rem] md:mb-0 mx-auto px-1 scrollbar overflow-auto"
 		>

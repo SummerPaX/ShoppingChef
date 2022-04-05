@@ -8,6 +8,10 @@ module.exports = {
       colors: {
         gray: colors.neutral
       },
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
+      }
     },
   },
   plugins: [],
