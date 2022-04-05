@@ -144,6 +144,9 @@ export const recipeStore = defineStore("recipeStore", {
 			options.dishType.forEach((element: String) => {
 				optionsString += `&dishType=${element}`;
 			});
+			options.cuisine.forEach((element: String) => {
+				optionsString += `&cuisineType=${element}`;
+			});
 			if (options.calories.min > 0 || options.calories.max < Number.MAX_VALUE) {
 				optionsString += "&calories=";
 				optionsString +=

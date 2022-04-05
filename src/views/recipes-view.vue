@@ -1,5 +1,5 @@
 <script lang="ts">
-import RecipeCard from "../components/recipes/RecipeCard.vue";
+import RecipeCard from "../components/recipes/recipeCard.vue";
 import RecipeSearch from "../components/recipes/RecipeSearch.vue";
 import { recipeStore } from "../stores/recipeStore";
 

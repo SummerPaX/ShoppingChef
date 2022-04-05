@@ -24,6 +24,7 @@ export default {
 					health: [],
 					mealType: [],
 					dishType: [],
+					cuisine: ["french"],
 					calories: {
 						min: 0,
 						max: Number.MAX_VALUE

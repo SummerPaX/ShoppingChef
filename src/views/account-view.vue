@@ -1,5 +1,4 @@
 <script>
-import Login from "../components/account/Login.vue";
 import {accountStore} from "../stores/accountStore"
 
 export default {

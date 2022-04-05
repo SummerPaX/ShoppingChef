@@ -4,6 +4,7 @@ interface edamamOptions {
 	health: Array<String>;
 	mealType: Array<String>;
 	dishType: Array<String>;
+	cuisine: Array<String>;
 	calories: {
 		min: Number;
 		max: Number;
