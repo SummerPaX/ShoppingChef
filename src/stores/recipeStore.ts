@@ -10,38 +10,38 @@ export const recipeStore = defineStore("recipeStore", {
 	}),
 	getters: {
 		getDietLabels() {
-			return {
-				balanced: {
+			return [
+				 {
 					name: "Balanced",
 					param: "balanced",
 					description: "Protein/Fat/Carb values in 15/35/50 ratio",
 				},
-				highfiber: {
+				 {
 					name: "High-Fiber",
 					param: "high-fiber",
 					description: "More than 5g fiber per serving",
 				},
-				highprotein: {
+				 {
 					name: "High-Protein",
 					param: "high-protein",
 					description: "More than 50% of total calories from proteins",
 				},
-				lowcarb: {
+				 {
 					name: "Low-Carb",
 					param: "low-carb",
 					description: "Less than 20% of total calories from carbs",
 				},
-				lowfat: {
+				{
 					name: "Low-Fat",
 					param: "low-fat",
 					description: "Less than 15% of total calories from fat",
 				},
-				lowsodium: {
+				 {
 					name: "Low-Sodium",
 					param: "low-sodium",
 					description: "Less than 140mg Na per serving",
-				},
-			};
+				}]
+			;
 		},
 		getHealthLabels() {
 			return [

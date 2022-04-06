@@ -1,6 +1,6 @@
 <script lang="ts">
 import Navbar from "./components/Navbar.vue";
-import Login from './components/account/login.vue'
+import Login from './components/account/LoginRegister.vue'
 import { accountStore } from "./stores/accountStore";
 
 export default {

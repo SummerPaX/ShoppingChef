@@ -26,7 +26,7 @@ export default {
 <template>
 	<div class="fixed h-screen w-screen flex items-start justify-center">
 		<div
-			class="border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700 w-full p-4 mt-[10vh] text-gray-700 dark:text-white max-w-lg overflow-y-auto"
+			class="border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700 w-full p-4 mt-1 sm:mt-[10vh] text-gray-700 dark:text-white max-w-lg overflow-y-auto"
 			:class="{ registerForm: registerForm }"
 		>
 			<div class="flex justify-center">
@@ -66,7 +66,7 @@ export default {
 					v-if="!registerForm"
 				>
 					<input id="keep-ceckbox" class="check" type="checkbox" />
-					<label for="keep-ceckbox" c>keep me logged in</label>
+					<label for="keep-ceckbox">keep me logged in</label>
 					<a href="#" class="text-blue-500 focus-visible-green"
 						>Forgot your password?</a
 					>
