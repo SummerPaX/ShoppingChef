@@ -33,9 +33,6 @@ export default {
 	methods: {
 		submitSearch() {
 			if (this.queryText) {
-				this.time.max = this.time.max == 0 ? Number.MAX_VALUE : this.time.max;
-				this.calories.max = this.calories.max == 0 ? Number.MAX_VALUE : this.calories.max;
-
 				this.recipes.fetchRecipes({
 					query: this.queryText,
 					diet: this.dietType,
@@ -43,14 +40,19 @@ export default {
 					mealType: this.mealType,
 					dishType: this.dishType,
 					cuisine: this.cuisineType,
-					calories: this.calories,
-					time: this.time,
+					calories: {
+						min: this.calories.min,
+						max: this.calories.max == 0 ? Number.MAX_VALUE : this.calories.max
+					},
+					time: {
+						min: this.time.min,
+						max: this.time.max == 0 ? Number.MAX_VALUE : this.time.max
+					},
 					to: 50,
 				} as edamamOptions);
 			}
 		},
 		deleteSearchInput() {
-			console.log(this.$data);
 			this.queryText = "";
 			document.getElementById("searchBar")?.focus();
 		},
