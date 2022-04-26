@@ -1,43 +1,32 @@
-<script lang="ts">
-import { accountStore } from "../stores/accountStore";
+<script lang="ts" setup>
 import { User } from "firebase/auth";
+import { accountStore } from "../stores/accountStore";
+import { ref } from "vue";
 
-export default {
-	setup() {
-		const account = accountStore();
-		const pass = '****************';
-		return {
-			account, pass
-		};
-	},
-	computed: {
-		getUser():User{
-			console.log(this.account.getUser)
-			return this.account.getUser as User;
-		}
-	}
-};
+const account = accountStore();
+const pass = ref("****************");
+const getUser = ref(account.getUser as User);
 </script>
 
 <template>
 	<div class="flex h-screen flex-col justify-center items-center dark:text-white">
-		<img class="mt-20" :src="getUser.photoURL" :alt="getUser.displayName" srcset="">
+		<img class="mt-20" :src="getUser.photoURL ?? ''" :alt="getUser.displayName ?? 'Profile Photo'"/>
 		<h1 class="mt-5 mb-5 text-4xl">Account</h1>
 		<div class="flex flex-col justify-start items-start mb-auto shrink-0">
 			<div class="flex flex-row m-2 border-b">
 				<h2 class="w-32">Name:</h2>
 				<input disabled type="text" v-model="getUser.displayName" class="bg-inherit mr-5 w-56 grow" />
-				<button class=" px-1 rounded-md bg-orange-600">Edit</button>
+				<button class="px-1 rounded-md bg-orange-600">Edit</button>
 			</div>
 			<div class="flex flex-row m-2 border-b">
 				<h2 class="w-32">Email:</h2>
-				<input disabled type="email"  v-model="getUser.email" class="bg-inherit mr-5 w-56 grow " />
-				<button class=" px-1 rounded-md bg-orange-600">Edit</button>
+				<input disabled type="email" v-model="getUser.email" class="bg-inherit mr-5 w-56 grow" />
+				<button class="px-1 rounded-md bg-orange-600">Edit</button>
 			</div>
 			<div class="flex flex-row m-2 border-b">
 				<h2 class="w-32">Password:</h2>
-				<input disabled type="password" v-model="pass" class="bg-inherit  mr-5 w-56 grow" />
-				<button class=" px-1 rounded-md bg-orange-600">Edit</button>
+				<input disabled type="password" v-model="pass" class="bg-inherit mr-5 w-56 grow" />
+				<button class="px-1 rounded-md bg-orange-600">Edit</button>
 			</div>
 		</div>
 		<button
@@ -54,5 +43,3 @@ export default {
 		</button>
 	</div>
 </template>
-
-<style></style>

@@ -1,32 +1,32 @@
 interface Ingredient {
-  text: String;
+  text: string;
   quantity: Number;
-  measure: String;
-  food: String;
+  measure: string;
+  food: string;
   weight: Number;
-  foodCategory: String
-  image: String  
+  foodCategory: string
+  image: string  
 }
 
 interface Recipe {
-  uri: String
-	label: String;
+  uri: string
+	label: string;
 	image: string;
-	source: String;
-	url: String;
-  shareAs: String;
+	source: string;
+	url: string;
+  shareAs: string;
   yield: Number;
-  dietLabels: Array<String>;
-  healthLabels: Array<String>;
-  cautions: Array<String>;
-  ingredientLines: Array<String>;
+  dietLabels: Array<string>;
+  healthLabels: Array<string>;
+  cautions: Array<string>;
+  ingredientLines: Array<string>;
   ingredients: Array<Ingredient>
   calories: Number;
   totalWeight: Number;
   totalTime: Number;
-  cuisineType: Array<String>;
-  mealType: Array<String>;
-  dishType: Array<String>;
+  cuisineType: Array<string>;
+  mealType: Array<string>;
+  dishType: Array<string>;
   totalNutrients: any;
   totalDaily: any;
   digest: any;

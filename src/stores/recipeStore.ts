@@ -6,9 +6,15 @@ export const recipeStore = defineStore("recipeStore", {
 	state: () => ({
 		app_key: "40698503668e0bb3897581f4766d77f9",
 		app_id: "900da95e",
-		recipes: [] as Array<Recipe>,
+		recipes: [],
+		count: 0,
+		more: false,
+		to: 0
 	}),
 	getters: {
+		getRecipes():Recipe[]  {
+			return this.recipes;
+		},
 		getDietLabels() {
 			return [
 				 {
@@ -131,6 +137,11 @@ export const recipeStore = defineStore("recipeStore", {
 	},
 	actions: {
 		async fetchRecipes(options: edamamOptions) {
+			
+			this.recipes = [];
+			this.count = 0;
+			this.more = false;
+			this.to = 0;
 			let optionsString = `&q=${options.query}&app_id=${this.app_id}&app_key=${this.app_key}`;
 			options.diet.forEach((element: String) => {
 				optionsString += `&diet=${element}`;
@@ -147,25 +158,25 @@ export const recipeStore = defineStore("recipeStore", {
 			options.cuisine.forEach((element: String) => {
 				optionsString += `&cuisineType=${element}`;
 			});
-			if (options.calories.min > 0 || options.calories.max < Number.MAX_VALUE) {
+			if (options.calories.min > 0 || options.calories.max > 0 ) {
 				optionsString += "&calories=";
 				optionsString +=
 					options.calories.min > 0
 						? options.calories.min +
-						  (options.calories.max < Number.MAX_VALUE ? "-" : "%2b")
+						  (options.calories.max > 0 ? "-" : "%2b")
 						: "";
 				optionsString +=
-					options.calories.max < Number.MAX_VALUE ? options.calories.max : "";
+					options.calories.max > 0 ? options.calories.max : "";
 			}
-			if (options.time.min > 0 || options.time.max < Number.MAX_VALUE) {
+			if (options.time.min > 0 || options.time.max > 0) {
 				optionsString += "&time=";
 				optionsString +=
 					options.time.min > 0
 						? options.time.min +
-						  (options.time.max < Number.MAX_VALUE ? "-" : "%2b")
+						  (options.time.max > 0 ? "-" : "%2b")
 						: "";
 				optionsString +=
-					options.time.max < Number.MAX_VALUE ? options.time.max : "";
+					options.time.max > 0 ? options.time.max : "";
 			}
 			optionsString += options.to > 0 ? `&to=${options.to}` : "";
 
@@ -175,10 +186,11 @@ export const recipeStore = defineStore("recipeStore", {
 				"https://api.edamam.com/search?" + optionsString
 			);
 			const dataResponse = await dataRequest.json();
-			console.log(dataResponse);
-			const hits = dataResponse.hits as Array<Recipe>;
-			console.log(hits);
-			this.recipes = hits;
+			this.recipes = dataResponse.hits;
+			this.count = dataResponse.count;
+			this.more = dataResponse.more;
+			this.to = dataResponse.to;
+			console.log(this.recipes);
 		},
 	},
 });

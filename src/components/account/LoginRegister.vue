@@ -1,26 +1,16 @@
-<script lang="ts">
+<script lang="ts" setup>
+import { ref } from "vue";
 import { accountStore } from "../../stores/accountStore";
 
-export default {
-	data() {
-		return {
-			email: "",
-			password: "",
-			registerForm: false,
-		};
-	},
-	setup() {
-		const account = accountStore();
-		return {
-			account,
-		};
-	},
-	methods: {
-		toggleRegister() {
-			this.registerForm = !this.registerForm;
-		},
-	},
+let email = ref("");
+let password = ref("");
+let registerForm = ref(false);
+
+const toggleRegister = () => {
+	registerForm.value = !registerForm.value;
 };
+
+const account = accountStore();
 </script>
 
 <template>
@@ -34,15 +24,10 @@ export default {
 			</div>
 
 			<p class="text-center pb-2 text-2xl">
-				{{
-					registerForm ? "Sign up for your Account" : "Log in to Shopping Chef"
-				}}
+				{{ registerForm ? "Sign up for your Account" : "Log in to Shopping Chef" }}
 			</p>
 
-			<form
-				v-on:submit.prevent="registerForm ? account.createUser(email, password) : account.standardSignIn(email, password)"
-				class="my-5"
-			>
+			<form v-on:submit.prevent="registerForm ? account.createUser(email, password) : account.standardSignIn(email, password)" class="my-5">
 				<div class="pb-5">
 					<input
 						v-model="email"
@@ -61,93 +46,65 @@ export default {
 					/>
 				</div>
 
-				<div
-					class="pb-5 pl-1 flex flex-row justify-between"
-					v-if="!registerForm"
-				>
+				<div class="pb-5 pl-1 flex flex-row justify-between" v-if="!registerForm">
 					<input id="keep-ceckbox" class="check" type="checkbox" />
 					<label for="keep-ceckbox">keep me logged in</label>
-					<a href="#" class="text-blue-500 focus-visible-green"
-						>Forgot your password?</a
-					>
+					<a href="#" class="text-blue-500 focus-visible-green">Forgot your password?</a>
 				</div>
 
-				<div
-					class="pb-5 pl-1 flex flex-row justify-between"
-					v-if="registerForm"
-				>
+				<div class="pb-5 pl-1 flex flex-row justify-between" v-if="registerForm">
 					<input id="terms-ceckbox" class="check" type="checkbox" />
-					<label for="terms-ceckbox" c
-						>I agree to the&nbsp;<a
-							href="#"
-							class="text-blue-500 focus-visible-green"
-							>Terms and Conditions</a
-						></label
-					>
+					<label for="terms-ceckbox" c>I agree to the&nbsp;<a href="#" class="text-blue-500 focus-visible-green">Terms and Conditions</a></label>
 				</div>
 
 				<button
-					type="submit" required
+					type="submit"
+					required
 					class="bg-green-600 hover:bg-green-700 p-2 w-full text-white rounded-sm focus-visible:bg-green-700 focus-visible-green transition-all ease-in-out duration-200"
 				>
 					{{ registerForm ? "Sign up" : "Sign In" }}
 				</button>
 			</form>
 
-			<div
-				class="text-center border-b border-gray-500 dark:border-gray-200"
-				style="line-height: 0px"
-			>
-				<span
-					class="p-1 text-xs tracking-wide text-gray-500 dark:text-gray-200 text-inherit uppercase bg-white dark:bg-gray-700"
-					style="line-height: 0px"
+			<div class="text-center border-b border-gray-500 dark:border-gray-200" style="line-height: 0px">
+				<span class="p-1 text-xs tracking-wide text-gray-500 dark:text-gray-200 text-inherit uppercase bg-white dark:bg-gray-700" style="line-height: 0px"
 					>Or</span
 				>
 			</div>
 
 			<div class="mt-5 mb-3 relative flex flex-wrap justify-around items-center">
 				<button
-				@click="account.googleSignIn"
+					@click="account.googleSignIn"
 					id="googleAuth"
 					class="before:w-5 before:h-5 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 google-icon"
 				>
-					{{ registerForm ? "Sign up " : "Continue "}}  with Google
+					{{ registerForm ? "Sign up " : "Continue " }} with Google
 				</button>
 				<button
 					id="microsoftAuth"
 					class="before:w-5 before:h-5 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 microsoft-icon"
 				>
-					{{ registerForm ? "Sign up " : "Continue "}} with Microsoft
+					{{ registerForm ? "Sign up " : "Continue " }} with Microsoft
 				</button>
 				<button
 					id="appleAuth"
 					class="before:w-5 before:h-5 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 apple-icon"
 				>
-					{{ registerForm ? "Sign up " : "Continue "}}  with Apple
+					{{ registerForm ? "Sign up " : "Continue " }} with Apple
 				</button>
 				<button
 					id="twitterAuth"
 					class="before:w-5 before:h-4 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 twitter-icon"
 				>
-					{{ registerForm ? "Sign up " : "Continue "}}  with Twitter
+					{{ registerForm ? "Sign up " : "Continue " }} with Twitter
 				</button>
 			</div>
 
-			<div
-				class="text-center border-b border-gray-500 dark:border-gray-200"
-			></div>
+			<div class="text-center border-b border-gray-500 dark:border-gray-200"></div>
 
 			<div class="mt-4 mb-1 text-sm text-center">
-				<a
-					href="#"
-					@click="toggleRegister"
-					class="text-blue-500 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green"
-				>
-					{{
-						registerForm
-							? "Already have an account? Log In"
-							: "Don't have an account? Sign up!"
-					}}</a
+				<a href="#" @click="toggleRegister" class="text-blue-500 focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green">
+					{{ registerForm ? "Already have an account? Log In" : "Don't have an account? Sign up!" }}</a
 				>
 			</div>
 		</div>

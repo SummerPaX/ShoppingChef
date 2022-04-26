@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <template>
   <nav class="sidebar-nav">
     <router-link

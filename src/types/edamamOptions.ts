@@ -1,10 +1,10 @@
 interface edamamOptions {
 	query: string;
-	diet: Array<String>;
-	health: Array<String>;
-	mealType: Array<String>;
-	dishType: Array<String>;
-	cuisine: Array<String>;
+	diet: Array<string>;
+	health: Array<string>;
+	mealType: Array<string>;
+	dishType: Array<string>;
+	cuisine: Array<string>;
 	calories: {
 		min: Number;
 		max: Number;

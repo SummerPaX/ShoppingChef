@@ -1,62 +1,44 @@
-<script lang="ts">
+<script lang="ts" setup>
+import { ref } from "vue";
 import edamamOptions from "../../types/edamamOptions";
 import { recipeStore } from "../../stores/recipeStore";
 
-export default {
-	data() {
-		return {
-			showmeal: false,
-			showcuisine: false,
-			showdiet: false,
-			showhealth: false,
-			showdish: false,
-			showcalories: false,
-			showpreptime: false,
-			queryText: "schnitzel",
-			filterVisible: false,
-			dietType: [],
-			healthType: [],
-			mealType: [],
-			dishType: [],
-			cuisineType: [],
-			calories: { min: 0, max: 0 },
-			time: { min: 0, max: 0 },
-		};
-	},
-	setup() {
-		const recipes = recipeStore();
+const recipes = recipeStore();
 
-		return {
-			recipes,
-		};
+let showmeal = ref(false);
+let showcuisine = ref(false);
+let showdiet = ref(false);
+let showhealth = ref(false);
+let showdish = ref(false);
+let showcalories = ref(false);
+let showpreptime = ref(false);
+let filterVisible = ref(false);
+
+let query = ref<edamamOptions>({
+	query: "",
+	diet: [],
+	health: [],
+	mealType: [],
+	dishType: [],
+	cuisine: [],
+	calories: {
+		min: 0,
+		max: 0,
 	},
-	methods: {
-		submitSearch() {
-			if (this.queryText) {
-				this.recipes.fetchRecipes({
-					query: this.queryText,
-					diet: this.dietType,
-					health: this.healthType,
-					mealType: this.mealType,
-					dishType: this.dishType,
-					cuisine: this.cuisineType,
-					calories: {
-						min: this.calories.min,
-						max: this.calories.max == 0 ? Number.MAX_VALUE : this.calories.max
-					},
-					time: {
-						min: this.time.min,
-						max: this.time.max == 0 ? Number.MAX_VALUE : this.time.max
-					},
-					to: 50,
-				} as edamamOptions);
-			}
-		},
-		deleteSearchInput() {
-			this.queryText = "";
-			document.getElementById("searchBar")?.focus();
-		},
+	time: {
+		min: 0,
+		max: 0,
 	},
+	to: 50,
+});
+const submitSearch = () => {
+	if (query.value.query) {
+		recipes.fetchRecipes(query.value);
+	}
+};
+const deleteSearchInput = () => {
+	query.value.query = "";
+	document.getElementById("searchBar")?.focus();
 };
 </script>
 
@@ -64,12 +46,12 @@ export default {
 	<div class="relative flex flex-col text-gray-600 dark:text-white items-center overflow-visible">
 		<form
 			v-on:submit.prevent="submitSearch"
-			class="relative h-12 flex flex-row w-full items-center bg-gray-100 dark:bg-gray-800 rounded-full border border-green-600 group overflow-visible transition-all duration-100 mx-2"
+			class="relative mt-2 h-12 flex flex-row w-full items-center bg-gray-100 dark:bg-gray-800 rounded-full border border-green-600 group overflow-visible transition-all duration-100 mx-2"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
-				:class="queryText ? 'h-8 w-8' : 'h-0 w-0 '"
+				:class="query.query ? 'h-8 w-8' : 'h-0 w-0 '"
 				class="group-focus-within:h-8 group-focus-within:w-8 absolute flex items-center ml-3 text-center rounded-full fill-gray-500 dark:fill-gray-400 transition-all"
 			>
 				<path d="M0 0h24v24H0V0z" fill="none" />
@@ -78,25 +60,25 @@ export default {
 				/>
 			</svg>
 			<input
-				v-model="queryText"
+				v-model="query.query"
 				id="searchBar"
 				type="text"
-				:class="queryText ? 'ml-14' : 'ml-4'"
-				class="block w-full h-full group-focus-within:ml-14 mr-10 bg-opacity-0 placeholder:text-gray-400 placeholder:dark:text-gray-500 focus-visible:outline-none focus:border-none bg-inherit transition-spacing"
+				:class="query.query ? 'ml-14' : 'ml-4'"
+				class="block w-full h-full group-focus-within:ml-14 mr-10 bg-transparent placeholder:text-gray-400 placeholder:dark:text-gray-500 focus-visible:outline-none focus:border-none transition-spacing"
 				placeholder="Search"
 			/>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				@click.passive="deleteSearchInput"
-				:class="queryText ? 'h-6 w-6' : 'h-0 w-0 '"
+				:class="query.query ? 'h-6 w-6' : 'h-0 w-0 '"
 				class="absolute cursor-pointer right-20 mr-2 flex my-auto rounded-full fill-gray-500 dark:fill-gray-400 transition-all"
 			>
 				<path d="M0 0h24v24H0V0z" fill="none" />
 				<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
 			</svg>
 			<button
-				:class="queryText ? 'w-20' : 'w-0 opacity-0'"
+				:class="query.query ? 'w-20' : 'w-0 opacity-0'"
 				class="h-full right-0 rounded-r-full shrink-0 grow-0 bg-green-600 text-white font-semibold transition-all focus-visible:outline-none focus:border-none"
 			>
 				Search
@@ -119,7 +101,7 @@ export default {
 				<h1 @click="showmeal = !showmeal" class="cursor-pointer">Meal &#9207;</h1>
 				<div v-if="showmeal">
 					<div v-for="meal in recipes.getMealTypes" :key="meal" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="meal" v-model="this.mealType" :value="meal" class="check peer" type="checkbox" />
+						<input :id="meal" v-model="query.mealType" :value="meal" class="check peer" type="checkbox" />
 						<label :for="meal" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ meal }}</label>
 					</div>
 				</div>
@@ -131,7 +113,7 @@ export default {
 				<h1 @click="showcuisine = !showcuisine" class="cursor-pointer">Cuisine &#9207;</h1>
 				<div v-if="showcuisine">
 					<div v-for="cuisine in recipes.getCuisineTypes" :key="cuisine" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="cuisine" v-model="this.cuisineType" :value="cuisine" class="check peer" type="checkbox" />
+						<input :id="cuisine" v-model="query.cuisine" :value="cuisine" class="check peer" type="checkbox" />
 						<label :for="cuisine" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ cuisine }}</label>
 					</div>
 				</div>
@@ -143,7 +125,7 @@ export default {
 				<h1 @click="showhealth = !showhealth" class="cursor-pointer">HealthLabels &#9207;</h1>
 				<div v-if="showhealth">
 					<div v-for="health in recipes.getHealthLabels" :key="health" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="health" v-model="this.healthType" :value="health" class="check peer" type="checkbox" />
+						<input :id="health" v-model="query.health" :value="health" class="check peer" type="checkbox" />
 						<label :for="health" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ health }}</label>
 					</div>
 				</div>
@@ -155,7 +137,7 @@ export default {
 				<h1 @click="showdiet = !showdiet" class="cursor-pointer">Diet &#9207;</h1>
 				<div v-if="showdiet">
 					<div v-for="diet in recipes.getDietLabels" :key="diet.param" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="diet.param" v-model="this.dietType" :value="diet.param" class="check peer" type="checkbox" />
+						<input :id="diet.param" v-model="query.diet" :value="diet.param" class="check peer" type="checkbox" />
 						<label :for="diet.param" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ diet.name }}</label>
 					</div>
 				</div>
@@ -167,7 +149,7 @@ export default {
 				<h1 @click="showdish = !showdish" class="cursor-pointer">Dish &#9207;</h1>
 				<div v-if="showdish">
 					<div v-for="dish in recipes.getDishTypes" :key="dish" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="dish" v-model="this.dishType" :value="dish" class="check peer" type="checkbox" />
+						<input :id="dish" v-model="query.dishType" :value="dish" class="check peer" type="checkbox" />
 						<label :for="dish" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ dish }}</label>
 					</div>
 				</div>
@@ -184,7 +166,7 @@ export default {
 							id="minCal"
 							type="number"
 							placeholder="min"
-							v-model="calories.min"
+							v-model="query.calories.min"
 							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
 						/>
 					</div>
@@ -194,7 +176,7 @@ export default {
 							id="maxCal"
 							type="number"
 							placeholder="max"
-							v-model="calories.max"
+							v-model="query.calories.max"
 							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
 						/>
 					</div>
@@ -212,7 +194,7 @@ export default {
 							id="minCal"
 							type="number"
 							placeholder="min"
-							v-model="time.min"
+							v-model="query.time.min"
 							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
 						/>
 					</div>
@@ -222,7 +204,7 @@ export default {
 							id="maxCal"
 							type="number"
 							placeholder="max"
-							v-model="time.max"
+							v-model="query.time.max"
 							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
 						/>
 					</div>

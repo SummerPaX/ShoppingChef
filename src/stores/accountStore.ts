@@ -11,21 +11,21 @@ import {
 	signInWithPopup,
 	getAuth,
 } from "firebase/auth";
-import { async } from "@firebase/util";
-import { useRoute } from "vue-router";
 
 onAuthStateChanged(auth, (_user) => {
 	const account = accountStore();
+	account.user = _user;
 	account.authenticated = _user != null;
 });
 
 export const accountStore = defineStore("accountStore", {
 	state: () => ({
 		authenticated: false,
+		user: null as User | null | undefined,
 	}),
 	getters: {
-		getUser(): User | null {
-			return auth.currentUser;
+		getUser(): User | null | undefined {
+			return this.user;
 		},
 	},
 	actions: {
