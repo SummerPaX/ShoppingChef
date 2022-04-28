@@ -44,6 +44,7 @@ const deleteSearchInput = () => {
 
 <template>
 	<div class="relative flex flex-col text-gray-600 dark:text-white items-center overflow-visible">
+		<!-- Search Bar -->
 		<form
 			v-on:submit.prevent="submitSearch"
 			class="relative mt-2 h-12 flex flex-row w-full items-center bg-gray-100 dark:bg-gray-800 rounded-full border border-green-600 group overflow-visible transition-all duration-100 mx-2"
@@ -79,12 +80,14 @@ const deleteSearchInput = () => {
 			</svg>
 			<button
 				:class="query.query ? 'w-20' : 'w-0 opacity-0'"
-				class="h-full right-0 rounded-r-full shrink-0 grow-0 bg-green-600 text-white font-semibold transition-all focus-visible:outline-none focus:border-none"
+				class="h-full right-0 rounded-r-full shrink-0 grow-0 bg-green-600 text-white font-semibold transition-all focus-visible:outline-none overflow-hidden focus:border-none"
 			>
 				Search
 			</button>
 		</form>
 
+		<!-- Filter -->
+		<!--TODO make Filters Reactive-->
 		<div class="relative mt-2 flex flex-row flex-wrap items-baseline justify-start w-full transition-spacing">
 			<button :disabled="!filterVisible" class="peer hidden"></button>
 			<button
@@ -96,9 +99,9 @@ const deleteSearchInput = () => {
 			</button>
 			<div
 				:class="showmeal ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute left-14 flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				class="absolute left-14 flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showmeal = !showmeal" class="cursor-pointer">Meal &#9207;</h1>
+				<h1 @click="showmeal = !showmeal" class="cursor-pointer flex items-center">Meal <span class="material-symbols-outlined "> {{showmeal ? "expand_less" : "expand_more"}} </span></h1>
 				<div v-if="showmeal">
 					<div v-for="meal in recipes.getMealTypes" :key="meal" class="my-1 pl-1 flex flex-row justify-between">
 						<input :id="meal" v-model="query.mealType" :value="meal" class="check peer" type="checkbox" />
@@ -108,9 +111,9 @@ const deleteSearchInput = () => {
 			</div>
 			<div
 				:class="showcuisine ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute left-[8.5rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				class="absolute left-[8.5rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showcuisine = !showcuisine" class="cursor-pointer">Cuisine &#9207;</h1>
+				<h1 @click="showcuisine = !showcuisine" class="cursor-pointer flex items-center">Cuisine <span class="material-symbols-outlined "> {{showcuisine ? "expand_less" : "expand_more"}} </span></h1>
 				<div v-if="showcuisine">
 					<div v-for="cuisine in recipes.getCuisineTypes" :key="cuisine" class="my-1 pl-1 flex flex-row justify-between">
 						<input :id="cuisine" v-model="query.cuisine" :value="cuisine" class="check peer" type="checkbox" />
@@ -120,9 +123,9 @@ const deleteSearchInput = () => {
 			</div>
 			<div
 				:class="showhealth ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute left-[14.5rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				class="absolute left-[14.5rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showhealth = !showhealth" class="cursor-pointer">HealthLabels &#9207;</h1>
+				<h1 @click="showhealth = !showhealth" class="cursor-pointer flex items-center">HealthLabels <span class="material-symbols-outlined "> {{showhealth ? "expand_less" : "expand_more"}} </span></h1>
 				<div v-if="showhealth">
 					<div v-for="health in recipes.getHealthLabels" :key="health" class="my-1 pl-1 flex flex-row justify-between">
 						<input :id="health" v-model="query.health" :value="health" class="check peer" type="checkbox" />
@@ -132,9 +135,9 @@ const deleteSearchInput = () => {
 			</div>
 			<div
 				:class="showdiet ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 md:mt-1 left-14 md:left-[23rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				class="absolute mt-10 md:mt-1 left-14 md:left-[23rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showdiet = !showdiet" class="cursor-pointer">Diet &#9207;</h1>
+				<h1 @click="showdiet = !showdiet" class="cursor-pointer flex items-center">Diet <span class="material-symbols-outlined "> {{showdiet ? "expand_less" : "expand_more"}} </span></h1>
 				<div v-if="showdiet">
 					<div v-for="diet in recipes.getDietLabels" :key="diet.param" class="my-1 pl-1 flex flex-row justify-between">
 						<input :id="diet.param" v-model="query.diet" :value="diet.param" class="check peer" type="checkbox" />
@@ -144,9 +147,9 @@ const deleteSearchInput = () => {
 			</div>
 			<div
 				:class="showdish ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 md:mt-1 left-[8.15rem] md:left-[27.65rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				class="absolute mt-10 md:mt-1 left-[8.15rem] md:left-[27.65rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showdish = !showdish" class="cursor-pointer">Dish &#9207;</h1>
+				<h1 @click="showdish = !showdish" class="cursor-pointer flex items-center">Dish <span class="material-symbols-outlined "> {{showdish ? "expand_less" : "expand_more"}} </span></h1>
 				<div v-if="showdish">
 					<div v-for="dish in recipes.getDishTypes" :key="dish" class="my-1 pl-1 flex flex-row justify-between">
 						<input :id="dish" v-model="query.dishType" :value="dish" class="check peer" type="checkbox" />
@@ -156,9 +159,9 @@ const deleteSearchInput = () => {
 			</div>
 			<div
 				:class="showcalories ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 left-[13rem] md:left-14 lg:mt-1 lg:left-[32.4rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				class="absolute mt-10 left-[13rem] md:left-14 lg:mt-1 lg:left-[32.4rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showcalories = !showcalories" class="cursor-pointer">Calories &#9207;</h1>
+				<h1 @click="showcalories = !showcalories" class="cursor-pointer flex items-center">Calories <span class="material-symbols-outlined "> {{showcalories ? "expand_less" : "expand_more"}} </span></h1>
 				<div v-if="showcalories" class="flex flex-col">
 					<div class="flex flex-row items-center">
 						<label for="nimCal" class="w-8">min</label>
@@ -167,7 +170,7 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="min"
 							v-model="query.calories.min"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
 						/>
 					</div>
 					<div class="flex flex-row items-center">
@@ -177,16 +180,16 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="max"
 							v-model="query.calories.max"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
 						/>
 					</div>
 				</div>
 			</div>
 			<div
 				:class="showpreptime ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 left-[19.25rem] md:left-[10rem] lg:mt-1 lg:left-[38.7rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				class="absolute mt-10 left-[19.25rem] md:left-[10rem] lg:mt-1 lg:left-[38.7rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showpreptime = !showpreptime" class="cursor-pointer">Preptime &#9207;</h1>
+				<h1 @click="showpreptime = !showpreptime" class="cursor-pointer flex items-center">Preptime <span class="material-symbols-outlined "> {{showpreptime ? "expand_less" : "expand_more"}} </span></h1>
 				<div v-if="showpreptime" class="flex flex-col">
 					<div class="flex flex-row items-center">
 						<label for="nimCal" class="w-8">min</label>
@@ -195,7 +198,7 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="min"
 							v-model="query.time.min"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
 						/>
 					</div>
 					<div class="flex flex-row items-center">
@@ -205,7 +208,7 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="max"
 							v-model="query.time.max"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
 						/>
 					</div>
 				</div>
