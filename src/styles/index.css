@@ -1,92 +1,100 @@
+
+@import url("https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
-  body {
-    @apply bg-white dark:bg-gradient-to-tl w-screen h-screen dark:from-gray-700 dark:to-gray-800 scroll-ff;
-  }
+	body {
+		@apply bg-white dark:bg-gradient-to-tl w-screen h-screen dark:from-gray-700 dark:to-gray-800 scroll-ff;
+	}
 
-  .scroll-ff {
-    scrollbar-face-color: rgb(22, 163, 74); /* Firefox 63 compatibility */
-    scrollbar-track-color: rgb(229, 229, 229); /* Firefox 63 compatibility */
-    scrollbar-color: rgb(22, 163, 74) rgb(229, 229, 229);
-  }
-  
-  @media (prefers-color-scheme: dark) {
-    .scroll-ff {
-      scrollbar-track-color: rgb(82, 82, 82); /* Firefox 63 compatibility */
-      scrollbar-color: rgb(22, 163, 74) rgb(82, 82, 82);
-    }
-  }
+	.scroll-ff {
+		scrollbar-face-color: rgb(22, 163, 74); /* Firefox 63 compatibility */
+		scrollbar-track-color: rgb(229, 229, 229); /* Firefox 63 compatibility */
+		scrollbar-color: rgb(22, 163, 74) rgb(229, 229, 229);
+	}
 
-  .scrollbar::-webkit-scrollbar {
-    width: 5px;
-  }
+	@media (prefers-color-scheme: dark) {
+		.scroll-ff {
+			scrollbar-track-color: rgb(82, 82, 82); /* Firefox 63 compatibility */
+			scrollbar-color: rgb(22, 163, 74) rgb(82, 82, 82);
+		}
+	}
 
-  .scrollbar::-webkit-scrollbar-track {
-    border-radius: 10px;
-    @apply bg-gray-200 dark:bg-gray-600;
-  }
+	.scrollbar::-webkit-scrollbar {
+		width: 5px;
+	}
 
-  .scrollbar::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    @apply bg-green-500 dark:bg-green-900;
-  }
+	.scrollbar::-webkit-scrollbar-track {
+		border-radius: 10px;
+		@apply bg-gray-200 dark:bg-gray-600;
+	}
 
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    @apply bg-green-800;
-  }
+	.scrollbar::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		@apply bg-green-500 dark:bg-green-900;
+	}
 
-  .sidebar-nav {
-    @apply fixed flex flex-row bottom-0 w-screen h-16 justify-center items-center
+	.scrollbar::-webkit-scrollbar-thumb:hover {
+		@apply bg-green-800;
+	}
+
+	.sidebar-nav {
+		@apply fixed flex flex-row bottom-0 w-screen h-16 justify-center items-center
            md:w-20 md:flex-col md:h-screen md:py-4
            dark:bg-gray-900  dark:text-white  
            bg-green-600 text-white 
            shadow-lg px-0;
-  }
-  .sidebar-icon {
-    @apply relative flex items-center justify-center h-12 w-12 mx-auto md:mx-2 my-2  
+	}
+	.sidebar-icon {
+		@apply relative flex items-center justify-center h-12 w-12 mx-auto md:mx-2 my-2  
            bg-green-700 text-white fill-white   hover:bg-green-200 hover:text-green-700 hover:fill-green-500
            dark:bg-gray-700 dark:text-green-500 dark:fill-green-500 dark:hover:bg-green-600 dark:hover:text-white dark:hover:fill-white 
            focus-visible:outline focus-visible:outline-0 focus-visible:ring-green-500 focus-visible:ring-2
            rounded-3xl hover:rounded-xl shadow-lg 
            cursor-pointer
            transition-all duration-300 ease-in-out;
-  }
-  .sidebar-icon.router-link-active {
-    @apply dark:bg-green-800 dark:fill-white dark:text-white rounded-md 
+	}
+	.sidebar-icon.router-link-active {
+		@apply dark:bg-green-800 dark:fill-white dark:text-white rounded-md 
            bg-green-200 text-green-700 fill-green-500
            duration-200
            cursor-auto;
-  }
+	}
 
-  .check {
-    @apply cursor-pointer opacity-0 absolute transition-all ease-in-out;
-  }
+	.check {
+		@apply cursor-pointer opacity-0 absolute transition-all ease-in-out;
+	}
 
-  .check + label {
-    @apply flex items-center cursor-pointer before:flex before:items-center 
+	.check + label {
+		@apply flex items-center cursor-pointer before:flex before:items-center 
            before:justify-center before:mr-2 before:w-4 before:h-4 before:border 
            before:border-solid before:border-black dark:before:border-white before:rounded
            transition-all ease-in-out;
-  }
+	}
 
-  .check:checked + label::before {
-    @apply font-['Open_Sans'];
-    content: "\002714";
-  }
+	.check:checked + label::before {
+		@apply font-['Open_Sans'];
+		content: "\002714";
+	}
 
-  .check:focus + label::before {
-    @apply outline outline-2 outline-green-500;
-  }
+	.check:focus + label::before {
+		@apply outline outline-2 outline-green-500;
+	}
 
-  .check + label:hover::before,
-  .check:hover + label::before {
-    box-shadow: 0 0 0.3em black;
-  }
+	.check + label:hover::before,
+	.check:hover + label::before {
+		box-shadow: 0 0 0.3em black;
+	}
 
-  .focus-visible-green {
-    @apply focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:border-transparent focus-visible:outline-none focus-visible:rounded-sm;
-  }
+	.focus-visible-green {
+		@apply focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:border-transparent focus-visible:outline-none focus-visible:rounded-sm;
+	}
+	.material-symbols-outlined {
+		font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
+	}  
+	.material-symbols-big {
+		font-variation-settings: "FILL" 0, "wght" 600, "GRAD" 0, "opsz" 48;
+	}
 }
