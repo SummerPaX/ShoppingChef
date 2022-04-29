@@ -10,7 +10,7 @@ const getUser = ref(account.getUser as User);
 
 <template>
 	<div class="flex h-screen flex-col justify-center items-center dark:text-white">
-		<img class="mt-20" :src="getUser.photoURL ?? ''" :alt="getUser.displayName?.substring(0,1) ?? 'Profile Photo'"/>
+		<img class="mt-20 rounded-full" :src="getUser.photoURL ?? ''" :alt="'Profile Picture'"/>
 		<h1 class="mt-5 mb-5 text-4xl">Account</h1>
 		<div class="flex flex-col justify-start items-start mb-auto shrink-0">
 			<div class="flex flex-row m-2 border-b">

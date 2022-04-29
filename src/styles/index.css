@@ -59,8 +59,8 @@
 	.sidebar-icon.router-link-active {
 		@apply dark:bg-green-800 dark:fill-white dark:text-white rounded-md 
            bg-green-200 text-green-700 fill-green-500
-           duration-200
-           cursor-auto;
+           cursor-default
+           duration-200;
 	}
 
 	.check {
