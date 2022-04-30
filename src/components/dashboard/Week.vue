@@ -1,9 +1,12 @@
 <script lang="ts" setup>
 import Day from "./Day.vue";
 import { computed } from 'vue'
+import {Temporal } from '@js-temporal/polyfill'
 
-const now = computed(() => {
-  return Temporal.Now;
+console.log(Temporal.Now)
+
+const now = computed<Temporal.PlainDateTime>(() => {
+  return Temporal.PlainDateTime.from(Temporal.Now.instant.toLocaleString()) as Temporal.PlainDateTime;
 });
 </script>
 
