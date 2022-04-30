@@ -7,9 +7,11 @@ const account = accountStore();
 </script>
 
 <template>
-	<router-view v-if="account.authenticated" class="md:ml-20" />
-	<Navbar v-if="account.authenticated" />
-	<Login v-if="!account.authenticated" />
+  <div v-if="account.authenticated">
+    <router-view class="md:ml-20" />
+    <Navbar />
+  </div>
+  <Login v-else />
 </template>
 
 <style></style>

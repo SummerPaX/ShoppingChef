@@ -60,19 +60,19 @@ const recipe = computed(() => props.recipeProp?.recipe as Recipe);
 					</span>
 				</header>
 				<div v-if="showTags" class="flex flex-row flex-wrap">
-					<li class="mr-1 mt-1 py-0.5 px-1.5 bg-green-600 text-gray-100 rounded-sm" v-for="(lines, index) in recipe.healthLabels" :key="index">
+					<li class="mr-1 mt-1 py-0.5 px-1.5 bg-green-600 text-gray-100 rounded-sm cursor-default" v-for="(lines, index) in recipe.healthLabels" :key="index">
 						{{ lines }}
 					</li>
 				</div>
 			</ul>
-			<div class="h-10 bg-gray-800 flex flex-row text-center items-center px-2 font-medium text-black dark:text-gray-300">
+			<div class="h-10 bg-gray-300 dark:bg-gray-800 flex flex-row text-center items-center px-2 font-medium text-black dark:text-gray-300">
 				<span v-if="recipe.totalTime > 0" class="material-symbols-outlined"> timer </span
 				><span v-if="recipe.totalTime > 0"> &nbsp;{{ recipe.totalTime }}min</span>
-				<div v-if="recipe.totalTime > 0" class="h-full w-1 bg-gray-700 mx-2"></div>
+				<div v-if="recipe.totalTime > 0" class="h-full w-1 bg-white dark:bg-gray-700 mx-3"></div>
 				<span class="">Calories:&nbsp;{{ Math.round(recipe.calories) }}kcal</span>
-				<div class="h-full w-1 bg-gray-700 mx-2"></div>
+				<div class="h-full w-1 bg-white dark:bg-gray-700 mx-3"></div>
 				<span class="">Servings:&nbsp;{{ Math.round(recipe.yield) }}</span>
-				<div class="h-full w-1 bg-gray-700 mx-2"></div>
+				<div class="h-full w-1 bg-white dark:bg-gray-700 mx-3"></div>
 				<a :href="recipe.url" target="_blank" class="flex items-center ml-auto mr-2 text-indigo-500 dark:text-indigo-500"
 					>Instructions<span class="material-symbols-outlined text-base text-indigo-500 pl-1"> north_east </span></a
 				> 
