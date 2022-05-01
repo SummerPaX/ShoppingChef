@@ -15,28 +15,35 @@ const recipe = computed(() => props.recipeProp?.recipe as Recipe);
 <template>
 	<!--TODO Rating System-->
 	<div
-		class="w-full mb-2 overflow-hidden transition-all duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700 "
+		class="w-full mb-2 overflow-hidden transition-all duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700"
 	>
-		<div class="md:shrink-0 ">
-			<!--TODO maybe Lazy Load Image-->
-			<img class="h-48 w-full object-cover md:h-full md:w-48  bg-[url('src\assets\logo.png')] bg-cover bg-opacity-20"  :srcset="recipe.image" />
+		<div class="md:shrink-0">
+			<img class="h-48 w-full object-cover md:h-full md:w-48 bg-[url('src\assets\icons\recipeimg.svg')] bg-cover bg-opacity-20" :srcset="recipe.image" />
 		</div>
 		<div class="w-full">
-			<div class="flex items-center px-4 py-2">
-				<img v-if="recipe.healthLabels.includes('Vegan')" src="..\..\assets\icons\vegan.svg" alt="" class="h-12 rounded-full ml-[-0.5rem] pr-2" />
-				<img v-else-if="recipe.healthLabels.includes('Vegetarian')" src="..\..\assets\icons\veggie.svg" alt="" class="h-12 rounded-full ml-[-0.5rem] pr-2" />
-				<span class="uppercase tracking-wide text-sm font-semibold text-orange-500 dark:text-orange-500 pr-2">{{ recipe.mealType.at(0) }}</span>
+			<div class="flex items-center pl-4">
+				<img v-if="recipe.healthLabels.includes('Vegan')" src="..\..\assets\icons\vegan.svg" alt="" class="h-12 rounded-full ml-[-0.5rem] pr-2 py-2" />
+				<img
+					v-else-if="recipe.healthLabels.includes('Vegetarian')"
+					src="..\..\assets\icons\veggie.svg"
+					alt=""
+					class="h-12 rounded-full ml-[-0.5rem] pr-2 py-2"
+				/>
+				<span class="uppercase tracking-wide text-sm font-semibold text-orange-500 dark:text-orange-500 pr-2 py-2">{{ recipe.mealType.at(0) }}</span>
 				<span
-					class="uppercase tracking-wide text-sm font-semibold text-indigo-500 dark:text-indigo-500 pr-2"
+					class="uppercase tracking-wide text-sm font-semibold text-indigo-500 dark:text-indigo-500 pr-2 py-2"
 					v-for="(htags, index) in recipe.dietLabels"
 					:key="index"
 					>{{ htags }}</span
 				>
+				<div class="flex ml-auto h-12 items-start">
+					<button class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 rounded-bl">add_shopping_cart</button>
+					<button class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5">calendar_add_on</button>
+				</div>
 			</div>
 			<a href="#" class="mt-1 text-xl leading-tight font-medium hover:underline text-black dark:text-white px-4 py-2">
 				{{ recipe.label }}
 			</a>
-			<!--TODO show more (Calories, preptime, ...)-->
 			<ul class="flex overflow-hidden flex-col place-content-between md:place-content-start mt-2 px-4 py-2">
 				<header class="flex items-center mt-1 leading-tight font-medium text-black dark:text-white">
 					Ingredients<span class="material-symbols-outlined cursor-pointer select-none" @click="showIngredients = !showIngredients">
@@ -75,7 +82,7 @@ const recipe = computed(() => props.recipeProp?.recipe as Recipe);
 				<div class="h-full w-1 bg-white dark:bg-gray-700 mx-3"></div>
 				<a :href="recipe.url" target="_blank" class="flex items-center ml-auto mr-2 text-indigo-500 dark:text-indigo-500"
 					>Instructions<span class="material-symbols-outlined text-base text-indigo-500 pl-1"> north_east </span></a
-				> 
+				>
 			</div>
 		</div>
 	</div>
