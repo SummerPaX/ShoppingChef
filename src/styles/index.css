@@ -6,7 +6,7 @@
 
 @layer components {
 	body {
-		@apply bg-white dark:bg-gradient-to-tl w-screen h-screen dark:from-gray-700 dark:to-gray-800 scroll-ff;
+		@apply bg-white dark:bg-gradient-to-tl dark:from-gray-700 dark:to-gray-800 scroll-ff;
 	}
 
 	.scroll-ff {
