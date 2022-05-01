@@ -1,9 +1,9 @@
 interface Ingredient {
   text: string;
-  quantity: Number;
+  quantity: number;
   measure: string;
   food: string;
-  weight: Number;
+  weight: number;
   foodCategory: string
   image: string  
 }
@@ -15,15 +15,15 @@ interface Recipe {
 	source: string;
 	url: string;
   shareAs: string;
-  yield: Number;
+  yield: number;
   dietLabels: Array<string>;
   healthLabels: Array<string>;
   cautions: Array<string>;
   ingredientLines: Array<string>;
   ingredients: Array<Ingredient>
-  calories: Number;
-  totalWeight: Number;
-  totalTime: Number;
+  calories: number;
+  totalWeight: number;
+  totalTime: number;
   cuisineType: Array<string>;
   mealType: Array<string>;
   dishType: Array<string>;

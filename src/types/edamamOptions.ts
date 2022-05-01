@@ -6,14 +6,15 @@ interface edamamOptions {
 	dishType: Array<string>;
 	cuisine: Array<string>;
 	calories: {
-		min: Number;
-		max: Number;
+		min: number;
+		max: number;
 	};
 	time: {
-		min: Number;
-		max: Number;
+		min: number;
+		max: number;
 	};
-    to: Number;
+	from: number;
+    to: number;
 }
 
 export default edamamOptions;

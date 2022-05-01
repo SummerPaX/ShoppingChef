@@ -6,7 +6,12 @@ import { recipeStore } from "../stores/recipeStore";
 import Recipe from "../types/recipe";
 
 const recipes = computed(() => recipeStore().getRecipes);
-const count = computed(() => recipeStore().count);
+const count = computed(() => {
+	if(recipeStore().count < recipes.value.length) return recipes.value.length;
+	if(recipeStore().count > 100)  return 100;
+	return recipeStore().count;
+});
+const more = computed(()=> recipeStore().more && recipes.value.length < 100);
 
 let startY = ref(0);
 let searchSticky = ref(true);
@@ -20,6 +25,9 @@ const handleScroll = (e: Event) => {
 	}
 	startY.value = scrollY;
 };
+const loadMore = () => {
+	recipeStore().fetchMoreRecipes();
+};
 </script>
 
 <template>
@@ -28,12 +36,18 @@ const handleScroll = (e: Event) => {
 			class="h-screen flex flex-col max-w-xl md:max-w-[95%] xl:max-w-6xl transition-all duration-200 ease-linear flex-grow overflow-visible overflow-y-auto md:overflow-visible"
 			@scroll="handleScroll"
 		>
-			<div class="sticky transition-all ease-in-out shadow-lg md:mx-[-0.25rem] rounded-b-lg duration-200 bg-white dark:bg-gray-800 top-0 px-2  " :class="searchSticky ? '' : 'translate-y-[-7rem]'">
+			<div
+				class="sticky transition-all ease-in-out shadow-lg md:mx-[-0.25rem] rounded-b-lg duration-200 bg-white dark:bg-gray-800 top-0 px-2"
+				:class="searchSticky ? '' : 'translate-y-[-7rem]'"
+			>
 				<RecipeSearch></RecipeSearch>
 			</div>
-			<div class="m-2 mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto">
-				<p class="text-gray-700 dark:text-white">{{ count }} Entrys found</p>
+			<div class="mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto">
+				<p class="text-gray-700 dark:text-white">{{ recipes.length + " of " + count }} Entrys</p>
 				<RecipeCard v-for="recipe in recipes" :key="recipe.uri" :recipeProp="recipe" />
+				<div v-if="more" class="flex justify-center w-full">
+					<button @click="loadMore" class="material-symbols-outlined font-semibold rounded-full border-2 border-gray-500 text-gray-500 hover:bg-gray-700 text-4xl mb-4"> arrow_downward </button>
+				</div>
 			</div>
 		</div>
 	</div>
