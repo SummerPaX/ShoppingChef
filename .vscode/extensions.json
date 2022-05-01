@@ -9,8 +9,7 @@
 		"csstools.postcss",
 		"toba.vsfire",
 		"gruntfuggly.todo-tree",
-		"misterj.vue-volar-extention-pack",
-		"MisterJ.vue-volar-extention-pack"
+		"johnsoncodehk.volar"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [
