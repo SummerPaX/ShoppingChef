@@ -46,7 +46,7 @@ const loadMore = () => {
 				<p class="text-gray-700 dark:text-white">{{ recipes.length + " of " + count }} Entrys</p>
 				<RecipeCard v-for="recipe in recipes" :key="recipe.uri" :recipeProp="recipe" />
 				<div v-if="more" class="flex justify-center w-full">
-					<button @click="loadMore" class="material-symbols-outlined font-semibold rounded-full border-2 border-gray-500 text-gray-500 hover:bg-gray-700 text-4xl mb-4"> arrow_downward </button>
+					<button @click="loadMore" class="material-symbols-outlined font-semibold rounded-full border-2 border-gray-500 text-gray-500 hover:animate-bounce-up transition-all hover:bg-gray-700 text-4xl mb-4"> arrow_downward </button>
 				</div>
 			</div>
 		</div>

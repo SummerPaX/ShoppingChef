@@ -15,7 +15,7 @@ const recipe = computed(() => props.recipeProp?.recipe as Recipe);
 <template>
 	<!--TODO Rating System-->
 	<div
-		class="w-full mb-2 overflow-hidden transition-all duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700"
+		class="w-full mb-2 overflow-hidden transition-all  animate-slide-up duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700"
 	>
 		<div class="md:shrink-0">
 			<img class="h-48 w-full object-cover md:h-full md:w-48 bg-[url('src\assets\icons\recipeimg.svg')] bg-cover bg-opacity-20" :srcset="recipe.image" />
