@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { acceptHMRUpdate, defineStore } from "pinia";
 import { auth } from "../firebase/config";
 import {
 	createUserWithEmailAndPassword,
@@ -72,3 +72,7 @@ export const accountStore = defineStore("accountStore", {
 		},
 	},
 });
+// make sure to pass the right store definition, `useAuth` in this case.
+if (import.meta.hot) {
+	import.meta.hot.accept(acceptHMRUpdate(accountStore, import.meta.hot))
+  }
