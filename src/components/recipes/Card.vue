@@ -6,16 +6,20 @@ let showIngredients = ref(false);
 let showTags = ref(false);
 
 const props = defineProps({
-	recipeProp: Object,
+	recipe: Object,
 });
 
-const recipe = computed(() => props.recipeProp?.recipe as Recipe);
+const recipe = computed(() => props.recipe?.recipe as Recipe);
+
+const addToList = () => {};
+
+const addToWeek = () => {};
 </script>
 
 <template>
 	<!--TODO Rating System-->
 	<div
-		class="w-full mb-2 overflow-hidden transition-all  animate-slide-up duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700"
+		class="w-full mb-2 overflow-hidden transition-all animate-slide-up duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700"
 	>
 		<div class="md:shrink-0">
 			<img class="h-48 w-full object-cover md:h-full md:w-48 bg-[url('src\assets\icons\recipeimg.svg')] bg-cover bg-opacity-20" :srcset="recipe.image" />
@@ -37,8 +41,10 @@ const recipe = computed(() => props.recipeProp?.recipe as Recipe);
 					>{{ htags }}</span
 				>
 				<div class="flex ml-auto h-12 items-start">
-					<button class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 rounded-bl">add_shopping_cart</button>
-					<button class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5">calendar_add_on</button>
+					<button @click.prevent="addToList" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 rounded-bl">
+						add_shopping_cart
+					</button>
+					<button @click.prevent="addToWeek" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5">calendar_add_on</button>
 				</div>
 			</div>
 			<a href="#" class="mt-1 text-xl leading-tight font-medium hover:underline text-black dark:text-white px-4 py-2">
@@ -72,15 +78,15 @@ const recipe = computed(() => props.recipeProp?.recipe as Recipe);
 					</li>
 				</div>
 			</ul>
-			<div class="h-10 bg-gray-300 dark:bg-gray-800 flex flex-row text-center items-center px-2 font-medium text-black dark:text-gray-300">
-				<span v-if="recipe.totalTime > 0" class="material-symbols-outlined"> timer </span
-				><span v-if="recipe.totalTime > 0"> &nbsp;{{ recipe.totalTime }}min</span>
-				<div v-if="recipe.totalTime > 0" class="h-full w-1 bg-white dark:bg-gray-700 mx-3"></div>
+			<div class="md:h-10 bg-gray-300 dark:bg-gray-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-gray-300">
+				<span v-if="recipe.totalTime > 0" class="material-symbols-outlined"> timer </span>
+				<span v-if="recipe.totalTime > 0"> &nbsp;{{ recipe.totalTime }}min</span>
+				<div v-if="recipe.totalTime > 0" class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
 				<span class="">Calories:&nbsp;{{ Math.round(recipe.calories) }}kcal</span>
-				<div class="h-full w-1 bg-white dark:bg-gray-700 mx-3"></div>
+				<div class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
 				<span class="">Servings:&nbsp;{{ Math.round(recipe.yield) }}</span>
-				<div class="h-full w-1 bg-white dark:bg-gray-700 mx-3"></div>
-				<a :href="recipe.url" target="_blank" class="flex items-center ml-auto mr-2 text-indigo-500 dark:text-indigo-500"
+				<div class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
+				<a :href="recipe.url" target="_blank" class="flex items-center h-10 ml-auto mr-2 text-indigo-500 dark:text-indigo-500"
 					>Instructions<span class="material-symbols-outlined text-base text-indigo-500 pl-1"> north_east </span></a
 				>
 			</div>

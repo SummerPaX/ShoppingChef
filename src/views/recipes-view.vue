@@ -7,11 +7,11 @@ import Recipe from "../types/recipe";
 
 const recipes = computed(() => recipeStore().getRecipes);
 const count = computed(() => {
-	if(recipeStore().count < recipes.value.length) return recipes.value.length;
-	if(recipeStore().count > 100)  return 100;
+	if (recipeStore().count < Object.keys(recipes.value).length) return Object.keys(recipes.value).length;
+	if (recipeStore().count > 100) return 100;
 	return recipeStore().count;
 });
-const more = computed(()=> recipeStore().more && recipes.value.length < 100);
+const more = computed(() => recipeStore().more && Object.keys(recipes.value).length < 100);
 
 let startY = ref(0);
 let searchSticky = ref(true);
@@ -43,10 +43,15 @@ const loadMore = () => {
 				<RecipeSearch></RecipeSearch>
 			</div>
 			<div class="mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto">
-				<p class="text-gray-700 dark:text-white">{{ recipes.length + " of " + count }} Entrys</p>
-				<RecipeCard v-for="recipe in recipes" :key="recipe.uri" :recipeProp="recipe" />
+				<p class="text-gray-700 dark:text-white">{{ Object.keys(recipes).length + " of " + count }} Entrys</p>
+				<RecipeCard v-for="(value, key) in recipes" :key="key" :recipe="{ recipe: value }" />
 				<div v-if="more" class="flex justify-center w-full">
-					<button @click="loadMore" class="material-symbols-outlined font-semibold rounded-full border-2 border-gray-500 text-gray-500 hover:animate-bounce-up transition-all hover:bg-gray-700 text-4xl mb-4"> arrow_downward </button>
+					<button
+						@click="loadMore"
+						class="material-symbols-outlined font-semibold rounded-full border-2 border-gray-500 text-gray-500 hover:animate-bounce-up transition-all hover:bg-gray-700 text-4xl mb-4"
+					>
+						arrow_downward
+					</button>
 				</div>
 			</div>
 		</div>
