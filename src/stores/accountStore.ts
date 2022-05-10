@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import { auth } from "../firebase/config";
+import { auth, db } from "../firebase/config";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
