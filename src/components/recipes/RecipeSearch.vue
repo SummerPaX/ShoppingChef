@@ -3,6 +3,8 @@ import { ref } from "vue";
 import edamamOptions from "../../types/edamamOptions";
 import { recipeStore } from "../../stores/recipeStore";
 
+const emit = defineEmits(["alert"]);
+
 const recipes = recipeStore();
 
 let showmeal = ref(false);

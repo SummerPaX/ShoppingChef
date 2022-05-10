@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import { accountStore } from "../../stores/accountStore";
 
+const emit = defineEmits(["alert"]);
+
 let email = ref("");
 let password = ref("");
 let registerForm = ref(false);
@@ -21,7 +23,7 @@ const account = accountStore();
 			:class="{ registerForm: registerForm }"
 		>
 			<div class="flex justify-center">
-				<img src="..\..\assets\logo.png" alt="" class="h-24" />
+				<img src="..\..\assets\schef.svg" alt="Logo" class="h-36" />
 			</div>
 
 			<p class="text-center pb-2 text-2xl">
@@ -69,9 +71,9 @@ const account = accountStore();
 			</form>
 
 			<div class="text-center border-b border-gray-500 dark:border-gray-200" style="line-height: 0px">
-				<span class="p-1 text-xs tracking-wide text-gray-500 dark:text-gray-200 text-inherit uppercase bg-white dark:bg-gray-700" style="line-height: 0px"
-					>Or</span
-				>
+				<span class="p-1 text-xs tracking-wide text-gray-500 dark:text-gray-200 text-inherit uppercase bg-white dark:bg-gray-700" style="line-height: 0px">
+					Or
+				</span>
 			</div>
 
 			<div class="mt-5 mb-3 relative flex flex-wrap justify-around items-center">
@@ -82,7 +84,7 @@ const account = accountStore();
 				>
 					{{ registerForm ? "Sign up " : "Continue " }} with Google
 				</button>
-				<button
+				<!-- <button
 					id="microsoftAuth"
 					class="before:w-5 before:h-5 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 microsoft-icon"
 				>
@@ -99,7 +101,7 @@ const account = accountStore();
 					class="before:w-5 before:h-4 before:mr-2 before:bg-no-repeat before:bg-cover before:content-[''] shadow hover:bg-green-500 hover:dark:bg-green-700 hover:shadow-lg hover:text-white focus-visible:ring-2 focus-visible:ring-green-500 focus-visible-green rounded-sm bg-gray-100 dark:bg-gray-800 h-10 w-80 grow-0 flex items-center justify-center font-semibold whitespace-nowrap mb-2 transition-all ease-in-out duration-200 twitter-icon"
 				>
 					{{ registerForm ? "Sign up " : "Continue " }} with Twitter
-				</button>
+				</button> -->
 			</div>
 
 			<div class="text-center border-b border-gray-500 dark:border-gray-200"></div>

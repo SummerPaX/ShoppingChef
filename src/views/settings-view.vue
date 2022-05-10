@@ -2,10 +2,14 @@
 import { User } from "firebase/auth";
 import { accountStore } from "../stores/accountStore";
 import { ref } from "vue";
+import { alertType } from "../types/constants";
+
 
 const account = accountStore();
 const pass = ref("****************");
 const getUser = ref(account.getUser as User);
+
+const emit = defineEmits(["alert"]);
 </script>
 
 <template>
@@ -26,8 +30,9 @@ const getUser = ref(account.getUser as User);
 				<input disabled type="password" v-model="pass" class="bg-inherit mr-5 w-56 grow" />
 			</div>
 		</div>
+			<!-- @click="account.deleteUser" -->
 		<button
-			@click="account.deleteUser"
+			@click="emit('alert', 'User Deleted', alertType.ERROR)"
 			class="bg-red-600 hover:bg-red-700 p-2 m-4 w-40 text-white rounded-sm focus-visible:bg-red-700 focus-visible-green transition-all ease-in-out duration-200"
 		>
 			Delete User

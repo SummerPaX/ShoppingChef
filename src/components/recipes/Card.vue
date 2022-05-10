@@ -2,18 +2,40 @@
 import { computed, ref, reactive } from "@vue/reactivity";
 import Recipe from "../../types/recipe";
 
+
+const emit = defineEmits(["alert"]);
+
 let showIngredients = ref(false);
 let showTags = ref(false);
+let imgLoaded = ref(false);
 
 const props = defineProps({
 	recipe: Object,
 });
 
 const recipe = computed(() => props.recipe?.recipe as Recipe);
+const rating = ref(Math.random() * 100);
+console.log(rating.value);
 
 const addToList = () => {};
 
 const addToWeek = () => {};
+
+const addToFavourite = () => {};
+
+// const rateHover = (event: MouseEvent) => {
+// 	let localX = event.pageX - (<Element>event.currentTarget).getBoundingClientRect().x;
+// 	let tempRating = Math.round(localX * (100 / (<Element>event.currentTarget).getBoundingClientRect().width));
+// 	tempRating = tempRating + 5 - (tempRating % 5);
+// 	rating.value = tempRating;
+// 	console.log(rating.value);
+// };
+// const rate = (event: MouseEvent) => {
+// 	let localX = event.pageX - (<Element>event.currentTarget).getBoundingClientRect().x;
+// 	let tempRating = Math.round(localX * (100 / (<Element>event.currentTarget).getBoundingClientRect().width));
+// 	tempRating = tempRating + 5 - (tempRating % 5);
+// 	rating.value = tempRating;
+// };
 </script>
 
 <template>
@@ -21,40 +43,65 @@ const addToWeek = () => {};
 	<div
 		class="w-full mb-2 overflow-hidden transition-all animate-slide-up duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700"
 	>
-		<div class="md:shrink-0">
-			<img class="h-48 w-full object-cover md:h-full md:w-48 bg-[url('src\assets\icons\recipeimg.svg')] bg-cover bg-opacity-20" :srcset="recipe.image" />
+		<div class="relative md:shrink-0">
+			<img
+				:class="imgLoaded ? '' : ' '"
+				class="absolute h-48 max-h-48 w-full object-cover transition-all duration-1000 md:h-full md:w-48 bg-cover bg-opacity-20"
+				src="..\..\assets\icons\recipeimg.svg"
+			/>
+			<img
+				:class="imgLoaded ? 'opacity-100 h-48 md:h-full scale-100 -translate-y-0' : 'opacity-0 h-0 scale-150 '"
+				class="w-full object-cover transition-opacity-transform duration-500 md:w-48"
+				:srcset="recipe.image"
+				@load="imgLoaded = true"
+			/>
 		</div>
 		<div class="w-full">
 			<div class="flex items-center pl-4">
-				<img v-if="recipe.healthLabels.includes('Vegan')" src="..\..\assets\icons\vegan.svg" alt="" class="h-12 rounded-full ml-[-0.5rem] pr-2 py-2" />
+				<img
+					v-if="recipe.healthLabels.includes('Vegan')"
+					src="..\..\assets\icons\vegan.svg"
+					alt=""
+					class="h-12 self-start rounded-full ml-[-0.5rem] pr-2 py-2"
+				/>
 				<img
 					v-else-if="recipe.healthLabels.includes('Vegetarian')"
 					src="..\..\assets\icons\veggie.svg"
 					alt=""
 					class="h-12 rounded-full ml-[-0.5rem] pr-2 py-2"
 				/>
-				<span class="uppercase tracking-wide text-sm font-semibold text-orange-500 dark:text-orange-500 pr-2 py-2">{{ recipe.mealType.at(0) }}</span>
-				<span
-					class="uppercase tracking-wide text-sm font-semibold text-indigo-500 dark:text-indigo-500 pr-2 py-2"
-					v-for="(htags, index) in recipe.dietLabels"
-					:key="index"
-					>{{ htags }}</span
-				>
-				<div class="flex ml-auto h-12 items-start">
-					<button @click.prevent="addToList" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 rounded-bl">
+				<div class="flex items-center flex-wrap">
+					<span class="uppercase tracking-wide text-sm font-semibold text-orange-500 dark:text-orange-500 pr-2">{{ recipe.mealType.at(0) }}</span>
+					<span
+						class="uppercase tracking-wide text-sm font-semibold text-indigo-500 dark:text-indigo-500 pr-2"
+						v-for="(htags, index) in recipe.dietLabels"
+						:key="index"
+						>{{ htags }}</span
+					>
+				</div>
+				<div class="flex ml-auto h-12 items-start self-start">
+					<button
+						@click.prevent="addToFavourite"
+						class="material-symbols-outlined font-bold text-white hover:text-pink-500 bg-lime-600 p-2 rounded-bl transition-colors"
+					>
+						favorite
+					</button>
+					<button @click.prevent="addToList" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5 transition-colors">
 						add_shopping_cart
 					</button>
-					<button @click.prevent="addToWeek" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5">calendar_add_on</button>
+					<button @click.prevent="addToWeek" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5 transition-colors">
+						calendar_add_on
+					</button>
 				</div>
 			</div>
 			<a href="#" class="mt-1 text-xl leading-tight font-medium hover:underline text-black dark:text-white px-4 py-2">
 				{{ recipe.label }}
 			</a>
 			<ul class="flex overflow-hidden flex-col place-content-between md:place-content-start mt-2 px-4 py-2">
-				<header class="flex items-center mt-1 leading-tight font-medium text-black dark:text-white">
-					Ingredients<span class="material-symbols-outlined cursor-pointer select-none" @click="showIngredients = !showIngredients">
+				<header @click="showIngredients = !showIngredients" class="flex items-center mt-1 leading-tight font-medium text-black dark:text-white">
+					Ingredients<button class="material-symbols-outlined cursor-pointer select-none">
 						{{ showIngredients ? "expand_less" : "expand_more" }}
-					</span>
+					</button>
 				</header>
 				<div v-if="showIngredients">
 					<li
@@ -67,10 +114,10 @@ const addToWeek = () => {};
 				</div>
 			</ul>
 			<ul class="flex overflow-hidden flex-col place-content-between md:place-content-start px-4 py-2">
-				<header class="flex w-full items-center leading-tight font-medium text-black dark:text-white">
-					Tags<span class="material-symbols-outlined cursor-pointer select-none" @click="showTags = !showTags">
+				<header @click="showTags = !showTags" class="flex w-full items-center leading-tight font-medium text-black dark:text-white">
+					Tags<button class="material-symbols-outlined cursor-pointer select-none">
 						{{ showTags ? "expand_less" : "expand_more" }}
-					</span>
+					</button>
 				</header>
 				<div v-if="showTags" class="flex flex-row flex-wrap">
 					<li class="mr-1 mt-1 py-0.5 px-1.5 bg-green-600 text-gray-100 rounded-sm cursor-default" v-for="(lines, index) in recipe.healthLabels" :key="index">
@@ -79,6 +126,18 @@ const addToWeek = () => {};
 				</div>
 			</ul>
 			<div class="md:h-10 bg-gray-300 dark:bg-gray-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-gray-300">
+				<div
+					class="ml-1 text-transparent stars bg-clip-text select-none flex items-center"
+					:style="`background-image: linear-gradient(to right, rgb(234 179 8) ${rating}%, white ${rating}%);`"
+				>
+					<span class="material-symbols-outlined cursor-default">star</span>
+					<span class="material-symbols-outlined cursor-default">star</span>
+					<span class="material-symbols-outlined cursor-default">star</span>
+					<span class="material-symbols-outlined cursor-default">star</span>
+					<span class="material-symbols-outlined cursor-default">star</span>
+				</div>
+				<span>({{ Math.round(rating / 2) / 10 }})</span>
+				<div class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
 				<span v-if="recipe.totalTime > 0" class="material-symbols-outlined"> timer </span>
 				<span v-if="recipe.totalTime > 0"> &nbsp;{{ recipe.totalTime }}min</span>
 				<div v-if="recipe.totalTime > 0" class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>

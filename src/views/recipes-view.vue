@@ -5,6 +5,9 @@ import RecipeSearch from "../components/recipes/RecipeSearch.vue";
 import { recipeStore } from "../stores/recipeStore";
 import Recipe from "../types/recipe";
 
+
+const emit = defineEmits(["alert"]);
+
 const recipes = computed(() => recipeStore().getRecipes);
 const count = computed(() => {
 	if (recipeStore().count < Object.keys(recipes.value).length) return Object.keys(recipes.value).length;
