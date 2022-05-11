@@ -40,18 +40,18 @@ const loadMore = () => {
 			@scroll="handleScroll"
 		>
 			<div
-				class="sticky transition-all ease-in-out shadow-lg md:mx-[-0.25rem] rounded-b-lg duration-200 bg-white dark:bg-gray-800 top-0 px-2"
+				class="sticky transition-all ease-in-out shadow-lg md:mx-[-0.25rem] rounded-b-lg duration-200 bg-white dark:bg-neutral-800 top-0 px-2"
 				:class="searchSticky ? '' : 'translate-y-[-7rem]'"
 			>
 				<RecipeSearch></RecipeSearch>
 			</div>
 			<div class="mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto">
-				<p class="text-gray-700 dark:text-white">{{ Object.keys(recipes).length + " of " + count }} Entrys</p>
+				<p class="text-neutral-700 dark:text-white">{{ Object.keys(recipes).length + " of " + count }} Entrys</p>
 				<RecipeCard v-for="(value, key) in recipes" :key="key" :recipe="{ recipe: value }" />
 				<div v-if="more" class="flex justify-center w-full">
 					<button
 						@click="loadMore"
-						class="material-symbols-outlined font-semibold rounded-full border-2 border-gray-500 text-gray-500 hover:animate-bounce-up transition-all hover:bg-gray-700 text-4xl mb-4"
+						class="material-symbols-outlined font-semibold rounded-full border-2 border-neutral-500 text-neutral-500 hover:animate-bounce-up transition-all hover:bg-neutral-700 text-4xl mb-4"
 					>
 						arrow_downward
 					</button>

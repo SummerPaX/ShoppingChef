@@ -10,6 +10,12 @@ const pass = ref("****************");
 const getUser = ref(account.getUser as User);
 
 const emit = defineEmits(["alert"]);
+
+const deleteUser = () => {
+	account.deleteUser();
+	emit('alert', 'User Deleted', alertType.ERROR)
+}
+
 </script>
 
 <template>
@@ -32,14 +38,14 @@ const emit = defineEmits(["alert"]);
 		</div>
 			<!-- @click="account.deleteUser" -->
 		<button
-			@click="emit('alert', 'User Deleted', alertType.ERROR)"
-			class="bg-red-600 hover:bg-red-700 p-2 m-4 w-40 text-white rounded-sm focus-visible:bg-red-700 focus-visible-green transition-all ease-in-out duration-200"
+			@click="deleteUser"
+			class="bg-red-600 hover:bg-red-700 p-2 m-4 w-40 text-white rounded-sm focus-visible:bg-red-700 focus-visible-primary transition-all ease-in-out duration-200"
 		>
 			Delete User
 		</button>
 		<button
 			@click="account.signOut"
-			class="bg-red-600 hover:bg-red-700 p-2 m-4 w-40 text-white rounded-sm focus-visible:bg-red-700 focus-visible-green transition-all ease-in-out duration-200 mb-20"
+			class="bg-red-600 hover:bg-red-700 p-2 m-4 w-40 text-white rounded-sm focus-visible:bg-red-700 focus-visible-primary transition-all ease-in-out duration-200 mb-20"
 		>
 			Sign Out
 		</button>

@@ -63,17 +63,17 @@ const deleteSearchInput = () => {
 </script>
 
 <template>
-	<div class="relative flex flex-col text-gray-600 dark:text-white items-center overflow-visible">
+	<div class="relative flex flex-col text-neutral-600 dark:text-white items-center overflow-visible">
 		<!-- Search Bar -->
 		<form
 			v-on:submit.prevent="submitSearch"
-			class="relative mt-2 h-12 flex flex-row w-full items-center bg-gray-100 dark:bg-gray-800 rounded-full border border-green-600 group overflow-visible transition-all duration-100 mx-2"
+			class="relative mt-2 h-12 flex flex-row w-full items-center bg-neutral-100 dark:bg-neutral-800 rounded-full border border-primary-600 group overflow-visible transition-all duration-100 mx-2"
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				:class="query.query ? 'h-8 w-8' : 'h-0 w-0 '"
-				class="group-focus-within:h-8 group-focus-within:w-8 absolute flex items-center ml-3 text-center rounded-full fill-gray-500 dark:fill-gray-400 transition-all"
+				class="group-focus-within:h-8 group-focus-within:w-8 absolute flex items-center ml-3 text-center rounded-full fill-neutral-500 dark:fill-neutral-400 transition-all"
 			>
 				<path d="M0 0h24v24H0V0z" fill="none" />
 				<path
@@ -85,7 +85,7 @@ const deleteSearchInput = () => {
 				id="searchBar"
 				type="text"
 				:class="query.query ? 'ml-14' : 'ml-4'"
-				class="block w-full h-full group-focus-within:ml-14 mr-10 bg-transparent placeholder:text-gray-400 placeholder:dark:text-gray-500 focus-visible:outline-none focus:border-none transition-spacing"
+				class="block w-full h-full group-focus-within:ml-14 mr-10 bg-transparent placeholder:text-neutral-400 placeholder:dark:text-neutral-500 focus-visible:outline-none focus:border-none transition-spacing"
 				placeholder="Search"
 			/>
 			<svg
@@ -93,7 +93,7 @@ const deleteSearchInput = () => {
 				viewBox="0 0 24 24"
 				@click.passive="deleteSearchInput"
 				:class="query.query ? 'h-6 w-6' : 'h-0 w-0 '"
-				class="absolute cursor-pointer right-20 mr-2 flex my-auto rounded-full fill-gray-500 dark:fill-gray-400 transition-all"
+				class="absolute cursor-pointer right-20 mr-2 flex my-auto rounded-full fill-neutral-500 dark:fill-neutral-400 transition-all"
 			>
 				<!-- X Button -->
 				<path d="M0 0h24v24H0V0z" fill="none" />
@@ -101,7 +101,7 @@ const deleteSearchInput = () => {
 			</svg>
 			<button
 				:class="query.query ? 'w-20' : 'w-0 opacity-0'"
-				class="h-full right-0 rounded-r-full shrink-0 grow-0 bg-green-600 text-white font-semibold transition-all hover:bg-green-800 focus-visible:bg-green-800 focus-visible:outline-none overflow-hidden focus:border-none"
+				class="h-full right-0 rounded-r-full shrink-0 grow-0 bg-primary-600 text-white font-semibold transition-all hover:bg-primary-800 focus-visible:bg-primary-800 focus-visible:outline-none overflow-hidden focus:border-none"
 			>
 				Search
 			</button>
@@ -114,14 +114,14 @@ const deleteSearchInput = () => {
 			<button
 				@click.prevent="filterVisible = !filterVisible"
 				:class="filterVisible ? 'rounded-lg' : 'rounded-full'"
-				class="flex items-center lg:mr-5 border-2 border-green-600 select-none px-1 m-1 md:mx-2.5 hover:bg-gray-200 hover:dark:bg-gray-600 transition-colors ease-in-out"
+				class="flex items-center lg:mr-5 border-2 border-primary-600 select-none px-1 m-1 md:mx-2.5 hover:bg-neutral-200 hover:dark:bg-neutral-600 transition-colors ease-in-out"
 			>
 				<span v-if="filterVisible" class="material-symbols-outlined">close</span>
 				<span v-else class="material-symbols-outlined">navigate_next</span>
 			</button>
 			<div
-				:class="showmeal ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute left-14 flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showmeal ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute left-14 flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
 				<h1 @click="showmeal = !showmeal" class="cursor-pointer flex items-center">
 					Meal
@@ -137,8 +137,8 @@ const deleteSearchInput = () => {
 				</div>
 			</div>
 			<div
-				:class="showcuisine ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute left-[8.5rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showcuisine ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute left-[8.5rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
 				<h1 @click="showcuisine = !showcuisine" class="cursor-pointer flex items-center">
 					Cuisine
@@ -154,8 +154,8 @@ const deleteSearchInput = () => {
 				</div>
 			</div>
 			<div
-				:class="showhealth ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute left-[14.5rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showhealth ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute left-[14.5rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
 				<h1 @click="showhealth = !showhealth" class="cursor-pointer flex items-center">
 					HealthLabels
@@ -171,8 +171,8 @@ const deleteSearchInput = () => {
 				</div>
 			</div>
 			<div
-				:class="showdiet ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 md:mt-1 left-14 md:left-[23rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showdiet ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute mt-10 md:mt-1 left-14 md:left-[23rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
 				<h1 @click="showdiet = !showdiet" class="cursor-pointer flex items-center">
 					Diet
@@ -188,8 +188,8 @@ const deleteSearchInput = () => {
 				</div>
 			</div>
 			<div
-				:class="showdish ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 md:mt-1 left-[8.15rem] md:left-[27.65rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showdish ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute mt-10 md:mt-1 left-[8.15rem] md:left-[27.65rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
 				<h1 @click="showdish = !showdish" class="cursor-pointer flex items-center">
 					Dish
@@ -205,8 +205,8 @@ const deleteSearchInput = () => {
 				</div>
 			</div>
 			<div
-				:class="showcalories ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 left-[13rem] md:left-14 lg:mt-1 lg:left-[32.4rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showcalories ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute mt-10 left-[13rem] md:left-14 lg:mt-1 lg:left-[32.4rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
 				<h1 @click="showcalories = !showcalories" class="cursor-pointer flex items-center">
 					Calories
@@ -222,7 +222,7 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="min"
 							v-model="query.calories.min"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
 					<div class="flex flex-row items-center">
@@ -232,14 +232,14 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="max"
 							v-model="query.calories.max"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
 				</div>
 			</div>
 			<div
-				:class="showpreptime ? 'rounded-lg' : 'rounded-lg hover:bg-gray-200 hover:dark:bg-gray-600'"
-				class="absolute mt-10 left-[19.25rem] md:left-[10rem] lg:mt-1 lg:left-[38.7rem] flex flex-col border-2 border-green-600 px-2 m-1 md:mx-2 bg-white dark:bg-gray-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showpreptime ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute mt-10 left-[19.25rem] md:left-[10rem] lg:mt-1 lg:left-[38.7rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
 				<h1 @click="showpreptime = !showpreptime" class="cursor-pointer flex items-center">
 					Preptime
@@ -255,7 +255,7 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="min"
 							v-model="query.time.min"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
 					<div class="flex flex-row items-center">
@@ -265,7 +265,7 @@ const deleteSearchInput = () => {
 							type="number"
 							placeholder="max"
 							v-model="query.time.max"
-							class="block w-20 px-1 m-1 rounded placeholder:text-gray-400 placeholder:dark:text-gray-300 focus-visible:outline-none focus:border-none bg-gray-200 dark:bg-gray-600 transition-spacing"
+							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
 				</div>

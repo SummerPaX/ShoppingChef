@@ -5,7 +5,7 @@
 
 @layer components {
 	body {
-		@apply bg-white dark:bg-gray-800 bg-[url('src\assets\bg.png')] bg-[length:2560px_1400px] scroll-ff;
+		@apply bg-white dark:bg-neutral-800 bg-[url('src\assets\bg.png')] bg-[length:2560px_1400px] scroll-ff;
 	}
 
 	.scroll-ff {
@@ -27,44 +27,44 @@
 
 	.scrollbar::-webkit-scrollbar-track {
 		border-radius: 10px;
-		@apply bg-gray-200 dark:bg-gray-600;
+		@apply bg-neutral-200 dark:bg-neutral-600;
 	}
 
 	.scrollbar::-webkit-scrollbar-thumb {
 		border-radius: 10px;
-		@apply bg-green-500 dark:bg-green-900;
+		@apply bg-primary-500 dark:bg-primary-900;
 	}
 
 	.scrollbar::-webkit-scrollbar-thumb:hover {
-		@apply bg-green-800;
+		@apply bg-primary-800;
 	}
 
 	.sidebar-nav {
 		@apply fixed flex flex-row bottom-0 w-screen h-16 justify-center items-center
            md:w-20 md:flex-col md:h-screen md:py-4
-           dark:bg-gray-900  dark:text-white  
-           bg-green-600 text-white 
+           dark:bg-neutral-900  dark:text-white  
+           bg-primary-600 text-white 
            shadow-lg px-0;
 	}
 	.sidebar-icon {
 		@apply relative flex items-center justify-center h-12 w-12 mx-auto md:mx-2 my-2  
-           bg-green-700 text-white fill-white   hover:bg-green-200 hover:text-green-700 hover:fill-green-500 font-bold
-           dark:bg-gray-700 dark:text-green-500 dark:fill-green-500 dark:hover:bg-green-600 dark:hover:text-white dark:hover:fill-white 
-           focus-visible:outline focus-visible:outline-0 focus-visible:ring-green-500 focus-visible:ring-2
+           bg-primary-700 text-white fill-white   hover:bg-primary-200 hover:text-primary-700 hover:fill-primary-500 font-bold
+           dark:bg-neutral-700 dark:text-primary-500 dark:fill-primary-500 dark:hover:bg-primary-600 dark:hover:text-white dark:hover:fill-white 
+           focus-visible:outline focus-visible:outline-0 focus-visible:ring-primary-500 focus-visible:ring-2
            rounded-3xl hover:rounded-xl shadow-lg 
            cursor-pointer
            transition-all duration-300 ease-in-out;
 	}
 	.sidebar-icon.router-link-active {
-		@apply dark:bg-green-800 dark:fill-white dark:text-white rounded-md 
-           bg-green-200 text-green-700 fill-green-500
+		@apply dark:bg-primary-800 dark:fill-white dark:text-white rounded-md 
+           bg-primary-200 text-primary-700 fill-primary-500
            cursor-default
            duration-200;
 	}
 	.sidebar-tooltip {
 		@apply absolute w-auto p-2 m-2 min-w-max  rounded-md shadow-md
 			bottom-16 md:bottom-0 md:left-16 md:origin-left
-		   	text-green-500 bg-gray-900 
+		   	text-primary-500 bg-neutral-900 
 		   	font-medium
 		   	transition-all duration-200 scale-0;
 	}
@@ -86,7 +86,7 @@
 	}
 
 	.check:focus + label::before {
-		@apply outline outline-2 outline-green-500;
+		@apply outline outline-2 outline-primary-500;
 	}
 
 	.check + label:hover::before,
@@ -94,8 +94,8 @@
 		box-shadow: 0 0 0.3em black;
 	}
 
-	.focus-visible-green {
-		@apply focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:border-transparent focus-visible:outline-none focus-visible:rounded-sm;
+	.focus-visible-primary {
+		@apply focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:border-transparent focus-visible:outline-none focus-visible:rounded-sm;
 	}
 	.material-symbols-outlined {
 		font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;

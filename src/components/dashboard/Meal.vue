@@ -8,7 +8,7 @@ const emit = defineEmits(["alert"]);
 
 <template>
 	<div
-		class="h-24 bg-gray-300 dark:bg-gray-600 hover:bg-green-500 transition-all duration-200 hover:text-white p-2 mt-1 flex flex-col items-center justify-center group cursor-pointer overflow-clip"
+		class="h-24 bg-neutral-300 dark:bg-neutral-600 hover:bg-primary-500 transition-all duration-200 hover:text-white p-2 mt-1 flex flex-col items-center justify-center group cursor-pointer overflow-clip"
 	>
 		<div class="group-hover:font-medium transition-all duration-200">{{ mealType }}</div>
 		<span

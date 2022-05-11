@@ -41,7 +41,7 @@ const addToFavourite = () => {};
 <template>
 	<!--TODO Rating System-->
 	<div
-		class="w-full mb-2 overflow-hidden transition-all animate-slide-up duration-200 md:flex border border-black dark:border-green-600 rounded-sm shadow-md bg-white dark:bg-gray-700"
+		class="w-full mb-2 overflow-hidden transition-all animate-slide-up duration-200 md:flex border border-black dark:border-primary-600 rounded-sm shadow-md bg-white dark:bg-neutral-700"
 	>
 		<div class="relative md:shrink-0">
 			<img
@@ -82,14 +82,14 @@ const addToFavourite = () => {};
 				<div class="flex ml-auto h-12 items-start self-start">
 					<button
 						@click.prevent="addToFavourite"
-						class="material-symbols-outlined font-bold text-white hover:text-pink-500 bg-lime-600 p-2 rounded-bl transition-colors"
+						class="material-symbols-outlined font-bold text-white hover:text-pink-500 bg-primary-400 p-2 rounded-bl transition-colors"
 					>
 						favorite
 					</button>
-					<button @click.prevent="addToList" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5 transition-colors">
+					<button @click.prevent="addToList" class="material-symbols-outlined text-white hover:bg-primary-700 bg-primary-600 p-2 ml-0.5 transition-colors">
 						add_shopping_cart
 					</button>
-					<button @click.prevent="addToWeek" class="material-symbols-outlined text-white hover:bg-green-700 bg-green-600 p-2 ml-0.5 transition-colors">
+					<button @click.prevent="addToWeek" class="material-symbols-outlined text-white hover:bg-primary-700 bg-primary-600 p-2 ml-0.5 transition-colors">
 						calendar_add_on
 					</button>
 				</div>
@@ -105,7 +105,7 @@ const addToFavourite = () => {};
 				</header>
 				<div v-if="showIngredients">
 					<li
-						class="mr-1 mt-1 w-full py-0.5 px-1.5 rounded-sm bg-gray-200 text-slate-500 dark:bg-green-800 dark:text-gray-100"
+						class="mr-1 mt-1 w-full py-0.5 px-1.5 rounded-sm bg-neutral-200 text-slate-500 dark:bg-primary-800 dark:text-neutral-100"
 						v-for="(lines, index) in recipe.ingredientLines"
 						:key="index"
 					>
@@ -120,12 +120,12 @@ const addToFavourite = () => {};
 					</button>
 				</header>
 				<div v-if="showTags" class="flex flex-row flex-wrap">
-					<li class="mr-1 mt-1 py-0.5 px-1.5 bg-green-600 text-gray-100 rounded-sm cursor-default" v-for="(lines, index) in recipe.healthLabels" :key="index">
+					<li class="mr-1 mt-1 py-0.5 px-1.5 bg-primary-600 text-neutral-100 rounded-sm cursor-default" v-for="(lines, index) in recipe.healthLabels" :key="index">
 						{{ lines }}
 					</li>
 				</div>
 			</ul>
-			<div class="md:h-10 bg-gray-300 dark:bg-gray-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-gray-300">
+			<div class="md:h-10 bg-neutral-300 dark:bg-neutral-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-neutral-300">
 				<div
 					class="ml-1 text-transparent stars bg-clip-text select-none flex items-center"
 					:style="`background-image: linear-gradient(to right, rgb(234 179 8) ${rating}%, white ${rating}%);`"
@@ -137,14 +137,14 @@ const addToFavourite = () => {};
 					<span class="material-symbols-outlined cursor-default">star</span>
 				</div>
 				<span>({{ Math.round(rating / 2) / 10 }})</span>
-				<div class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
+				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
 				<span v-if="recipe.totalTime > 0" class="material-symbols-outlined"> timer </span>
 				<span v-if="recipe.totalTime > 0"> &nbsp;{{ recipe.totalTime }}min</span>
-				<div v-if="recipe.totalTime > 0" class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
+				<div v-if="recipe.totalTime > 0" class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
 				<span class="">Calories:&nbsp;{{ Math.round(recipe.calories) }}kcal</span>
-				<div class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
+				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
 				<span class="">Servings:&nbsp;{{ Math.round(recipe.yield) }}</span>
-				<div class="h-10 w-1 bg-white dark:bg-gray-700 mx-3"></div>
+				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
 				<a :href="recipe.url" target="_blank" class="flex items-center h-10 ml-auto mr-2 text-indigo-500 dark:text-indigo-500"
 					>Instructions<span class="material-symbols-outlined text-base text-indigo-500 pl-1"> north_east </span></a
 				>
