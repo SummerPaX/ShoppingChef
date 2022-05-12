@@ -9,8 +9,8 @@ Shopping Chef is a Lifestyle Planner which helps you plan your meals, keep track
 <br>
 
 
-> Projekt for  
-> <img src="https://www.htlwienwest.at/img/logo.svg"  alt="HTL Wien West" style="height:50px" />
+> ### Project for  
+> <img src="https://www.htlwienwest.at/img/logo.svg"  alt="HTL Wien West" style="height:50px;background:#404040;border-radius:20px;padding: 10px 20px" />
 >
 > Created with [vue.js]((https://vuejs.org)) frontend and [firebase] Backend
 
