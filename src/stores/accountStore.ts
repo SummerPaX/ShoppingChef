@@ -13,6 +13,7 @@ import {
 } from "firebase/auth";
 import { doc, collection, getDoc, onSnapshot, DocumentReference, DocumentData, CollectionReference, setDoc, addDoc, Timestamp } from "firebase/firestore";
 import { async } from "@firebase/util";
+import { alertType } from "../types/constants";
 
 onAuthStateChanged(auth, (_user) => {
 	const account = accountStore();
@@ -48,6 +49,7 @@ export const accountStore = defineStore("accountStore", {
 		userdata: null as any,
 		calendardata: {} as any,
 		listsdata: {} as any,
+		sendAlert: (message: string, type: string) => {},
 	}),
 	getters: {
 		getUser(): User | null | undefined {
@@ -77,7 +79,7 @@ export const accountStore = defineStore("accountStore", {
 					(err) => console.log(err)
 				);
 			} catch (err) {
-				console.log(err);
+				this.sendAlert(err + "", alertType.ERROR);
 			}
 		},
 		subscribeToUserCalendar() {
@@ -94,7 +96,7 @@ export const accountStore = defineStore("accountStore", {
 					(err) => console.log(err)
 				);
 			} catch (err) {
-				console.log(err);
+				this.sendAlert(err + "", alertType.ERROR);
 			}
 		},
 		subscribeToUserLists() {
@@ -111,7 +113,7 @@ export const accountStore = defineStore("accountStore", {
 					(err) => console.log(err)
 				);
 			} catch (err) {
-				console.log(err);
+				this.sendAlert(err + "", alertType.ERROR);
 			}
 		},
 		subscribeToFirebase() {
@@ -133,7 +135,7 @@ export const accountStore = defineStore("accountStore", {
 				const res = await signInWithEmailAndPassword(auth, email, password);
 				if (!res) throw new Error("Could not complete signin");
 			} catch (err) {
-				console.error(err);
+				this.sendAlert(err + "", alertType.ERROR);
 			}
 		},
 		async googleSignIn() {
@@ -141,13 +143,14 @@ export const accountStore = defineStore("accountStore", {
 
 			const auth = getAuth();
 			signInWithPopup(auth, provider).catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				// The email of the user's account used.
-				const email = error.email;
-				// The AuthCredential type that was used.
-				const credential = GoogleAuthProvider.credentialFromError(error);
+				// // Handle Errors here.
+				// const errorCode = error.code;
+				// const errorMessage = error.message;
+				// // The email of the user's account used.
+				// const email = error.email;
+				// // The AuthCredential type that was used.
+				// const credential = GoogleAuthProvider.credentialFromError(error);
+				this.sendAlert(error.message, alertType.ERROR);
 			});
 		},
 		async createUser(email: string, password: string) {
@@ -155,7 +158,7 @@ export const accountStore = defineStore("accountStore", {
 				const res = await createUserWithEmailAndPassword(auth, email, password);
 				if (!res) throw new Error("Could not complete signup");
 			} catch (err) {
-				console.error(err);
+				this.sendAlert(err + "", alertType.ERROR);
 			}
 		},
 		async signOut() {

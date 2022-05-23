@@ -19,6 +19,8 @@ const addAlert = (message: string, type: string) => {
 		type: type,
 	});
 };
+
+account.sendAlert = addAlert;
 </script>
 
 <template>
