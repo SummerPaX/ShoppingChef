@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import { cuisineTypes, dietLabels, dishTypes, healthLabels, mealTypes } from "../types/constants";
+import { standardOptions, cuisineTypes, dietLabels, dishTypes, healthLabels, mealTypes } from "../types/constants";
 import Recipe from "../types/recipe";
 import edamamOptions from "../types/edamamOptions";
 
@@ -54,24 +54,7 @@ export const recipeStore = defineStore("recipeStore", {
 		count: 0,
 		more: false,
 		fetching: false,
-		currentOptions: {
-			query: "",
-			diet: [],
-			health: [],
-			mealType: [],
-			dishType: [],
-			cuisine: [],
-			calories: {
-				min: 0,
-				max: 0,
-			},
-			time: {
-				min: 0,
-				max: 0,
-			},
-			from: 0,
-			to: 0,
-		} as edamamOptions,
+		currentOptions: standardOptions,
 	}),
 	getters: {
 		getRecipes(): any {

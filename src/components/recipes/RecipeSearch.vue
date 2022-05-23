@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { ref } from "vue";
-import edamamOptions from "../../types/edamamOptions";
 import { recipeStore } from "../../stores/recipeStore";
+import { standardOptions } from "../../types/constants";
+import { alertType } from "../../types/constants";
 
 const emit = defineEmits(["alert"]);
 
@@ -16,48 +17,16 @@ let showcalories = ref(false);
 let showpreptime = ref(false);
 let filterVisible = ref(false);
 
-let query = ref<edamamOptions>({
-	query: "",
-	diet: [],
-	health: [],
-	mealType: [],
-	dishType: [],
-	cuisine: [],
-	calories: {
-		min: 0,
-		max: 0,
-	},
-	time: {
-		min: 0,
-		max: 0,
-	},
-	from: 0,
-	to: 20,
-});
+let query = ref(standardOptions);
 const submitSearch = () => {
-	if (query.value.query) {
+	if (query.value.query.trim().length > 1) {
 		recipes.fetchRecipes(query.value);
+	} else {
+		emit("alert", "Use more than 1 character", alertType.ERROR);
 	}
 };
 const deleteSearchInput = () => {
-	query.value = {
-		query: "",
-		diet: [],
-		health: [],
-		mealType: [],
-		dishType: [],
-		cuisine: [],
-		calories: {
-			min: 0,
-			max: 0,
-		},
-		time: {
-			min: 0,
-			max: 0,
-		},
-		from: 0,
-		to: 20,
-	};
+	query.value = standardOptions;
 	document.getElementById("searchBar")?.focus();
 };
 </script>

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref, reactive } from "@vue/reactivity";
 import Recipe from "../../types/recipe";
-
+import { accountStore } from "../../stores/accountStore";
 
 const emit = defineEmits(["alert"]);
 
@@ -59,19 +59,19 @@ const addToFavourite = () => {};
 		<div class="w-full">
 			<div class="flex items-center pl-4">
 				<img
-					v-if="recipe.healthLabels.includes('Vegan')"
+					v-if="recipe.healthLabels?.includes('Vegan')"
 					src="..\..\assets\icons\vegan.svg"
 					alt=""
 					class="h-12 self-start rounded-full ml-[-0.5rem] pr-2 py-2"
 				/>
 				<img
-					v-else-if="recipe.healthLabels.includes('Vegetarian')"
+					v-else-if="recipe.healthLabels?.includes('Vegetarian')"
 					src="..\..\assets\icons\veggie.svg"
 					alt=""
 					class="h-12 rounded-full ml-[-0.5rem] pr-2 py-2"
 				/>
 				<div class="flex items-center flex-wrap">
-					<span class="uppercase tracking-wide text-sm font-semibold text-orange-500 dark:text-orange-500 pr-2">{{ recipe.mealType.at(0) }}</span>
+					<span class="uppercase tracking-wide text-sm font-semibold text-orange-500 dark:text-orange-500 pr-2">{{ recipe.mealType?.at(0) ?? "" }}</span>
 					<span
 						class="uppercase tracking-wide text-sm font-semibold text-indigo-500 dark:text-indigo-500 pr-2"
 						v-for="(htags, index) in recipe.dietLabels"
@@ -98,14 +98,14 @@ const addToFavourite = () => {};
 				{{ recipe.label }}
 			</a>
 			<ul class="flex overflow-hidden flex-col place-content-between md:place-content-start mt-2 px-4 py-2">
-				<header @click="showIngredients = !showIngredients" class="flex items-center mt-1 leading-tight font-medium text-black dark:text-white">
-					Ingredients<button class="material-symbols-outlined cursor-pointer select-none">
+				<header @click="showIngredients = !showIngredients" class="flex items-center mt-1 leading-tight font-medium text-black dark:text-white cursor-pointer select-none">
+					Ingredients<button class="material-symbols-outlined select-none">
 						{{ showIngredients ? "expand_less" : "expand_more" }}
 					</button>
 				</header>
 				<div v-if="showIngredients">
 					<li
-						class="mr-1 mt-1 w-full py-0.5 px-1.5 rounded-sm bg-neutral-200 text-slate-500 dark:bg-primary-800 dark:text-neutral-100"
+						class="mr-1 mt-1 w-full py-0.5 px-1.5 rounded-sm bg-neutral-200 text-slate-500 dark:bg-primary-800 dark:text-neutral-100 "
 						v-for="(lines, index) in recipe.ingredientLines"
 						:key="index"
 					>
@@ -114,18 +114,24 @@ const addToFavourite = () => {};
 				</div>
 			</ul>
 			<ul class="flex overflow-hidden flex-col place-content-between md:place-content-start px-4 py-2">
-				<header @click="showTags = !showTags" class="flex w-full items-center leading-tight font-medium text-black dark:text-white">
+				<header @click="showTags = !showTags" class="flex w-full items-center leading-tight font-medium text-black dark:text-white cursor-pointer select-none">
 					Tags<button class="material-symbols-outlined cursor-pointer select-none">
 						{{ showTags ? "expand_less" : "expand_more" }}
 					</button>
 				</header>
 				<div v-if="showTags" class="flex flex-row flex-wrap">
-					<li class="mr-1 mt-1 py-0.5 px-1.5 bg-primary-600 text-neutral-100 rounded-sm cursor-default" v-for="(lines, index) in recipe.healthLabels" :key="index">
+					<li
+						class="mr-1 mt-1 py-0.5 px-1.5 bg-primary-600 text-neutral-100 rounded-sm cursor-default"
+						v-for="(lines, index) in recipe.healthLabels"
+						:key="index"
+					>
 						{{ lines }}
 					</li>
 				</div>
 			</ul>
-			<div class="md:h-10 bg-neutral-300 dark:bg-neutral-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-neutral-300">
+			<div
+				class="md:h-10 bg-neutral-300 dark:bg-neutral-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-neutral-300"
+			>
 				<div
 					class="ml-1 text-transparent stars bg-clip-text select-none flex items-center"
 					:style="`background-image: linear-gradient(to right, rgb(234 179 8) ${rating}%, white ${rating}%);`"
@@ -138,12 +144,12 @@ const addToFavourite = () => {};
 				</div>
 				<span>({{ Math.round(rating / 2) / 10 }})</span>
 				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
-				<span v-if="recipe.totalTime > 0" class="material-symbols-outlined"> timer </span>
-				<span v-if="recipe.totalTime > 0"> &nbsp;{{ recipe.totalTime }}min</span>
-				<div v-if="recipe.totalTime > 0" class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
+				<span v-if="recipe.totalTime ?? 0 > 0" class="material-symbols-outlined"> timer </span>
+				<span v-if="recipe.totalTime ?? 0 > 0"> &nbsp;{{ recipe.totalTime }}min</span>
+				<div v-if="recipe.totalTime ?? 0 > 0" class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
 				<span class="">Calories:&nbsp;{{ Math.round(recipe.calories) }}kcal</span>
 				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
-				<span class="">Servings:&nbsp;{{ Math.round(recipe.yield) }}</span>
+				<span class="">Servings:&nbsp;{{ Math.round(recipe.yield ?? 0) }}</span>
 				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
 				<a :href="recipe.url" target="_blank" class="flex items-center h-10 ml-auto mr-2 text-indigo-500 dark:text-indigo-500"
 					>Instructions<span class="material-symbols-outlined text-base text-indigo-500 pl-1"> north_east </span></a

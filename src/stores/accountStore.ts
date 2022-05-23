@@ -24,9 +24,15 @@ onAuthStateChanged(auth, (_user) => {
 				Promise.all([
 					setDoc(account.getUserDoc, { fav: [] }),
 					setDoc(doc(account.getCalendarCol, "2000-02-02"), { Breakfast: "", Lunch: "", Dinner: "", Snacks: [] }),
-					addDoc(account.getListsCol, { name: "", recipes: [], singleItems: [], creationDate: Timestamp.fromDate(new Date()), completionDate: Timestamp.fromDate(new Date("January 1, 1970")) }),
-				]).then(() => account.subscribe());
-			} else account.subscribe();
+					addDoc(account.getListsCol, {
+						name: "",
+						recipes: [],
+						singleItems: [],
+						creationDate: Timestamp.fromDate(new Date()),
+						completionDate: Timestamp.fromDate(new Date("January 1, 1970")),
+					}),
+				]).then(() => account.subscribeToFirebase());
+			} else account.subscribeToFirebase();
 		});
 });
 
@@ -41,6 +47,7 @@ export const accountStore = defineStore("accountStore", {
 		},
 		userdata: null as any,
 		calendardata: {} as any,
+		listsdata: {} as any,
 	}),
 	getters: {
 		getUser(): User | null | undefined {
@@ -57,10 +64,7 @@ export const accountStore = defineStore("accountStore", {
 		},
 	},
 	actions: {
-		subscribe() {
-			this.subscribeToUserData();
-			this.subscribeToUserCalendar();
-		},
+		//Subscribe to Firebase Data
 		subscribeToUserData() {
 			if (!this.user) return;
 			try {
@@ -93,30 +97,41 @@ export const accountStore = defineStore("accountStore", {
 				console.log(err);
 			}
 		},
+		subscribeToUserLists() {
+			if (!this.user) return;
+			try {
+				this.unsub["listsData"] = onSnapshot(
+					this.getListsCol,
+					(d) => {
+						d.docs.forEach((doc) => {
+							this.listsdata[doc.id] = doc.data();
+						});
+						console.log(this.listsdata);
+					},
+					(err) => console.log(err)
+				);
+			} catch (err) {
+				console.log(err);
+			}
+		},
+		subscribeToFirebase() {
+			this.subscribeToUserData();
+			this.subscribeToUserCalendar();
+			this.subscribeToUserLists();
+		},
+		unsubFromFirebase() {
+			this.unsub["calendarData"]();
+			this.unsub["userData"]();
+			this.unsub["listsData"]();
+			this.userdata = null;
+			this.calendardata = {};
+			this.listsdata = {};
+		},
+		//Log in Stuff
 		async standardSignIn(email: string, password: string) {
 			try {
 				const res = await signInWithEmailAndPassword(auth, email, password);
 				if (!res) throw new Error("Could not complete signin");
-			} catch (err) {
-				console.error(err);
-			}
-		},
-		async deleteUser() {
-			this.unsub["calendarData"]();
-			this.unsub["userData"]();
-			this.userdata = null;
-			deleteUser(auth.currentUser as User);
-		},
-		async signOut() {
-			this.unsub["calendarData"]();
-			this.unsub["userData"]();
-			this.userdata = null;
-			signOut(auth);
-		},
-		async createUser(email: string, password: string) {
-			try {
-				const res = await createUserWithEmailAndPassword(auth, email, password);
-				if (!res) throw new Error("Could not complete signup");
 			} catch (err) {
 				console.error(err);
 			}
@@ -134,6 +149,22 @@ export const accountStore = defineStore("accountStore", {
 				// The AuthCredential type that was used.
 				const credential = GoogleAuthProvider.credentialFromError(error);
 			});
+		},
+		async createUser(email: string, password: string) {
+			try {
+				const res = await createUserWithEmailAndPassword(auth, email, password);
+				if (!res) throw new Error("Could not complete signup");
+			} catch (err) {
+				console.error(err);
+			}
+		},
+		async signOut() {
+			this.unsubFromFirebase();
+			signOut(auth);
+		},
+		async deleteUser() {
+			this.unsubFromFirebase();
+			deleteUser(auth.currentUser as User);
 		},
 	},
 });

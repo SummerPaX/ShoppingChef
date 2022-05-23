@@ -1,11 +1,16 @@
 @import url("https://fonts.sandbox.google.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200");
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
+	* {
+		font-family: 'Quicksand', sans-serif;
+	}
+	
 	body {
-		@apply bg-white dark:bg-neutral-800 bg-[url('src\assets\bg.png')] bg-[length:2560px_1400px] scroll-ff;
+		@apply bg-white dark:bg-neutral-800 bg-[url('src\assets\bg.png')] bg-[length:2560px_1400px] scroll-ff scroll-smooth;
 	}
 
 	.scroll-ff {
@@ -22,7 +27,7 @@
 	}
 
 	.scrollbar::-webkit-scrollbar {
-		width: 5px;
+		width: 10px;
 	}
 
 	.scrollbar::-webkit-scrollbar-track {

@@ -1,3 +1,23 @@
+import edamamOptions from "./edamamOptions";
+
+const standardOptions:edamamOptions = {
+	query: "",
+	diet: [],
+	health: [],
+	mealType: [],
+	dishType: [],
+	cuisine: [],
+	calories: {
+		min: 0,
+		max: 0,
+	},
+	time: {
+		min: 0,
+		max: 0,
+	},
+	from: 0,
+	to: 20,
+}
 const alertType = {
 	SUCCESS: "green",
 	INFO: "blue",
@@ -119,4 +139,4 @@ const cuisineTypes = [
 	"South East Asian",
 ];
 
-export { alertType, dietLabels, healthLabels, mealTypes, dishTypes, cuisineTypes };
+export { standardOptions, alertType, dietLabels, healthLabels, mealTypes, dishTypes, cuisineTypes };
