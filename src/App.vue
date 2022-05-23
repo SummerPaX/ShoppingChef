@@ -13,9 +13,9 @@ let alerts = ref([] as any[]);
 function close(index: number) {
 	alerts.value.splice(index, 1);
 }
-const addAlert = (mesage: string, type: string) => {
+const addAlert = (message: string, type: string) => {	
 	alerts.value.push({
-		message: mesage,
+		message: message,
 		type: type,
 	});
 };

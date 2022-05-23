@@ -9,9 +9,13 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-const closeAfter = setTimeout(() => {
-	emit("close");
-}, 10000);
+let closingStyle = ref(' ');
+const closeAfter = setTimeout(() => close(), 6000);
+
+const close = () => {
+	closingStyle.value = ' opacity-0 -translate-y-10' ;
+	setTimeout(() => emit("close"), 1100);
+}
 
 // muss mit switch case sein weil sonst tailwind die css Komponenten nicht generiert!
 // const bgColor = computed(()=>`bg-${props.type ?? 'neutral'}-300`)
@@ -46,9 +50,12 @@ const hoverColor = computed<string>(() => {
 </script>
 
 <template>
-	<div :class="bgColor" class="h-12 m-1 py-5 px-2 rounded flex items-center animate-slide-up">
+	<div
+		:class="bgColor + closingStyle"
+		class="h-12 m-1 py-5 px-2 rounded flex items-center transition-all ease-in-out duration-1000 animate-slide-up"
+	>
 		<span class="mx-5"> {{ message }} </span>
-		<button @click="emit('close')" :class="hoverColor" class="material-symbols-outlined rounded-full p-1 transition-all ease-in-out">close</button>
+		<button @click="close" :class="hoverColor" class="material-symbols-outlined rounded-full p-1 transition-all ease-in-out">close</button>
 	</div>
 </template>
 
