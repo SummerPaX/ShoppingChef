@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, computed } from "vue";
 import RecipeCard from "../components/recipes/Card.vue";
+import Loading from "../components/Loading.vue";
 import RecipeSearch from "../components/recipes/RecipeSearch.vue";
 import { recipeStore } from "../stores/recipeStore";
 import Recipe from "../types/recipe";
@@ -10,13 +11,14 @@ const addAlert = (message: string, type: string) => {
 	emit("alert", message, type);
 };
 
-const recipes = computed(() => recipeStore().getRecipes);
+const store = recipeStore();
+const recipes = computed(() => store.getRecipes);
 const count = computed(() => {
-	if (recipeStore().count < Object.keys(recipes.value).length) return Object.keys(recipes.value).length;
-	if (recipeStore().count > 100) return 100;
-	return recipeStore().count;
+	if (store.count < Object.keys(recipes.value).length) return Object.keys(recipes.value).length;
+	if (store.count > 100) return 100;
+	return store.count;
 });
-const more = computed(() => recipeStore().more && Object.keys(recipes.value).length < 100);
+const more = computed(() => store.more && Object.keys(recipes.value).length < 100);
 
 let startY = ref(0);
 let searchSticky = ref(true);
@@ -31,7 +33,7 @@ const handleScroll = (e: Event) => {
 	startY.value = scrollY;
 };
 const loadMore = () => {
-	recipeStore().fetchMoreRecipes();
+	store.fetchMoreRecipes();
 };
 </script>
 
@@ -50,13 +52,15 @@ const loadMore = () => {
 			<div class="mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto scroll-smooth">
 				<p class="text-neutral-700 dark:text-white">{{ Object.keys(recipes).length + " of " + count }} Entrys</p>
 				<RecipeCard @alert="emit('alert')" v-for="(value, key) in recipes" :key="key" :recipe="{ recipe: value }" />
-				<div v-if="more" class="flex justify-center w-full">
+				<div v-if="more" class="flex justify-center items-center w-full h-20">
 					<button
+						v-if="!store.fetching"
 						@click="loadMore"
 						class="material-symbols-outlined font-semibold rounded-full border-2 border-neutral-500 text-neutral-500 hover:animate-bounce-up transition-all hover:bg-neutral-700 text-4xl mb-4"
 					>
 						arrow_downward
 					</button>
+					<Loading color="bg-gray-500"  :loading="store.fetching" />
 				</div>
 			</div>
 		</div>
