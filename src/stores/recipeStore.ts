@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import { standardOptions, cuisineTypes, dietLabels, dishTypes, healthLabels, mealTypes } from "../types/constants";
+import { standardOptions, cuisineTypes, dietLabels, dishTypes, healthLabels, mealTypes, alertType } from "../types/constants";
 import Recipe from "../types/recipe";
 import edamamOptions from "../types/edamamOptions";
 
@@ -38,7 +38,6 @@ function buildQueryString(options: edamamOptions, appid: string, appkey: string)
 	return optionsString;
 }
 async function fetchRecipes(optionsString: string) {
-	//TODO error handling!!!
 	const dataRequest = await fetch("https://api.edamam.com/search?" + optionsString);
 	const dataResponse = await dataRequest.json();
 	return dataResponse;
@@ -49,12 +48,12 @@ export const recipeStore = defineStore("recipeStore", {
 		//TODO store Appkey and appid securely
 		app_key: "40698503668e0bb3897581f4766d77f9",
 		app_id: "900da95e",
-		// recipes: [] as any[],
 		recipes: {} as any,
 		count: 0,
 		more: false,
 		fetching: false,
 		currentOptions: standardOptions,
+		sendAlert: (message: string, type: string) => {},
 	}),
 	getters: {
 		getRecipes(): any {
@@ -86,40 +85,57 @@ export const recipeStore = defineStore("recipeStore", {
 			this.currentOptions = options;
 			this.recipes = {};
 
-			const optionsString = buildQueryString(options, this.app_id, this.app_key);
+			try {
+				const optionsString = buildQueryString(options, this.app_id, this.app_key);
 
-			const dataResponse = await fetchRecipes(optionsString);
-			dataResponse.hits.forEach((hit: any) => {
-				this.recipes[this.getIdFromUri(hit.recipe.uri)] = hit.recipe;
-			});
+				const dataResponse = await fetchRecipes(optionsString);
+				dataResponse.hits.forEach((hit: any) => {
+					this.recipes[this.getIdFromUri(hit.recipe.uri)] = hit.recipe;
+				});
 
-			this.count = dataResponse.count;
-			this.more = dataResponse.more;
-			this.currentOptions.to = dataResponse.to;
-			this.fetching = false;
-			console.log(this.$state);
+				this.count = dataResponse.count;
+				this.more = dataResponse.more;
+				this.currentOptions.to = dataResponse.to;
+				console.log(this.$state);
+			} catch (err) {
+				this.sendAlert(err + "", alertType.ERROR);
+			} finally {
+				this.fetching = false;
+			}
 		},
 		async fetchMoreRecipes() {
 			if (!this.more) return;
-			this.fetching = true;
+			try {
+				this.fetching = true;
 
-			this.currentOptions.to += 20;
-			this.currentOptions.from += 20;
+				this.currentOptions.to += 20;
+				this.currentOptions.from += 20;
 
-			const optionsString = buildQueryString(this.currentOptions, this.app_id, this.app_key);
+				const optionsString = buildQueryString(this.currentOptions, this.app_id, this.app_key);
 
-			const dataResponse = await fetchRecipes(optionsString);
-			// this.recipes.push(...dataResponse.hits);
-			dataResponse.hits.forEach((hit: any) => {
-				this.recipes[this.getIdFromUri(hit.recipe.uri)] = hit.recipe;
-			});
-			this.count = dataResponse.count;
-			this.more = dataResponse.more;
-			this.fetching = false;
-			console.log(this.$state);
+				const dataResponse = await fetchRecipes(optionsString);
+				// this.recipes.push(...dataResponse.hits);
+				dataResponse.hits.forEach((hit: any) => {
+					this.recipes[this.getIdFromUri(hit.recipe.uri)] = hit.recipe;
+				});
+				this.count = dataResponse.count;
+				this.more = dataResponse.more;
+				console.log(this.$state);
+			} catch (err) {
+				this.sendAlert(err + "", alertType.ERROR);
+			} finally {
+				this.fetching = false;
+			}
 		},
 		getIdFromUri(uri: string): string {
 			return uri.substring(uri.indexOf("recipe_") + 7);
+		},
+		cleanStore() {
+			this.recipes = {} as any;
+			this.count = 0;
+			this.more = false;
+			this.fetching = false;
+			this.currentOptions = standardOptions;
 		},
 	},
 });
