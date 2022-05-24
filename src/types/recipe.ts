@@ -9,12 +9,12 @@ interface Ingredient {
 }
 
 interface Recipe {
-  label: string;
+	label: string;
 	url: string;
 	ingredients: Array<Ingredient>;
 	calories: number;
-  description?: string;
-	uri?: string;
+	description?: string;
+	uri: string;
 	image?: string;
 	source?: string;
 	shareAs?: string;

@@ -4,24 +4,27 @@ import Recipe from "../../types/recipe";
 import { accountStore } from "../../stores/accountStore";
 
 const emit = defineEmits(["alert"]);
-
-let showIngredients = ref(false);
-let showTags = ref(false);
-let imgLoaded = ref(false);
-
 const props = defineProps({
 	recipe: Object,
 });
 
+const accStore = accountStore();
+const showIngredients = ref(false);
+const showTags = ref(false);
+const imgLoaded = ref(false);
+
 const recipe = computed(() => props.recipe?.recipe as Recipe);
+const isFav = computed(() => accStore.isFav(recipe.value.uri));
 const rating = ref(Math.random() * 100);
-console.log(rating.value);
 
 const addToList = () => {};
 
 const addToWeek = () => {};
 
-const addToFavourite = () => {};
+const toggleFav = () => {
+	if (isFav.value) accStore.removeFav(recipe.value.uri);
+	else accStore.addFav(recipe.value);
+};
 
 // const rateHover = (event: MouseEvent) => {
 // 	let localX = event.pageX - (<Element>event.currentTarget).getBoundingClientRect().x;
@@ -80,9 +83,11 @@ const addToFavourite = () => {};
 					>
 				</div>
 				<div class="flex ml-auto h-12 items-start self-start">
+					<!-- TODO: Fav animation -->
 					<button
-						@click.prevent="addToFavourite"
-						class="material-symbols-outlined font-bold text-white hover:text-pink-500 bg-primary-400 p-2 rounded-bl transition-colors"
+						@click.prevent="toggleFav"
+						:class="isFav ? 'text-pink-500 hover:text-pink-400' : 'hover:text-pink-300'"
+						class="material-symbols-outlined font-bold text-white active:  bg-primary-400 p-2 rounded-bl transition-colors"
 					>
 						favorite
 					</button>
@@ -98,14 +103,17 @@ const addToFavourite = () => {};
 				{{ recipe.label }}
 			</a>
 			<ul class="flex overflow-hidden flex-col place-content-between md:place-content-start mt-2 px-4 py-2">
-				<header @click="showIngredients = !showIngredients" class="flex items-center mt-1 leading-tight font-medium text-black dark:text-white cursor-pointer select-none">
+				<header
+					@click="showIngredients = !showIngredients"
+					class="flex items-center mt-1 leading-tight font-medium text-black dark:text-white cursor-pointer select-none"
+				>
 					Ingredients<button class="material-symbols-outlined select-none">
 						{{ showIngredients ? "expand_less" : "expand_more" }}
 					</button>
 				</header>
 				<div v-if="showIngredients">
 					<li
-						class="mr-1 mt-1 w-full py-0.5 px-1.5 rounded-sm bg-neutral-200 text-slate-500 dark:bg-primary-800 dark:text-neutral-100 "
+						class="mr-1 mt-1 w-full py-0.5 px-1.5 rounded-sm bg-neutral-200 text-slate-500 dark:bg-primary-800 dark:text-neutral-100"
 						v-for="(lines, index) in recipe.ingredientLines"
 						:key="index"
 					>

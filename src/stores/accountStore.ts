@@ -11,9 +11,22 @@ import {
 	signInWithPopup,
 	getAuth,
 } from "firebase/auth";
-import { doc, collection, getDoc, onSnapshot, DocumentReference, DocumentData, CollectionReference, setDoc, addDoc, Timestamp } from "firebase/firestore";
-import { async } from "@firebase/util";
+import {
+	doc,
+	collection,
+	getDoc,
+	onSnapshot,
+	DocumentReference,
+	DocumentData,
+	CollectionReference,
+	setDoc,
+	addDoc,
+	Timestamp,
+	updateDoc,
+} from "firebase/firestore";
 import { alertType } from "../types/constants";
+import { recipeStore } from "./recipeStore";
+import Recipe from "../types/recipe";
 
 onAuthStateChanged(auth, (_user) => {
 	const account = accountStore();
@@ -23,7 +36,7 @@ onAuthStateChanged(auth, (_user) => {
 		getDoc(account.getUserDoc).then((d) => {
 			if (!d.exists()) {
 				Promise.all([
-					setDoc(account.getUserDoc, { fav: [] }),
+					setDoc(account.getUserDoc, { fav: {} }),
 					setDoc(doc(account.getCalendarCol, "2000-02-02"), { Breakfast: "", Lunch: "", Dinner: "", Snacks: [] }),
 					addDoc(account.getListsCol, {
 						name: "",
@@ -66,6 +79,29 @@ export const accountStore = defineStore("accountStore", {
 		},
 	},
 	actions: {
+		//Update UserDocs
+		addFav(recipe: Recipe) {			
+			try {
+				this.userdata.fav[recipeStore().getIdFromUri(recipe.uri)] = recipe;
+				updateDoc(this.getUserDoc, {
+					fav: this.userdata.fav,
+				});
+			} catch (err) {
+				this.sendAlert(err + "", alertType.ERROR);
+			}
+		},
+		removeFav(uri: string) {
+			delete this.userdata.fav[recipeStore().getIdFromUri(uri)];
+			updateDoc(this.getUserDoc, {
+				fav: this.userdata.fav,
+			});
+		},
+		isFav(uri: string): boolean {
+			return this.userdata.fav.hasOwnProperty(recipeStore().getIdFromUri(uri));
+		},
+		//TODO: Update Calendar
+		//TODO: Update Lists
+
 		//Subscribe to Firebase Data
 		subscribeToUserData() {
 			if (!this.user) return;
@@ -76,7 +112,7 @@ export const accountStore = defineStore("accountStore", {
 						this.userdata = d.data();
 						console.log(this.userdata);
 					},
-					(err) => console.log(err)
+					(err) => this.sendAlert(err + "", alertType.ERROR)
 				);
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
@@ -93,7 +129,7 @@ export const accountStore = defineStore("accountStore", {
 						});
 						console.log(this.calendardata);
 					},
-					(err) => console.log(err)
+					(err) => this.sendAlert(err + "", alertType.ERROR)
 				);
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
@@ -110,7 +146,7 @@ export const accountStore = defineStore("accountStore", {
 						});
 						console.log(this.listsdata);
 					},
-					(err) => console.log(err)
+					(err) => this.sendAlert(err + "", alertType.ERROR)
 				);
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
@@ -164,10 +200,12 @@ export const accountStore = defineStore("accountStore", {
 		async signOut() {
 			this.unsubFromFirebase();
 			signOut(auth);
+			recipeStore().cleanStore();
 		},
 		async deleteUser() {
 			this.unsubFromFirebase();
 			deleteUser(auth.currentUser as User);
+			recipeStore().cleanStore();
 		},
 	},
 });
