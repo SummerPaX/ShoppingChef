@@ -77,10 +77,13 @@ export const accountStore = defineStore("accountStore", {
 		getListsCol(): CollectionReference<DocumentData> {
 			return collection(db, "User", this.user?.uid ?? "", "Lists");
 		},
+		getFavs(): Map<string, Recipe> {
+			return this.userdata.fav;
+		},
 	},
 	actions: {
 		//Update UserDocs
-		addFav(recipe: Recipe) {			
+		addFav(recipe: Recipe) {
 			try {
 				this.userdata.fav[recipeStore().getIdFromUri(recipe.uri)] = recipe;
 				updateDoc(this.getUserDoc, {
