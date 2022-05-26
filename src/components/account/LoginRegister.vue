@@ -17,7 +17,6 @@ const account = accountStore();
 
 <template>
 	<div class="fixed h-screen w-screen flex items-start justify-center overflow-y-auto scrollbar">
-		<!--TODO Errorhandling-->
 		<div
 			class="border border-black dark:border-primary-600 rounded-sm shadow-md bg-white dark:bg-neutral-700 w-full p-4 my-1 sm:my-[10vh] text-neutral-700 dark:text-white max-w-lg"
 			:class="{ registerForm: registerForm }"
@@ -49,7 +48,6 @@ const account = accountStore();
 					/>
 				</div>
 				<!--TODO Signup Password check-->
-
 				<div class="pb-5 pl-1 flex flex-row justify-between" v-if="!registerForm">
 					<input id="keep-ceckbox" class="check" type="checkbox" />
 					<label for="keep-ceckbox">keep me logged in</label>

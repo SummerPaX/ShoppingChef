@@ -5,7 +5,7 @@ import { accountStore } from "../../stores/accountStore";
 
 const emit = defineEmits(["alert"]);
 const props = defineProps({
-	recipe: Object,
+	recipeobject: Object,
 });
 
 const accStore = accountStore();
@@ -13,7 +13,7 @@ const showIngredients = ref(false);
 const showTags = ref(false);
 const imgLoaded = ref(false);
 
-const recipe = computed(() => props.recipe?.recipe as Recipe);
+const recipe = computed(() => props.recipeobject?.recipe as Recipe);
 const isFav = computed(() => accStore.isFav(recipe.value.uri));
 const rating = ref(Math.random() * 100);
 
@@ -23,7 +23,7 @@ const addToWeek = () => {};
 
 const toggleFav = () => {
 	if (isFav.value) accStore.removeFav(recipe.value.uri);
-	else accStore.addFav(recipe.value);
+	else accStore.addFav(recipe.value, document.getElementById(recipe.value.uri ?? '') as HTMLImageElement);
 };
 
 // const rateHover = (event: MouseEvent) => {
@@ -53,6 +53,7 @@ const toggleFav = () => {
 				src="..\..\assets\icons\recipeimg.svg"
 			/>
 			<img
+				:id="recipe.uri"				
 				:class="imgLoaded ? 'opacity-100 h-48 md:h-full scale-100 -translate-y-0' : 'opacity-0 h-0 scale-150 '"
 				class="w-full object-cover transition-opacity-transform duration-500 md:w-48"
 				:srcset="recipe.image"

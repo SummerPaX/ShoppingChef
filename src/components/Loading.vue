@@ -10,7 +10,6 @@ const props = defineProps({
 	},
 });
 
-console.log(props.color);
 </script>
 
 <template>
@@ -23,14 +22,16 @@ console.log(props.color);
 </template>
 
 <style scoped>
-.first {transition-timing-function: ease;
+.first {
+	transition-timing-function: ease-in-out;
 	animation: appear 0.6s infinite;
 }
 .moving {
-	transition-timing-function: ease;
+	transition-timing-function: ease-in-out;
 	animation: move-right 0.6s infinite;
 }
-.last {transition-timing-function: ease;
+.last {
+	transition-timing-function: ease-in-out;
 	animation: dissappear 0.6s infinite;
 }
 @keyframes appear {

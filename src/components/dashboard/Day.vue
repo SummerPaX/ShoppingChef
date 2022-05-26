@@ -14,8 +14,8 @@ const props = defineProps({
 <template>
 	<div class="flex flex-col justify-center m-1 rounded ring-primary-500">
 		<header
-			:class="day?.equals(Temporal.Now.plainDateISO()) ? 'dark:bg-primary-700' : 'dark:bg-neutral-700'"
-			class="w-48 p-2 text-white font-bold rounded-t bg-neutral-500"
+			:class="day?.equals(Temporal.Now.plainDateISO()) ? 'bg-primary-600 dark:bg-primary-700' : 'dark:bg-neutral-700 bg-neutral-500'"
+			class="w-48 p-2 text-white font-bold rounded-t "
 		>
 			{{ days[(day?.dayOfWeek ?? 0) - 1] + ", " + day?.day + ". " }}
 		</header>

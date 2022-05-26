@@ -83,14 +83,18 @@ export const accountStore = defineStore("accountStore", {
 	},
 	actions: {
 		//Update UserDocs
-		addFav(recipe: Recipe) {
+		addFav(recipe: Recipe, img: HTMLImageElement) {
 			try {
-				this.userdata.fav[recipeStore().getIdFromUri(recipe.uri)] = recipe;
+				const id = recipeStore().getIdFromUri(recipe.uri);
+				this.userdata.fav[id] = recipe;
+
 				updateDoc(this.getUserDoc, {
 					fav: this.userdata.fav,
 				});
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
+				console.log(err);
+				
 			}
 		},
 		removeFav(uri: string) {

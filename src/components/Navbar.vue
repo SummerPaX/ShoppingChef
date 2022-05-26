@@ -6,7 +6,6 @@ const account = accountStore();
 
 <template>
 	<nav class="sidebar-nav">
-		<!--TODO tooltips-->
 		<div class="flex justify-center">
 			<img src="..\assets\schef.svg" alt="" class="h-12 mt-5 mb-8 hidden md:flex" />
 		</div>
@@ -21,6 +20,10 @@ const account = accountStore();
 		<router-link id="recipes" to="/recipes" class="sidebar-icon group">
 			<span class="material-symbols-outlined"> menu_book </span>
 			<span class="sidebar-tooltip group-hover:scale-100"> Recipes </span>
+		</router-link>
+		<router-link id="favs" to="/favs" class="sidebar-icon group">
+			<span class="material-symbols-outlined"> favorite </span>
+			<span class="sidebar-tooltip group-hover:scale-100"> Favourites </span>
 		</router-link>
 		<router-link
 			id="log-out"

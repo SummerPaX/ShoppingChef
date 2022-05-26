@@ -51,7 +51,7 @@ const loadMore = () => {
 			</div>
 			<div class="mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto scroll-smooth">
 				<p class="text-neutral-700 dark:text-white">{{ Object.keys(recipes).length + " of " + count }} Entrys</p>
-				<RecipeCard @alert="emit('alert')" v-for="(value, key) in recipes" :key="key" :recipe="{ recipe: value }" />
+				<RecipeCard @alert="emit('alert')" v-for="(value, key) in recipes" :key="key" :recipeobject="{ recipe: value }" />
 				<div v-if="more" class="flex justify-center items-center w-full h-20">
 					<button
 						v-if="!store.fetching"
