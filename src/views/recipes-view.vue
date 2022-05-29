@@ -12,13 +12,9 @@ const addAlert = (message: string, type: string) => {
 };
 
 const store = recipeStore();
-const recipes = computed(() => store.getRecipes);
-const count = computed(() => {
-	if (store.count < Object.keys(recipes.value).length) return Object.keys(recipes.value).length;
-	if (store.count > 100) return 100;
-	return store.count;
-});
-const more = computed(() => store.more && Object.keys(recipes.value).length < 100);
+const recipes = computed(() => store.recipes);
+const count = computed(() => (store.count < recipes.value.size ? recipes.value.size : store.count));
+const more = computed(() => store.next.length > 0);
 
 let startY = ref(0);
 let searchSticky = ref(true);
@@ -37,22 +33,15 @@ const loadMore = () => {
 };
 </script>
 
-<template>
+<template> 
 	<div class="flex justify-center">
 		<div
-			class="h-screen flex flex-col max-w-xl md:max-w-[95%] xl:max-w-6xl transition-all duration-200 ease-linear flex-grow overflow-visible overflow-y-auto md:overflow-visible scroll-smooth"
+			class="relative h-screen flex flex-col max-w-xl md:max-w-[95%] xl:max-w-6xl transition-all duration-200 ease-linear flex-grow overflow-visible overflow-y-auto md:overflow-visible scroll-smooth"
 			@scroll="handleScroll"
 		>
-			<div
-				class="sticky transition-all ease-in-out shadow-lg md:mx-[-0.25rem] rounded-b-lg duration-200 bg-white dark:bg-neutral-800 top-0 px-2"
-				:class="searchSticky ? '' : 'translate-y-[-7rem]'"
-			>
-				<RecipeSearch @alert="addAlert"></RecipeSearch>
-			</div>
-			<div class="mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto scroll-smooth">
-				<p class="text-neutral-700 dark:text-white">{{ Object.keys(recipes).length + " of " + count }} Entrys</p>
-				<RecipeCard @alert="emit('alert')" v-for="(value, key) in recipes" :key="key" :recipeobject="{ recipe: value }" />
-				<div v-if="more" class="flex justify-center items-center w-full h-20">
+			<div class="absolute w-full top-32 bottom-0 mb-[4.25rem] md:mb-0 px-1 scrollbar md:overflow-auto scroll-smooth">
+				<RecipeCard @alert="emit('alert')" v-for="(value, key) in recipes" :key="key" :recipeObject="value[1]" />
+				<div v-if="more" class="flex justify-center items-center h-20">
 					<button
 						v-if="!store.fetching"
 						@click="loadMore"
@@ -60,8 +49,15 @@ const loadMore = () => {
 					>
 						arrow_downward
 					</button>
-					<Loading color="bg-gray-500"  :loading="store.fetching" />
+					<Loading color="bg-gray-500" :loading="store.fetching" />
 				</div>
+			</div>
+			<div
+				class="sticky transition-all ease-in-out shadow-lg md:mx-[-0.25rem] rounded-b-lg duration-200 bg-white dark:bg-neutral-800 top-0 px-2"
+				:class="searchSticky ? '' : 'translate-y-[-7rem]'"
+			>
+				<RecipeSearch @alert="addAlert"></RecipeSearch>
+				<p class="text-neutral-700 dark:text-white">{{ recipes.size + " of " + count }} Entrys</p>
 			</div>
 		</div>
 	</div>

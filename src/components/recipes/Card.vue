@@ -5,25 +5,29 @@ import { accountStore } from "../../stores/accountStore";
 
 const emit = defineEmits(["alert"]);
 const props = defineProps({
-	recipeobject: Object,
+	recipeObject: {
+		type: Object,
+		required: true,
+	},
 });
 
 const accStore = accountStore();
 const showIngredients = ref(false);
 const showTags = ref(false);
 const imgLoaded = ref(false);
+const imgZoom = ref(false);
 
-const recipe = computed(() => props.recipeobject?.recipe as Recipe);
+const recipe = computed(() => props.recipeObject as Recipe);
 const isFav = computed(() => accStore.isFav(recipe.value.uri));
-const rating = ref(Math.random() * 100);
-
+const rating = ref(Math.random() * 70 + 30);
+console.log(recipe.value)
 const addToList = () => {};
 
 const addToWeek = () => {};
 
 const toggleFav = () => {
 	if (isFav.value) accStore.removeFav(recipe.value.uri);
-	else accStore.addFav(recipe.value, document.getElementById(recipe.value.uri ?? '') as HTMLImageElement);
+	else accStore.addFav(recipe.value);
 };
 
 // const rateHover = (event: MouseEvent) => {
@@ -44,20 +48,25 @@ const toggleFav = () => {
 <template>
 	<!--TODO Rating System-->
 	<div
-		class="w-full mb-2 overflow-hidden transition-all animate-slide-up duration-200 md:flex border border-black dark:border-primary-600 rounded-sm shadow-md bg-white dark:bg-neutral-700"
+		class="w-full mb-2 transition-all animate-slide-up duration-200 md:flex border border-black dark:border-primary-600 rounded-sm shadow-md bg-white dark:bg-neutral-700"
 	>
-		<div class="relative md:shrink-0">
+		<div class="relative md:shrink-0 h-48 md:h-auto md:w-48">
 			<img
 				:class="imgLoaded ? '' : ' '"
 				class="absolute h-48 max-h-48 w-full object-cover transition-all duration-1000 md:h-full md:w-48 bg-cover bg-opacity-20"
 				src="..\..\assets\icons\recipeimg.svg"
 			/>
 			<img
-				:id="recipe.uri"				
-				:class="imgLoaded ? 'opacity-100 h-48 md:h-full scale-100 -translate-y-0' : 'opacity-0 h-0 scale-150 '"
-				class="w-full object-cover transition-opacity-transform duration-500 md:w-48"
+				:id="recipe.uri"
+				:class="
+					imgLoaded
+						? 'opacity-100 h-48 md:h-full ' + (imgZoom ? 'absolute rounded md:translate-x-80 md:scale-[2] lg:translate-x-[30rem] lg:scale-[3]' : 'scale-100 ')
+						: 'opacity-0 h-0 scale-150'
+				"
+				class="object-cover transition-opacity-transform duration-500 w-full md:w-48"
 				:srcset="recipe.image"
 				@load="imgLoaded = true"
+				@click="imgZoom = !imgZoom"
 			/>
 		</div>
 		<div class="w-full">
@@ -88,7 +97,7 @@ const toggleFav = () => {
 					<button
 						@click.prevent="toggleFav"
 						:class="isFav ? 'text-pink-500 hover:text-pink-400' : 'hover:text-pink-300'"
-						class="material-symbols-outlined font-bold text-white active:  bg-primary-400 p-2 rounded-bl transition-colors"
+						class="material-symbols-outlined font-bold text-white active: bg-primary-400 p-2 rounded-bl transition-colors"
 					>
 						favorite
 					</button>

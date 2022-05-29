@@ -1,5 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { auth, db } from "../firebase/config";
+import { Temporal } from "@js-temporal/polyfill";
 import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -27,6 +28,7 @@ import {
 import { alertType } from "../types/constants";
 import { recipeStore } from "./recipeStore";
 import Recipe from "../types/recipe";
+import { stringify } from "@firebase/util";
 
 onAuthStateChanged(auth, (_user) => {
 	const account = accountStore();
@@ -43,7 +45,6 @@ onAuthStateChanged(auth, (_user) => {
 						recipes: [],
 						singleItems: [],
 						creationDate: Timestamp.fromDate(new Date()),
-						completionDate: Timestamp.fromDate(new Date("January 1, 1970")),
 					}),
 				]).then(() => account.subscribeToFirebase());
 			} else account.subscribeToFirebase();
@@ -60,7 +61,7 @@ export const accountStore = defineStore("accountStore", {
 			listsData: () => {},
 		},
 		userdata: null as any,
-		calendardata: {} as any,
+		calendardata: new Map<string, any>(),
 		listsdata: {} as any,
 		sendAlert: (message: string, type: string) => {},
 	}),
@@ -78,35 +79,40 @@ export const accountStore = defineStore("accountStore", {
 			return collection(db, "User", this.user?.uid ?? "", "Lists");
 		},
 		getFavs(): Map<string, Recipe> {
-			return this.userdata.fav;
+			if (!this.userdata?.fav) return new Map<string, Recipe>();
+			const map = new Map<string, Recipe>();
+			Object.keys(this.userdata?.fav).map((key) => {
+				map.set(key, this.userdata?.fav[key]);
+			});
+			return map;
 		},
 	},
 	actions: {
 		//Update UserDocs
-		addFav(recipe: Recipe, img: HTMLImageElement) {
+		addFav(recipe: Recipe) {
 			try {
 				const id = recipeStore().getIdFromUri(recipe.uri);
 				this.userdata.fav[id] = recipe;
 
-				updateDoc(this.getUserDoc, {
-					fav: this.userdata.fav,
-				});
+				setDoc(this.getUserDoc, { fav: this.userdata.fav }, { merge: true });
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
 				console.log(err);
-				
 			}
 		},
 		removeFav(uri: string) {
 			delete this.userdata.fav[recipeStore().getIdFromUri(uri)];
-			updateDoc(this.getUserDoc, {
-				fav: this.userdata.fav,
-			});
+			setDoc(this.getUserDoc, { fav: this.userdata.fav }, { merge: true });
 		},
 		isFav(uri: string): boolean {
 			return this.userdata.fav.hasOwnProperty(recipeStore().getIdFromUri(uri));
 		},
-		//TODO: Update Calendar
+		//Update Calendar
+		addToCalendar(day: Temporal.PlainDate, mealType: string, recipe: Recipe | null) {
+			const entry = {} as any;
+			entry[mealType] = recipe;
+			setDoc(doc(this.getCalendarCol, day.toString()), entry, { merge: true });
+		},
 		//TODO: Update Lists
 
 		//Subscribe to Firebase Data
@@ -132,7 +138,7 @@ export const accountStore = defineStore("accountStore", {
 					this.getCalendarCol,
 					(d) => {
 						d.docs.forEach((doc) => {
-							this.calendardata[doc.id] = doc.data();
+							this.calendardata.set(doc.id, doc.data());
 						});
 						console.log(this.calendardata);
 					},
@@ -169,7 +175,7 @@ export const accountStore = defineStore("accountStore", {
 			this.unsub["userData"]();
 			this.unsub["listsData"]();
 			this.userdata = null;
-			this.calendardata = {};
+			this.calendardata = new Map();
 			this.listsdata = {};
 		},
 		//Log in Stuff

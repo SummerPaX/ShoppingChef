@@ -77,7 +77,6 @@ const deleteSearchInput = () => {
 		</form>
 
 		<!--Filter-->
-		<!--TODO make Filters Reactive / komplett überarbeiten-->
 		<div class="relative mt-2 flex flex-row flex-wrap items-baseline justify-start w-full transition-spacing">
 			<button :disabled="!filterVisible" class="peer hidden"></button>
 			<button
@@ -88,88 +87,37 @@ const deleteSearchInput = () => {
 				<span v-if="filterVisible" class="material-symbols-outlined">close</span>
 				<span v-else class="material-symbols-outlined">navigate_next</span>
 			</button>
+
 			<div
-				:class="showmeal ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
-				class="absolute left-14 flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showpreptime ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute mt-10 left-[19.25rem] md:left-[10rem] lg:mt-1 lg:left-[38.7rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showmeal = !showmeal" class="cursor-pointer flex items-center">
-					Meal
+				<h1 @click="showpreptime = !showpreptime" class="cursor-pointer flex items-center">
+					Preptime
 					<span class="material-symbols-outlined">
-						{{ showmeal ? "expand_less" : "expand_more" }}
+						{{ showpreptime ? "expand_less" : "expand_more" }}
 					</span>
 				</h1>
-				<div v-if="showmeal">
-					<div v-for="meal in recipes.getMealTypes" :key="meal" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="meal" v-model="query.mealType" :value="meal" class="check peer" type="checkbox" />
-						<label :for="meal" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ meal }}</label>
+				<div v-if="showpreptime" class="flex flex-col">
+					<div class="flex flex-row items-center">
+						<label for="nimCal" class="w-8">min</label>
+						<input
+							id="minCal"
+							type="number"
+							placeholder="min"
+							v-model="query.time.min"
+							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
+						/>
 					</div>
-				</div>
-			</div>
-			<div
-				:class="showcuisine ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
-				class="absolute left-[8.5rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
-			>
-				<h1 @click="showcuisine = !showcuisine" class="cursor-pointer flex items-center">
-					Cuisine
-					<span class="material-symbols-outlined">
-						{{ showcuisine ? "expand_less" : "expand_more" }}
-					</span>
-				</h1>
-				<div v-if="showcuisine">
-					<div v-for="cuisine in recipes.getCuisineTypes" :key="cuisine" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="cuisine" v-model="query.cuisine" :value="cuisine" class="check peer" type="checkbox" />
-						<label :for="cuisine" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ cuisine }}</label>
-					</div>
-				</div>
-			</div>
-			<div
-				:class="showhealth ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
-				class="absolute left-[14.5rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
-			>
-				<h1 @click="showhealth = !showhealth" class="cursor-pointer flex items-center">
-					HealthLabels
-					<span class="material-symbols-outlined">
-						{{ showhealth ? "expand_less" : "expand_more" }}
-					</span>
-				</h1>
-				<div v-if="showhealth">
-					<div v-for="health in recipes.getHealthLabels" :key="health" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="health" v-model="query.health" :value="health" class="check peer" type="checkbox" />
-						<label :for="health" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ health }}</label>
-					</div>
-				</div>
-			</div>
-			<div
-				:class="showdiet ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
-				class="absolute mt-10 md:mt-1 left-14 md:left-[23rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
-			>
-				<h1 @click="showdiet = !showdiet" class="cursor-pointer flex items-center">
-					Diet
-					<span class="material-symbols-outlined">
-						{{ showdiet ? "expand_less" : "expand_more" }}
-					</span>
-				</h1>
-				<div v-if="showdiet">
-					<div v-for="diet in recipes.getDietLabels" :key="diet.param" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="diet.param" v-model="query.diet" :value="diet.param" class="check peer" type="checkbox" />
-						<label :for="diet.param" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ diet.name }}</label>
-					</div>
-				</div>
-			</div>
-			<div
-				:class="showdish ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
-				class="absolute mt-10 md:mt-1 left-[8.15rem] md:left-[27.65rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
-			>
-				<h1 @click="showdish = !showdish" class="cursor-pointer flex items-center">
-					Dish
-					<span class="material-symbols-outlined">
-						{{ showdish ? "expand_less" : "expand_more" }}
-					</span>
-				</h1>
-				<div v-if="showdish">
-					<div v-for="dish in recipes.getDishTypes" :key="dish" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="dish" v-model="query.dishType" :value="dish" class="check peer" type="checkbox" />
-						<label :for="dish" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ dish }}</label>
+					<div class="flex flex-row items-center">
+						<label for="nimCal" class="w-8">max</label>
+						<input
+							id="maxCal"
+							type="number"
+							placeholder="max"
+							v-model="query.time.max"
+							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
+						/>
 					</div>
 				</div>
 			</div>
@@ -207,35 +155,89 @@ const deleteSearchInput = () => {
 				</div>
 			</div>
 			<div
-				:class="showpreptime ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
-				class="absolute mt-10 left-[19.25rem] md:left-[10rem] lg:mt-1 lg:left-[38.7rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+				:class="showdish ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute mt-10 md:mt-1 left-[8.15rem] md:left-[27.65rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
 			>
-				<h1 @click="showpreptime = !showpreptime" class="cursor-pointer flex items-center">
-					Preptime
+				<h1 @click="showdish = !showdish" class="cursor-pointer flex items-center">
+					Dish
 					<span class="material-symbols-outlined">
-						{{ showpreptime ? "expand_less" : "expand_more" }}
+						{{ showdish ? "expand_less" : "expand_more" }}
 					</span>
 				</h1>
-				<div v-if="showpreptime" class="flex flex-col">
-					<div class="flex flex-row items-center">
-						<label for="nimCal" class="w-8">min</label>
-						<input
-							id="minCal"
-							type="number"
-							placeholder="min"
-							v-model="query.time.min"
-							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
-						/>
+				<div v-if="showdish">
+					<div v-for="dish in recipes.getDishTypes" :key="dish" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="dish" v-model="query.dishType" :value="dish" class="check peer" type="checkbox" />
+						<label :for="dish" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ dish }}</label>
 					</div>
-					<div class="flex flex-row items-center">
-						<label for="nimCal" class="w-8">max</label>
-						<input
-							id="maxCal"
-							type="number"
-							placeholder="max"
-							v-model="query.time.max"
-							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
-						/>
+				</div>
+			</div>
+			<div
+				:class="showdiet ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute mt-10 md:mt-1 left-14 md:left-[23rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+			>
+				<h1 @click="showdiet = !showdiet" class="cursor-pointer flex items-center">
+					Diet
+					<span class="material-symbols-outlined">
+						{{ showdiet ? "expand_less" : "expand_more" }}
+					</span>
+				</h1>
+				<div v-if="showdiet">
+					<div v-for="diet in recipes.getDietLabels" :key="diet.param" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="diet.param" v-model="query.diet" :value="diet.param" class="check peer" type="checkbox" />
+						<label :for="diet.param" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ diet.name }}</label>
+					</div>
+				</div>
+			</div>
+			<div
+				:class="showhealth ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute left-[14.5rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+			>
+				<h1 @click="showhealth = !showhealth" class="cursor-pointer flex items-center">
+					HealthLabels
+					<span class="material-symbols-outlined">
+						{{ showhealth ? "expand_less" : "expand_more" }}
+					</span>
+				</h1>
+				<div v-if="showhealth">
+					<div v-for="health in recipes.getHealthLabels" :key="health" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="health" v-model="query.health" :value="health" class="check peer" type="checkbox" />
+						<label :for="health" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ health }}</label>
+					</div>
+				</div>
+			</div>
+
+			<div
+				:class="showcuisine ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute left-[8.5rem] flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+			>
+				<h1 @click="showcuisine = !showcuisine" class="cursor-pointer flex items-center">
+					Cuisine
+					<span class="material-symbols-outlined">
+						{{ showcuisine ? "expand_less" : "expand_more" }}
+					</span>
+				</h1>
+				<div v-if="showcuisine">
+					<div v-for="cuisine in recipes.getCuisineTypes" :key="cuisine" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="cuisine" v-model="query.cuisine" :value="cuisine" class="check peer" type="checkbox" />
+						<label :for="cuisine" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ cuisine }}</label>
+					</div>
+				</div>
+			</div>
+
+			<div
+				:class="showmeal ? 'rounded-lg' : 'rounded-lg hover:bg-neutral-200 hover:dark:bg-neutral-600'"
+				class="absolute left-14 flex flex-col border-2 border-primary-600 px-2 m-1 md:mx-2 bg-white dark:bg-neutral-800 bg-opacity-90 whitespace-nowrap select-none peer-disabled:left-10 peer-disabled:w-0 peer-disabled:opacity-0 transition-all ease-in-out"
+			>
+				<h1 @click="showmeal = !showmeal" class="cursor-pointer flex items-center">
+					Meal
+					<span class="material-symbols-outlined">
+						{{ showmeal ? "expand_less" : "expand_more" }}
+					</span>
+				</h1>
+				<div v-if="showmeal">
+					<div v-for="meal in recipes.getMealTypes" :key="meal" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="meal" v-model="query.mealType" :value="meal" class="check peer" type="checkbox" />
+						<label :for="meal" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ meal }}</label>
 					</div>
 				</div>
 			</div>

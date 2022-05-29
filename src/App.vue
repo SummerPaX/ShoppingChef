@@ -16,6 +16,8 @@ function close(index: number) {
 	alerts.value.splice(index, 1);
 }
 const addAlert = (message: string, type: string) => {
+	console.error(message);
+	
 	alerts.value.push({
 		message: message,
 		type: type,
@@ -32,6 +34,9 @@ recipe.sendAlert = addAlert;
 		<Navbar />
 	</div>
 	<Login v-else />
+	<div id="modalspace">
+		
+	</div>
 	<div class="absolute bottom-10 w-screen left-0 flex flex-col justify-center items-center">
 		<Alert v-for="(alert, index) in alerts" @close="close(index)" :key="index" :message="alert.message" :type="alert.type"></Alert>
 	</div>

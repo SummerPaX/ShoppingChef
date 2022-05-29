@@ -8,7 +8,7 @@ interface Ingredient {
 	image: string;
 }
 
-interface Recipe {
+interface IRecipe {
 	label: string;
 	url: string;
 	ingredients: Array<Ingredient>;
@@ -33,4 +33,35 @@ interface Recipe {
 	digest?: any;
 }
 
+class Recipe implements IRecipe {
+	constructor() {
+		this.label = "";
+		this.uri = "";
+		this.url = "";
+		this.ingredients = [];
+		this.calories = 0;
+	}
+	label: string;
+	url: string;
+	ingredients: Ingredient[];
+	calories: number;
+	description?: string | undefined;
+	uri: string;
+	image?: string | undefined;
+	source?: string | undefined;
+	shareAs?: string | undefined;
+	yield?: number | undefined;
+	dietLabels?: string[] | undefined;
+	healthLabels?: string[] | undefined;
+	cautions?: string[] | undefined;
+	ingredientLines?: string[] | undefined;
+	totalWeight?: number | undefined;
+	totalTime?: number | undefined;
+	cuisineType?: string[] | undefined;
+	mealType?: string[] | undefined;
+	dishType?: string[] | undefined;
+	totalNutrients?: any;
+	totalDaily?: any;
+	digest?: any;
+}
 export default Recipe;

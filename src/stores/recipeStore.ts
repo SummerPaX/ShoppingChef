@@ -2,63 +2,22 @@ import { acceptHMRUpdate, defineStore } from "pinia";
 import { standardOptions, cuisineTypes, dietLabels, dishTypes, healthLabels, mealTypes, alertType } from "../types/constants";
 import Recipe from "../types/recipe";
 import edamamOptions from "../types/edamamOptions";
-
-function buildQueryString(options: edamamOptions, appid: string, appkey: string): string {
-	//TODO use fetch options
-	let optionsString = `&q=${options.query}&app_id=${appid}&app_key=${appkey}`;
-	options.diet.forEach((element: String) => {
-		optionsString += `&diet=${element}`;
-	});
-	options.health.forEach((element: String) => {
-		optionsString += `&health=${element}`;
-	});
-	options.mealType.forEach((element: String) => {
-		optionsString += `&mealType=${element}`;
-	});
-	options.dishType.forEach((element: String) => {
-		optionsString += `&dishType=${element}`;
-	});
-	options.cuisine.forEach((element: String) => {
-		optionsString += `&cuisineType=${element}`;
-	});
-	if (options.calories.min > 0 || options.calories.max > 0) {
-		optionsString += "&calories=";
-		optionsString += options.calories.min > 0 ? options.calories.min + (options.calories.max > 0 ? "-" : "%2b") : "";
-		optionsString += options.calories.max > 0 ? options.calories.max : "";
-	}
-	if (options.time.min > 0 || options.time.max > 0) {
-		optionsString += "&time=";
-		optionsString += options.time.min > 0 ? options.time.min + (options.time.max > 0 ? "-" : "%2b") : "";
-		optionsString += options.time.max > 0 ? options.time.max : "";
-	}
-	optionsString += options.from > 0 ? `&from=${options.from}` : "";
-	optionsString += options.to > 0 ? `&to=${options.to}` : "";
-	console.log(optionsString);
-
-	return optionsString;
-}
-async function fetchRecipes(optionsString: string) {
-	const dataRequest = await fetch("https://api.edamam.com/search?" + optionsString);
-	const dataResponse = await dataRequest.json();
-	return dataResponse;
-}
+import { stringify } from "@firebase/util";
 
 export const recipeStore = defineStore("recipeStore", {
 	state: () => ({
 		//TODO store Appkey and appid securely
 		app_key: "40698503668e0bb3897581f4766d77f9",
 		app_id: "900da95e",
-		recipes: {} as any,
+		recipes: new Map<string, Recipe>(),
 		count: 0,
-		more: false,
+		next: "",
 		fetching: false,
 		currentOptions: standardOptions,
+		images: new Map<string, string>(),
 		sendAlert: (message: string, type: string) => {},
 	}),
 	getters: {
-		getRecipes(): any {
-			return this.recipes;
-		},
 		getDietLabels() {
 			return dietLabels;
 		},
@@ -78,25 +37,27 @@ export const recipeStore = defineStore("recipeStore", {
 	actions: {
 		async fetchRecipes(options: edamamOptions) {
 			this.count = 0;
-			this.more = false;
+			this.next = "";
 			this.currentOptions.from = 0;
 			this.currentOptions.to = 20;
 			this.fetching = true;
 			this.currentOptions = options;
-			this.recipes = {};
+			this.recipes = new Map();
 
 			try {
 				const optionsString = buildQueryString(options, this.app_id, this.app_key);
+				console.log(optionsString);
 
-				const dataResponse = await fetchRecipes(optionsString);
-				dataResponse.hits.forEach((hit: any) => {
-					this.recipes[this.getIdFromUri(hit.recipe.uri)] = hit.recipe;
+				const dataRequest = await fetch("https://api.edamam.com/api/recipes/v2/?" + optionsString);
+				const dataResponse = await dataRequest.json();
+				dataResponse.hits.forEach((hit: any) => {					
+					this.recipes.set(this.getIdFromUri(hit.recipe.uri), hit.recipe);
 				});
+				
+				if(dataResponse.count == 0) this.sendAlert("No Recipes found", alertType.WARN)
 
 				this.count = dataResponse.count;
-				this.more = dataResponse.more;
-				this.currentOptions.to = dataResponse.to;
-				console.log(this.$state);
+				this.next = dataResponse._links?.next?.href ?? "";
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
 			} finally {
@@ -104,23 +65,18 @@ export const recipeStore = defineStore("recipeStore", {
 			}
 		},
 		async fetchMoreRecipes() {
-			if (!this.more) return;
+			if (this.next.length <= 0) return;
 			try {
 				this.fetching = true;
+				const dataRequest = await fetch(this.next);
+				const dataResponse = await dataRequest.json();
+				console.log(dataResponse);
 
-				this.currentOptions.to += 20;
-				this.currentOptions.from += 20;
-
-				const optionsString = buildQueryString(this.currentOptions, this.app_id, this.app_key);
-
-				const dataResponse = await fetchRecipes(optionsString);
-				// this.recipes.push(...dataResponse.hits);
 				dataResponse.hits.forEach((hit: any) => {
-					this.recipes[this.getIdFromUri(hit.recipe.uri)] = hit.recipe;
+					this.recipes.set(this.getIdFromUri(hit.recipe.uri), hit.recipe);
 				});
 				this.count = dataResponse.count;
-				this.more = dataResponse.more;
-				console.log(this.$state);
+				this.next = dataResponse._links?.next?.href ?? "";
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
 			} finally {
@@ -133,13 +89,40 @@ export const recipeStore = defineStore("recipeStore", {
 		cleanStore() {
 			this.recipes = {} as any;
 			this.count = 0;
-			this.more = false;
+			this.next = "";
 			this.fetching = false;
 			this.currentOptions = standardOptions;
 		},
 	},
 });
 
+function buildQueryString(options: edamamOptions, appid: string, appkey: string): string {
+	const query = new URLSearchParams({
+		type: "public",
+		q: options.query,
+		app_id: appid,
+		app_key: appkey,
+		from: options.from.toString(),
+		to: options.to.toString(),
+	});
+	options.health.forEach((element: string) => query.append("health", element));
+	options.mealType.forEach((element: string) => query.append("mealType", element));
+	options.dishType.forEach((element: string) => query.append("dishType", element));
+	options.cuisine.forEach((element: string) => query.append("cuisineType", element));
+
+	const calorieRange = generateRangeString(options.calories.min, options.calories.max);
+	if (calorieRange.length > 0) {
+		query.append("calories", calorieRange);
+	}
+	const timeRange = generateRangeString(options.time.min, options.time.max);
+	if (timeRange.length > 0) {
+		query.append("time", timeRange);
+	}
+	return query.toString();
+}
+function generateRangeString(min: number, max: number): string {
+	return (min > 0 ? min + (max > 0 ? "-" : "%2b") : "") + (max > 0 ? max : "");
+}
 // make sure to pass the right store definition, `useAuth` in this case.
 if (import.meta.hot) {
 	import.meta.hot.accept(acceptHMRUpdate(recipeStore, import.meta.hot));
