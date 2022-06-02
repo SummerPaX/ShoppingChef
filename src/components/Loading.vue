@@ -58,4 +58,9 @@ const props = defineProps({
 		transform: translate(24px, 0);
 	}
 }
+
+h1 .titel {
+	width: 100px;
+	height: 15rem;
+}
 </style>
