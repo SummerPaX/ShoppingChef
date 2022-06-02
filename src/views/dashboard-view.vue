@@ -5,7 +5,7 @@ const emit = defineEmits(["alert"]);
 </script>
 
 <template>
-	<div class="dark:text-white text-center m-auto h-screen pt-5 overflow-clip">
+	<div class="relative dark:text-white text-center m-auto h-screen">
 		<Week @alert="emit('alert')"></Week>
 	</div>
 </template>

@@ -14,25 +14,24 @@ const open = ref(false);
 setTimeout(() => {
 	open.value = true;
 }, 0);
-const add = (recipe: Recipe) => {
-	accStore.addToCalendar(props.day, props.mealType, recipe);
+const add = (day:Temporal.PlainDate, mealType:string) => {
+	accStore.addToCalendar(day, mealType, props.recipe);
 	emit("close");
 };
 
 const props = defineProps({
-	day: {
-		type: Temporal.PlainDate,
-		required: true,
-	},
-	mealType: {
-		type: String,
+	recipe: {
+		type: Recipe,
 		required: true,
 	},
 });
+
+const activeDay = ref(Temporal.Now.plainDateISO());
+
 const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-const dayString = days[props.day.dayOfWeek - 1].substring(0, 3) + ", " + props.day.day + ". " + months[props.day.month - 1] + " " + props.day.year;
+const dayString = days[activeDay.value.dayOfWeek - 1].substring(0, 3) + ", " + activeDay.value.day + ". " + months[activeDay.value.month - 1] + " " + activeDay.value.year;
 </script>
 
 <template>
@@ -47,7 +46,7 @@ const dayString = days[props.day.dayOfWeek - 1].substring(0, 3) + ", " + props.d
 		>
 			<header class="flex flex-row justify-between items-center">
 				<span class="font-bold text-transparent material-symbols-outlined">close</span>
-				<h1>{{ mealType }} on {{ dayString }}</h1>
+				<h1>Add {{ recipe.label }} to Calendar</h1>
 				<button @click="emit('close')" class="font-bold hover:text-red-400 transition-colors material-symbols-outlined">close</button>
 			</header>
 			<div class="w-full h-full my-2 overflow-y-auto overflow-x-hidden scrollbar scroll-smooth px-1 max-h-[80%]">

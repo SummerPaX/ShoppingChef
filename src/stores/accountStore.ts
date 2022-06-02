@@ -102,10 +102,13 @@ export const accountStore = defineStore("accountStore", {
 		},
 		removeFav(uri: string) {
 			delete this.userdata.fav[recipeStore().getIdFromUri(uri)];
-			setDoc(this.getUserDoc, { fav: this.userdata.fav }, { merge: true });
+			
+			setDoc(this.getUserDoc, { fav: this.userdata.fav })
+			console.log(uri);
 		},
 		isFav(uri: string): boolean {
-			return this.userdata.fav.hasOwnProperty(recipeStore().getIdFromUri(uri));
+			const id = recipeStore().getIdFromUri(uri);
+			return this.userdata.fav.hasOwnProperty(id);
 		},
 		//Update Calendar
 		addToCalendar(day: Temporal.PlainDate, mealType: string, recipe: Recipe | null) {
@@ -123,7 +126,7 @@ export const accountStore = defineStore("accountStore", {
 					this.getUserDoc,
 					(d) => {
 						this.userdata = d.data();
-						console.log(this.userdata);
+						console.warn(this.userdata);
 					},
 					(err) => this.sendAlert(err + "", alertType.ERROR)
 				);

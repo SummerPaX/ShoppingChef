@@ -20,7 +20,6 @@ const imgZoom = ref(false);
 const recipe = computed(() => props.recipeObject as Recipe);
 const isFav = computed(() => accStore.isFav(recipe.value.uri));
 const rating = ref(Math.random() * 70 + 30);
-console.log(recipe.value)
 const addToList = () => {};
 
 const addToWeek = () => {};
@@ -48,7 +47,7 @@ const toggleFav = () => {
 <template>
 	<!--TODO Rating System-->
 	<div
-		class="w-full mb-2 transition-all animate-slide-up duration-200 md:flex border border-black dark:border-primary-600 rounded-sm shadow-md bg-white dark:bg-neutral-700"
+		class="box-border w-full mb-2 transition-all animate-slide-up duration-200 md:flex border border-black dark:border-primary-600 rounded-sm shadow-md bg-white dark:bg-neutral-700"
 	>
 		<div class="relative md:shrink-0 h-48 md:h-auto md:w-48">
 			<img
@@ -60,10 +59,10 @@ const toggleFav = () => {
 				:id="recipe.uri"
 				:class="
 					imgLoaded
-						? 'opacity-100 h-48 md:h-full ' + (imgZoom ? 'absolute rounded md:translate-x-80 md:scale-[2] lg:translate-x-[30rem] lg:scale-[3]' : 'scale-100 ')
+						? 'opacity-100 h-48 md:h-full ' + (imgZoom ? 'absolute rounded md:h-48 md:translate-x-80 md:scale-[2] lg:translate-x-[30rem] lg:scale-[3]' : 'scale-100 ')
 						: 'opacity-0 h-0 scale-150'
 				"
-				class="object-cover transition-opacity-transform duration-500 w-full md:w-48"
+				class="object-cover transition-all duration-500 w-full md:w-48"
 				:srcset="recipe.image"
 				@load="imgLoaded = true"
 				@click="imgZoom = !imgZoom"
@@ -96,8 +95,8 @@ const toggleFav = () => {
 					<!-- TODO: Fav animation -->
 					<button
 						@click.prevent="toggleFav"
-						:class="isFav ? 'text-pink-500 hover:text-pink-400' : 'hover:text-pink-300'"
-						class="material-symbols-outlined font-bold text-white active: bg-primary-400 p-2 rounded-bl transition-colors"
+						:class="isFav ? 'text-pink-500 hover:text-pink-600' : 'hover:text-pink-300'"
+						class="material-symbols-outlined font-bold text-white bg-primary-400 p-2 rounded-bl transition-colors"
 					>
 						favorite
 					</button>
@@ -109,7 +108,7 @@ const toggleFav = () => {
 					</button>
 				</div>
 			</div>
-			<a href="#" class="mt-1 text-xl leading-tight font-medium hover:underline text-black dark:text-white px-4 py-2">
+			<a href="#" class="mt-1 text-xl flex font-medium hover:underline text-black dark:text-white mx-4 py-2">
 				{{ recipe.label }}
 			</a>
 			<ul class="flex overflow-hidden flex-col place-content-between md:place-content-start mt-2 px-4 py-2">
@@ -147,9 +146,7 @@ const toggleFav = () => {
 					</li>
 				</div>
 			</ul>
-			<div
-				class="md:h-10 bg-neutral-300 dark:bg-neutral-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-neutral-300"
-			>
+			<div class="lg:h-10 bg-neutral-300 dark:bg-neutral-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-neutral-300">
 				<div
 					class="ml-1 text-transparent stars bg-clip-text select-none flex items-center"
 					:style="`background-image: linear-gradient(to right, rgb(234 179 8) ${rating}%, white ${rating}%);`"

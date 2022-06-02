@@ -22,7 +22,7 @@ const account = accountStore();
 			:class="{ registerForm: registerForm }"
 		>
 			<div class="flex justify-center">
-				<img src="..\..\assets\schef.svg" alt="Logo" class="h-36" />
+				<img src="..\..\assets\logo.svg" alt="Logo" class="h-36" />
 			</div>
 
 			<p class="text-center pb-2 text-2xl">

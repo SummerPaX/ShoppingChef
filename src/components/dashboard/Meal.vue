@@ -35,11 +35,11 @@ const recipe = computed(() => {
 	<div>
 		<div
 			:style="`background-image: url(${recipe.image})`"
-			class="h-24 max-w-[12rem] bg-neutral-300 dark:bg-neutral-600 hover:bg-primary-500 transition-all duration-200 mt-1 flex flex-col items-center justify-end group cursor-pointer overflow-clip"
+			class="h-48 md:max-w-[12rem] bg-cover bg-neutral-300 dark:bg-neutral-600 hover:bg-primary-500 transition-all duration-200 mt-1 flex flex-col items-center justify-end group cursor-pointer overflow-clip"
 			v-if="recipe"
 		>
 			<div
-				class="font-medium w-full text-sm lg:text-base bg-stone-700/80 text-white transition-all p-1 pb-2 duration-200 translate-y-10 group-hover:translate-y-0"
+				class="font-medium w-full  bg-stone-700/80 text-white transition-all p-1 pb-2 duration-200 translate-y-10 group-hover:translate-y-0"
 			>
 				{{ label }}
 			</div>
@@ -55,7 +55,7 @@ const recipe = computed(() => {
 			</teleport>
 		</div>
 		<div
-			class="h-24 bg-neutral-300 dark:bg-neutral-600 hover:bg-primary-500 transition-all duration-200 p-2 mt-1 flex flex-col items-center justify-center group cursor-pointer overflow-clip"
+			class="min-h-[5rem] md:h-48 bg-stone-300 dark:bg-stone-600 hover:bg-primary-500 transition-all duration-200 p-2 mt-1 flex flex-col items-center justify-center group cursor-pointer overflow-clip"
 			v-else
 			@click="openNewRecipeModal = true"
 		>

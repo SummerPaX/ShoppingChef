@@ -7,7 +7,7 @@ const account = accountStore();
 <template>
 	<nav class="sidebar-nav">
 		<div class="flex justify-center">
-			<img src="..\assets\schef.svg" alt="" class="h-12 mt-5 mb-8 hidden md:flex" />
+			<img src="..\assets\logo.svg" alt="" class="h-12 mt-5 mb-8 hidden md:flex" />
 		</div>
 		<router-link id="home" to="/" class="sidebar-icon group">
 			<span class="material-symbols-outlined"> date_range </span>

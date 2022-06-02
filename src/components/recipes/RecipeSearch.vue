@@ -25,14 +25,14 @@ const submitSearch = () => {
 		emit("alert", "Use more than 1 character", alertType.ERROR);
 	}
 };
-const deleteSearchInput = () => {
-	query.value = standardOptions;
+const deleteSearchInput = () => {	
+	query.value.query = "";
 	document.getElementById("searchBar")?.focus();
 };
 </script>
 
 <template>
-	<div class="relative flex flex-col text-neutral-600 dark:text-white items-center overflow-visible">
+	<div class="relative flex flex-col text-neutral-600 dark:text-white items-center overflow-visible px-2">
 		<!-- Search Bar -->
 		<form
 			v-on:submit.prevent="submitSearch"
@@ -60,7 +60,7 @@ const deleteSearchInput = () => {
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
-				@click.passive="deleteSearchInput"
+				@click="deleteSearchInput"
 				:class="query.query ? 'h-6 w-6' : 'h-0 w-0 '"
 				class="absolute cursor-pointer right-20 mr-2 flex my-auto rounded-full fill-neutral-500 dark:fill-neutral-400 transition-all"
 			>
