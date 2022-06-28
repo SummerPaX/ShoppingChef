@@ -17,7 +17,7 @@ console.log(typeof props.recipeobject);
 
 const recipe = computed(() => props.recipeobject as Recipe);
 const isFav = computed(() => accStore.isFav(recipe.value.uri));
-const rating = ref(Math.random() * 100);
+const rating = ref(Math.random() * 80 + 20);
 
 const addToList = () => {};
 

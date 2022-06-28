@@ -3,7 +3,6 @@ import Meal from "./Meal.vue";
 import { Temporal } from "@js-temporal/polyfill";
 import { accountStore } from "../../stores/accountStore";
 import { computed } from "vue";
-import Recipe from "../../types/recipe";
 
 const emit = defineEmits(["alert"]);
 const accStore = accountStore();
@@ -24,7 +23,7 @@ const calories = computed(() => {
 		Object.keys(dayData).forEach((element) => {
 			c += (dayData[element]?.calories ?? 0) / (dayData[element]?.yield ?? 1);
 		});
-		return Math.round(c);
+		return Math.round(c * 100) / 100;
 	}
 	return 0;
 });
@@ -43,6 +42,6 @@ const calories = computed(() => {
 		<Meal @alert="emit('alert')" :day="day" mealType="Lunch"></Meal>
 		<Meal @alert="emit('alert')" :day="day" mealType="Dinner"></Meal>
 		<Meal @alert="emit('alert')" :day="day" class="rounded-b" mealType="Snack"></Meal>
-		<div v-if="calories > 0" class="w-full mt-1 dark:bg-green-800 font-bold animate-slide-up  rounded">Calories: {{ calories }}</div>
+		<div v-if="calories > 0" class="w-full mt-1 dark:bg-green-800 font-bold animate-slide-up rounded">Calories: {{ calories }} kcal</div>
 	</div>
 </template>

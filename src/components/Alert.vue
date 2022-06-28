@@ -9,11 +9,12 @@ const props = defineProps({
 
 const emit = defineEmits(["close"]);
 
-let closingStyle = ref(' ');
+const closingStyle = ref(' ');
 const closeAfter = setTimeout(() => close(), 6000);
 
 const close = () => {
 	closingStyle.value = ' opacity-0 -translate-y-10' ;
+	clearTimeout(closeAfter);
 	setTimeout(() => emit("close"), 1100);
 }
 
@@ -55,7 +56,11 @@ const hoverColor = computed<string>(() => {
 		class="h-12 m-1 py-5 px-2 rounded flex items-center transition-all ease-in-out duration-1000 animate-slide-up"
 	>
 		<span class="mx-5"> {{ message }} </span>
-		<button @click="close" :class="hoverColor" class="material-symbols-outlined rounded-full p-1 transition-all ease-in-out">close</button>
+		<button 
+			@click="close" 
+			:class="hoverColor" 
+			class="material-symbols-outlined rounded-full p-1 transition-all ease-in-out"
+		>close</button>
 	</div>
 </template>
 

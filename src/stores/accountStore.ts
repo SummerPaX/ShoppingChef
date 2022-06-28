@@ -1,5 +1,5 @@
-import { acceptHMRUpdate, defineStore } from "pinia";
 import { auth, db } from "../firebase/config";
+import { acceptHMRUpdate, defineStore } from "pinia";
 import { Temporal } from "@js-temporal/polyfill";
 import {
 	createUserWithEmailAndPassword,
@@ -12,57 +12,51 @@ import {
 	signInWithPopup,
 	getAuth,
 } from "firebase/auth";
-import {
-	doc,
-	collection,
-	getDoc,
-	onSnapshot,
-	DocumentReference,
-	DocumentData,
-	CollectionReference,
-	setDoc,
-	addDoc,
-	Timestamp,
-	updateDoc,
-} from "firebase/firestore";
+import { doc, collection, getDoc, onSnapshot, DocumentReference, DocumentData, CollectionReference, setDoc, addDoc, Timestamp } from "firebase/firestore";
 import { alertType } from "../types/constants";
 import { recipeStore } from "./recipeStore";
 import Recipe from "../types/recipe";
-import { stringify } from "@firebase/util";
+import Shoppinglist from "../types/shoppinglist";
+import { stringifyQuery } from "vue-router";
 
 onAuthStateChanged(auth, (_user) => {
 	const account = accountStore();
 	account.user = _user;
 	account.authenticated = _user != null;
-	if (_user)
-		getDoc(account.getUserDoc).then((d) => {
-			if (!d.exists()) {
-				Promise.all([
-					setDoc(account.getUserDoc, { fav: {} }),
-					setDoc(doc(account.getCalendarCol, "2000-02-02"), { Breakfast: "", Lunch: "", Dinner: "", Snacks: [] }),
-					addDoc(account.getListsCol, {
-						name: "",
-						recipes: [],
-						singleItems: [],
-						creationDate: Timestamp.fromDate(new Date()),
-					}),
-				]).then(() => account.subscribeToFirebase());
-			} else account.subscribeToFirebase();
-		});
+	if (!account.authenticated) return;
+
+	//get UserDoc
+	getDoc(account.getUserDoc).then((d) => {
+		if (d.exists()) {
+			account.subscribeToFirebase();
+			return;
+		}
+		//create Userdokument in the DB if it doesn't exist
+		Promise.all([
+			setDoc(account.getUserDoc, { fav: {} }),
+			setDoc(doc(account.getCalendarCol, "2000-02-02"), { Breakfast: "", Lunch: "", Dinner: "", Snacks: [] }),
+			addDoc(account.getListsCol, {
+				name: "",
+				recipes: [],
+				singleItems: [],
+				creationDate: Timestamp.fromDate(new Date()),
+			}),
+		]).then(() => account.subscribeToFirebase());
+	});
 });
 
 export const accountStore = defineStore("accountStore", {
 	state: () => ({
 		authenticated: false,
 		user: null as User | null | undefined,
+		userdata: null as any,
+		calendardata: new Map<string, any>(),
+		listsdata: new Map<string, Shoppinglist>() as any,
 		unsub: {
 			userData: () => {},
 			calendarData: () => {},
 			listsData: () => {},
 		},
-		userdata: null as any,
-		calendardata: new Map<string, any>(),
-		listsdata: {} as any,
 		sendAlert: (message: string, type: string) => {},
 	}),
 	getters: {
@@ -94,7 +88,9 @@ export const accountStore = defineStore("accountStore", {
 				const id = recipeStore().getIdFromUri(recipe.uri);
 				this.userdata.fav[id] = recipe;
 
-				setDoc(this.getUserDoc, { fav: this.userdata.fav }, { merge: true });
+				setDoc(this.getUserDoc, { fav: this.userdata.fav }, { merge: true }).catch((err) => {
+					this.sendAlert(err + "", alertType.ERROR);
+				});
 			} catch (err) {
 				this.sendAlert(err + "", alertType.ERROR);
 				console.log(err);
@@ -102,8 +98,8 @@ export const accountStore = defineStore("accountStore", {
 		},
 		removeFav(uri: string) {
 			delete this.userdata.fav[recipeStore().getIdFromUri(uri)];
-			
-			setDoc(this.getUserDoc, { fav: this.userdata.fav })
+
+			setDoc(this.getUserDoc, { fav: this.userdata.fav });
 			console.log(uri);
 		},
 		isFav(uri: string): boolean {
@@ -116,18 +112,19 @@ export const accountStore = defineStore("accountStore", {
 			entry[mealType] = recipe;
 			setDoc(doc(this.getCalendarCol, day.toString()), entry, { merge: true });
 		},
-		//TODO: Update Lists
-
+		//Update Lists
+		addToList(day: Temporal.PlainDate, mealType: string, recipe: Recipe | null) {
+			const entry = {} as any;
+			entry[mealType] = recipe;
+			setDoc(doc(this.getCalendarCol, day.toString()), entry, { merge: true });
+		},
 		//Subscribe to Firebase Data
 		subscribeToUserData() {
 			if (!this.user) return;
 			try {
 				this.unsub["userData"] = onSnapshot(
-					this.getUserDoc,
-					(d) => {
-						this.userdata = d.data();
-						console.warn(this.userdata);
-					},
+					this.getUserDoc, //doc(db, "User", this.user?.uid ?? "")
+					(d) => (this.userdata = d.data()),
 					(err) => this.sendAlert(err + "", alertType.ERROR)
 				);
 			} catch (err) {
@@ -182,43 +179,29 @@ export const accountStore = defineStore("accountStore", {
 			this.listsdata = {};
 		},
 		//Log in Stuff
-		async standardSignIn(email: string, password: string) {
-			try {
-				const res = await signInWithEmailAndPassword(auth, email, password);
-				if (!res) throw new Error("Could not complete signin");
-			} catch (err) {
-				this.sendAlert(err + "", alertType.ERROR);
-			}
+		standardSignIn(email: string, password: string) {
+			signInWithEmailAndPassword(auth, email, password).catch((error) => {
+				this.sendAlert(error + "", alertType.ERROR);
+			});
 		},
-		async googleSignIn() {
+		googleSignIn() {
 			const provider = new GoogleAuthProvider();
 
-			const auth = getAuth();
 			signInWithPopup(auth, provider).catch((error) => {
-				// // Handle Errors here.
-				// const errorCode = error.code;
-				// const errorMessage = error.message;
-				// // The email of the user's account used.
-				// const email = error.email;
-				// // The AuthCredential type that was used.
-				// const credential = GoogleAuthProvider.credentialFromError(error);
 				this.sendAlert(error.message, alertType.ERROR);
 			});
 		},
-		async createUser(email: string, password: string) {
-			try {
-				const res = await createUserWithEmailAndPassword(auth, email, password);
-				if (!res) throw new Error("Could not complete signup");
-			} catch (err) {
-				this.sendAlert(err + "", alertType.ERROR);
-			}
+		createUser(email: string, password: string) {
+			createUserWithEmailAndPassword(auth, email, password).catch((error) => {
+				this.sendAlert(error.message, alertType.ERROR);
+			});
 		},
-		async signOut() {
+		signOut() {
 			this.unsubFromFirebase();
 			signOut(auth);
 			recipeStore().cleanStore();
 		},
-		async deleteUser() {
+		deleteUser() {
 			this.unsubFromFirebase();
 			deleteUser(auth.currentUser as User);
 			recipeStore().cleanStore();

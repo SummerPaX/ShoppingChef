@@ -1,51 +1,24 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import { standardOptions, cuisineTypes, dietLabels, dishTypes, healthLabels, mealTypes, alertType } from "../types/constants";
+import { alertType } from "../types/constants";
 import Recipe from "../types/recipe";
 import edamamOptions from "../types/edamamOptions";
-import { stringify } from "@firebase/util";
 
 export const recipeStore = defineStore("recipeStore", {
 	state: () => ({
-		//TODO store Appkey and appid securely
-		app_key: "40698503668e0bb3897581f4766d77f9",
-		app_id: "900da95e",
 		recipes: new Map<string, Recipe>(),
 		count: 0,
 		next: "",
 		fetching: false,
-		currentOptions: standardOptions,
 		images: new Map<string, string>(),
 		sendAlert: (message: string, type: string) => {},
 	}),
-	getters: {
-		getDietLabels() {
-			return dietLabels;
-		},
-		getHealthLabels() {
-			return healthLabels;
-		},
-		getMealTypes() {
-			return mealTypes;
-		},
-		getDishTypes() {
-			return dishTypes;
-		},
-		getCuisineTypes() {
-			return cuisineTypes;
-		},
-	},
 	actions: {
 		async fetchRecipes(options: edamamOptions) {
-			this.count = 0;
-			this.next = "";
-			this.currentOptions.from = 0;
-			this.currentOptions.to = 20;
+			this.cleanStore();
 			this.fetching = true;
-			this.currentOptions = options;
-			this.recipes = new Map();
 
 			try {
-				const optionsString = buildQueryString(options, this.app_id, this.app_key);
+				const optionsString = buildQueryString(options);
 				console.log(optionsString);
 
 				const dataRequest = await fetch("https://api.edamam.com/api/recipes/v2/?" + optionsString);
@@ -87,21 +60,19 @@ export const recipeStore = defineStore("recipeStore", {
 			return uri.substring(uri.indexOf("recipe_") + 7);
 		},
 		cleanStore() {
-			this.recipes = {} as any;
+			this.recipes = new Map();
 			this.count = 0;
 			this.next = "";
-			this.fetching = false;
-			this.currentOptions = standardOptions;
 		},
 	},
 });
 
-function buildQueryString(options: edamamOptions, appid: string, appkey: string): string {
+function buildQueryString(options: edamamOptions): string {
 	const query = new URLSearchParams({
 		type: "public",
 		q: options.query,
-		app_id: appid,
-		app_key: appkey,
+		app_id: "900da95e",
+		app_key: "40698503668e0bb3897581f4766d77f9",
 		from: options.from.toString(),
 		to: options.to.toString(),
 	});
@@ -123,7 +94,9 @@ function buildQueryString(options: edamamOptions, appid: string, appkey: string)
 function generateRangeString(min: number, max: number): string {
 	return (min > 0 ? min + (max > 0 ? "-" : "%2b") : "") + (max > 0 ? max : "");
 }
-// make sure to pass the right store definition, `useAuth` in this case.
+
+
+// make sure to pass the right store definition, `recipeStore` in this case.
 if (import.meta.hot) {
 	import.meta.hot.accept(acceptHMRUpdate(recipeStore, import.meta.hot));
 }

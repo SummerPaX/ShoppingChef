@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import { recipeStore } from "../../stores/recipeStore";
-import { standardOptions } from "../../types/constants";
-import { alertType } from "../../types/constants";
+import { standardOptions, cuisineTypes, dietLabels, dishTypes, healthLabels, mealTypes, alertType } from "../../types/constants";
 
 const emit = defineEmits(["alert"]);
 
@@ -17,16 +16,17 @@ let showcalories = ref(false);
 let showpreptime = ref(false);
 let filterVisible = ref(false);
 
-let query = ref(standardOptions);
+let options = ref(standardOptions);
+
 const submitSearch = () => {
-	if (query.value.query.trim().length > 1) {
-		recipes.fetchRecipes(query.value);
+	if (options.value.query.trim().length > 1) {
+		recipes.fetchRecipes(options.value);
 	} else {
 		emit("alert", "Use more than 1 character", alertType.ERROR);
 	}
 };
 const deleteSearchInput = () => {	
-	query.value.query = "";
+	options.value.query = "";
 	document.getElementById("searchBar")?.focus();
 };
 </script>
@@ -41,7 +41,7 @@ const deleteSearchInput = () => {
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
-				:class="query.query ? 'h-8 w-8' : 'h-0 w-0 '"
+				:class="options.query ? 'h-8 w-8' : 'h-0 w-0 '"
 				class="group-focus-within:h-8 group-focus-within:w-8 absolute flex items-center ml-3 text-center rounded-full fill-neutral-500 dark:fill-neutral-400 transition-all"
 			>
 				<path d="M0 0h24v24H0V0z" fill="none" />
@@ -50,10 +50,10 @@ const deleteSearchInput = () => {
 				/>
 			</svg>
 			<input
-				v-model="query.query"
+				v-model="options.query"
 				id="searchBar"
 				type="text"
-				:class="query.query ? 'ml-14' : 'ml-4'"
+				:class="options.query ? 'ml-14' : 'ml-4'"
 				class="block w-full h-full group-focus-within:ml-14 mr-10 bg-transparent placeholder:text-neutral-400 placeholder:dark:text-neutral-500 focus-visible:outline-none focus:border-none transition-spacing"
 				placeholder="Search"
 			/>
@@ -61,7 +61,7 @@ const deleteSearchInput = () => {
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				@click="deleteSearchInput"
-				:class="query.query ? 'h-6 w-6' : 'h-0 w-0 '"
+				:class="options.query ? 'h-6 w-6' : 'h-0 w-0 '"
 				class="absolute cursor-pointer right-20 mr-2 flex my-auto rounded-full fill-neutral-500 dark:fill-neutral-400 transition-all"
 			>
 				<!-- X Button -->
@@ -69,7 +69,7 @@ const deleteSearchInput = () => {
 				<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
 			</svg>
 			<button
-				:class="query.query ? 'w-20' : 'w-0 opacity-0'"
+				:class="options.query ? 'w-20' : 'w-0 opacity-0'"
 				class="h-full right-0 rounded-r-full shrink-0 grow-0 bg-primary-600 text-white font-semibold transition-all hover:bg-primary-800 focus-visible:bg-primary-800 focus-visible:outline-none overflow-hidden focus:border-none"
 			>
 				Search
@@ -105,7 +105,7 @@ const deleteSearchInput = () => {
 							id="minCal"
 							type="number"
 							placeholder="min"
-							v-model="query.time.min"
+							v-model="options.time.min"
 							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
@@ -115,7 +115,7 @@ const deleteSearchInput = () => {
 							id="maxCal"
 							type="number"
 							placeholder="max"
-							v-model="query.time.max"
+							v-model="options.time.max"
 							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
@@ -138,7 +138,7 @@ const deleteSearchInput = () => {
 							id="minCal"
 							type="number"
 							placeholder="min"
-							v-model="query.calories.min"
+							v-model="options.calories.min"
 							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
@@ -148,7 +148,7 @@ const deleteSearchInput = () => {
 							id="maxCal"
 							type="number"
 							placeholder="max"
-							v-model="query.calories.max"
+							v-model="options.calories.max"
 							class="block w-20 px-1 m-1 rounded placeholder:text-neutral-400 placeholder:dark:text-neutral-300 focus-visible:outline-none focus:border-none bg-neutral-200 dark:bg-neutral-600 transition-spacing"
 						/>
 					</div>
@@ -165,8 +165,8 @@ const deleteSearchInput = () => {
 					</span>
 				</h1>
 				<div v-if="showdish">
-					<div v-for="dish in recipes.getDishTypes" :key="dish" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="dish" v-model="query.dishType" :value="dish" class="check peer" type="checkbox" />
+					<div v-for="dish in dishTypes" :key="dish" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="dish" v-model="options.dishType" :value="dish" class="check peer" type="checkbox" />
 						<label :for="dish" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ dish }}</label>
 					</div>
 				</div>
@@ -182,8 +182,8 @@ const deleteSearchInput = () => {
 					</span>
 				</h1>
 				<div v-if="showdiet">
-					<div v-for="diet in recipes.getDietLabels" :key="diet.param" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="diet.param" v-model="query.diet" :value="diet.param" class="check peer" type="checkbox" />
+					<div v-for="diet in dietLabels" :key="diet.param" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="diet.param" v-model="options.diet" :value="diet.param" class="check peer" type="checkbox" />
 						<label :for="diet.param" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ diet.name }}</label>
 					</div>
 				</div>
@@ -199,8 +199,8 @@ const deleteSearchInput = () => {
 					</span>
 				</h1>
 				<div v-if="showhealth">
-					<div v-for="health in recipes.getHealthLabels" :key="health" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="health" v-model="query.health" :value="health" class="check peer" type="checkbox" />
+					<div v-for="health in healthLabels" :key="health" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="health" v-model="options.health" :value="health" class="check peer" type="checkbox" />
 						<label :for="health" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ health }}</label>
 					</div>
 				</div>
@@ -217,8 +217,8 @@ const deleteSearchInput = () => {
 					</span>
 				</h1>
 				<div v-if="showcuisine">
-					<div v-for="cuisine in recipes.getCuisineTypes" :key="cuisine" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="cuisine" v-model="query.cuisine" :value="cuisine" class="check peer" type="checkbox" />
+					<div v-for="cuisine in cuisineTypes" :key="cuisine" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="cuisine" v-model="options.cuisine" :value="cuisine" class="check peer" type="checkbox" />
 						<label :for="cuisine" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ cuisine }}</label>
 					</div>
 				</div>
@@ -235,8 +235,8 @@ const deleteSearchInput = () => {
 					</span>
 				</h1>
 				<div v-if="showmeal">
-					<div v-for="meal in recipes.getMealTypes" :key="meal" class="my-1 pl-1 flex flex-row justify-between">
-						<input :id="meal" v-model="query.mealType" :value="meal" class="check peer" type="checkbox" />
+					<div v-for="meal in mealTypes" :key="meal" class="my-1 pl-1 flex flex-row justify-between">
+						<input :id="meal" v-model="options.mealType" :value="meal" class="check peer" type="checkbox" />
 						<label :for="meal" class="peer-checked:bg-pink-500 peer-checked:bg-opacity-40 pr-1">{{ meal }}</label>
 					</div>
 				</div>

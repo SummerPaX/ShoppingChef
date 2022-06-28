@@ -45,7 +45,6 @@ const toggleFav = () => {
 </script>
 
 <template>
-	<!--TODO Rating System-->
 	<div
 		class="box-border w-full mb-2 transition-all animate-slide-up duration-200 md:flex border border-black dark:border-primary-600 rounded-sm shadow-md bg-white dark:bg-neutral-700"
 	>
@@ -59,7 +58,8 @@ const toggleFav = () => {
 				:id="recipe.uri"
 				:class="
 					imgLoaded
-						? 'opacity-100 h-48 md:h-full ' + (imgZoom ? 'absolute rounded md:h-48 md:translate-x-80 md:scale-[2] lg:translate-x-[30rem] lg:scale-[3]' : 'scale-100 ')
+						? 'opacity-100 h-48 md:h-full ' +
+						  (imgZoom ? 'absolute rounded md:h-48 md:translate-x-80 md:scale-[2] lg:translate-x-[30rem] lg:scale-[3]' : 'scale-100 ')
 						: 'opacity-0 h-0 scale-150'
 				"
 				class="object-cover transition-all duration-500 w-full md:w-48"
@@ -100,12 +100,12 @@ const toggleFav = () => {
 					>
 						favorite
 					</button>
-					<button @click.prevent="addToList" class="material-symbols-outlined text-white hover:bg-primary-700 bg-primary-600 p-2 ml-0.5 transition-colors">
+					<router-link id="lists" to="/lists" @click.prevent="toggleFav" class="material-symbols-outlined text-white hover:bg-primary-700 bg-primary-600 p-2 ml-0.5 transition-colors">
 						add_shopping_cart
-					</button>
-					<button @click.prevent="addToWeek" class="material-symbols-outlined text-white hover:bg-primary-700 bg-primary-600 p-2 ml-0.5 transition-colors">
+					</router-link>
+					<router-link id="home" to="/home" @click.prevent="toggleFav" class="material-symbols-outlined text-white hover:bg-primary-700 bg-primary-600 p-2 ml-0.5 transition-colors">
 						calendar_add_on
-					</button>
+					</router-link>
 				</div>
 			</div>
 			<a href="#" class="mt-1 text-xl flex font-medium hover:underline text-black dark:text-white mx-4 py-2">
@@ -146,16 +146,14 @@ const toggleFav = () => {
 					</li>
 				</div>
 			</ul>
-			<div class="lg:h-10 bg-neutral-300 dark:bg-neutral-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-neutral-300">
+			<div
+				class="lg:h-10 bg-neutral-300 dark:bg-neutral-800 flex flex-row flex-wrap text-center items-center px-2 font-medium text-black dark:text-neutral-300"
+			>
 				<div
 					class="ml-1 text-transparent stars bg-clip-text select-none flex items-center"
 					:style="`background-image: linear-gradient(to right, rgb(234 179 8) ${rating}%, white ${rating}%);`"
 				>
-					<span class="material-symbols-outlined cursor-default">star</span>
-					<span class="material-symbols-outlined cursor-default">star</span>
-					<span class="material-symbols-outlined cursor-default">star</span>
-					<span class="material-symbols-outlined cursor-default">star</span>
-					<span class="material-symbols-outlined cursor-default">star</span>
+					<span v-for="n in 5" :key="n" class="material-symbols-outlined cursor-default">star</span>
 				</div>
 				<span>({{ Math.round(rating / 2) / 10 }})</span>
 				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
@@ -166,9 +164,9 @@ const toggleFav = () => {
 				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
 				<span class="">Servings:&nbsp;{{ Math.round(recipe.yield ?? 0) }}</span>
 				<div class="h-10 w-1 bg-white dark:bg-neutral-700 mx-3"></div>
-				<a :href="recipe.url" target="_blank" class="flex items-center h-10 ml-auto mr-2 text-indigo-500 dark:text-indigo-500"
-					>Instructions<span class="material-symbols-outlined text-base text-indigo-500 pl-1"> north_east </span></a
-				>
+				<a :href="recipe.url" target="_blank" class="flex items-center h-10 ml-auto mr-2 text-indigo-500 dark:text-indigo-500">
+					Instructions <span class="material-symbols-outlined text-base text-indigo-500 pl-1"> north_east </span>
+				</a>
 			</div>
 		</div>
 	</div>

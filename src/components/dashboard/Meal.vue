@@ -67,7 +67,11 @@ const recipe = computed(() => {
 			</span>
 			<teleport to="#modalspace">
 				<div v-if="openNewRecipeModal">
-					<CalendarAddModal @close="openNewRecipeModal = false" @alert="emit('alert')" :day="day" :mealType="mealType"></CalendarAddModal>
+					<CalendarAddModal 
+						@close="openNewRecipeModal = false"
+					 	@alert="emit('alert')" 
+					 	:day="day" :mealType="mealType">
+					 </CalendarAddModal>
 				</div>
 			</teleport>
 		</div>
